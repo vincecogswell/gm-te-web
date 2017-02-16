@@ -7,11 +7,11 @@
         <th>No. of Parking Lots</th>
     </tr>
     <tr ng-repeat="campus in vm.campuses">
-        <td>{{ campus.name }}</td>
+        <td><a href="#!/campus/{{ campus.id }}">{{ campus.name }}</a></td>
         <td>{{ campus.status }}</td>
         <td>{{ campus.num_buildings }}</td>
         <td>{{ campus.num_lots }}</td>
-        <td><a href="#!/campus/{{ campus.id }}">Edit</a></td>
+        <td><button ng-click="vm.showMap(campus)">Edit</button></td>
         <td>Delete</td>
     </tr>
 </table>
