@@ -1,0 +1,17 @@
+<h1>Campuses</h1>
+<table>
+    <tr>
+        <th>Campus</th>
+        <th>Status</th>
+        <th>No. of Buildings</th>
+        <th>No. of Parking Lots</th>
+    </tr>
+    <tr ng-repeat="campus in vm.campuses">
+        <td>{{ campus.name }}</td>
+        <td>{{ campus.status }}</td>
+        <td>{{ campus.num_buildings }}</td>
+        <td>{{ campus.num_lots }}</td>
+        <td><a href="#!/campus/{{ campus.id }}">Edit</a></td>
+        <td>Delete</td>
+    </tr>
+</table>
