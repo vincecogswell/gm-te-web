@@ -8,27 +8,16 @@
                 templateUrl: 'partials/components/campuses.component.html',
                 bindToController: true,
                 controllerAs: 'vm',
-                controller: 'CampusesCtrl'
+                controller: 'CampusesCtrl',
+                resolve: {
+                    campuses: function(campusService) {
+                        return campusService.getCampuses();
+                    }
+                }
             });
         }])
-        .controller('CampusesCtrl', [function() {
+        .controller('CampusesCtrl', ['campuses', function(campuses) {
             var self = this;
-
-            self.campuses = [
-                {
-                    id: 1,
-                    name: "GM Technical Center",
-                    status: "Active",
-                    num_buildings: 38,
-                    num_lots: 30
-                },
-                {
-                    id: 2,
-                    name: "Michigan State University",
-                    status: "Active",
-                    num_buildings: 120,
-                    num_lots: 80
-                }
-            ];
+            self.campuses = campuses;
         }]);
 })();

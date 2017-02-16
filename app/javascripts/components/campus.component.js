@@ -8,11 +8,17 @@
                 templateUrl: 'partials/components/campus.component.html',
                 bindToController: true,
                 controllerAs: 'vm',
-                controller: 'CampusCtrl'
+                controller: 'CampusCtrl',
+                resolve: {
+                    campusService: function(campusService) {
+                        return campusService;
+                    }
+                }
             });
         }])
-        .controller('CampusCtrl', [function() {
+        .controller('CampusCtrl', ['campusService', '$routeParams', function(campusService, $routeParams) {
             var self = this;
-
+            var id = parseInt($routeParams.id);
+            self.campus = campusService.getCampusById(id);
         }]);
 })();
