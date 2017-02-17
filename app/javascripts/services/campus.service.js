@@ -7,13 +7,15 @@
 	function campusService() {
 
 		function getCampuses() {
-            return campuses; 
+			// API call
+			// if (!campuses) then get campuses
+            return campuses;
 		}
 
-		function getCampusById(id) {
+		function getCampus(campusId) {
 			for (var i = 0; i < campuses.length; i++) {
 				let campus = campuses[i];
-				if (campus.id === id) {
+				if (campus.id === campusId) {
 					return campus;
 				}
 			}
@@ -26,20 +28,22 @@
 				name: "GM Technical Center",
 				status: "Active",
 				num_buildings: 38,
-				num_lots: 30
+				num_lots: 30,
+				location: null
 			},
 			{
 				id: 2,
 				name: "Michigan State University",
 				status: "Active",
 				num_buildings: 120,
-				num_lots: 80
+				num_lots: 80,
+				location: null
 			}
         ];
 
 		return {
 			getCampuses: getCampuses,
-			getCampusById: getCampusById
+			getCampus: getCampus
 		}
 	}
 })();
