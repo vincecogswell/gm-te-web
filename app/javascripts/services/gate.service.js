@@ -24,16 +24,18 @@
 		var gates = [
 			{
 				id: 1,
-				name: "College of Engineering",
+				name: "Gate A",
 				status: "Active",
+				access: "Everyone",
                 hours: null,
                 instructions: null,
                 location: null
 			},
 			{
 				id: 2,
-				name: "International Center",
+				name: "Gate B",
 				status: "Active",
+				access: "Everyone",
                 hours: null,
                 instructions: null,
                 location: null

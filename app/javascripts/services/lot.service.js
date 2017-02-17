@@ -24,14 +24,14 @@
 		var lots = [
 			{
 				id: 1,
-				name: "College of Engineering",
+				name: "Lot A",
 				status: "Active",
                 access: "Everyone",
                 location: null
 			},
 			{
 				id: 2,
-				name: "International Center",
+				name: "Lot B",
 				status: "Active",
                 access: "Everyone",
                 location: null

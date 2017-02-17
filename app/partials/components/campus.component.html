@@ -1,2 +1,47 @@
+<button ng-click="vm.goBack()">Back</button>
 <h1>{{ vm.campus.name }}</h1>
 <!-- Remember to check for a null value! -->
+<table>
+    <tr>
+        <th>Building</th>
+        <th>Status</th>
+    </tr>
+    <tr ng-repeat="building in vm.buildings">
+        <td><a href="#!/campus/{{ vm.campus.id }}/building/{{ building.id }}">{{ building.name }}</a></td>
+        <td>{{ building.status }}</td>
+        <td><button ng-click="vm.showMap(vm.campus)">Edit</button></td>
+        <td>Delete</td>
+    </tr>
+</table>
+<table>
+    <tr>
+        <th>Lot</th>
+        <th>Status</th>
+        <th>Access</th>
+    </tr>
+    <tr ng-repeat="lot in vm.lots">
+        <td><a href="#!/campus/{{ vm.campus.id }}/lot/{{ lot.id }}">{{ lot.name }}</a></td>
+        <td>{{ lot.status }}</td>
+        <td>{{ lot.access }}</td>
+        <td><button ng-click="vm.showMap(vm.campus)">Edit</button></td>
+        <td>Delete</td>
+    </tr>
+</table>
+<table>
+    <tr>
+        <th>Gate</th>
+        <th>Status</th>
+        <th>Access</th>
+        <th>Hours</th>
+        <th>Instructions</th>
+    </tr>
+    <tr ng-repeat="gate in vm.gates">
+        <td><a href="#!/campus/{{ vm.campus.id }}/gate/{{ gate.id }}">{{ gate.name }}</a></td>
+        <td>{{ gate.status }}</td>
+        <td>{{ gate.access }}</td>
+        <td>{{ gate.hours }}</td>
+        <td>{{ gate.instructions }}</td>
+        <td><button ng-click="vm.showMap(vm.campus)">Edit</button></td>
+        <td>Delete</td>
+    </tr>
+</table>
