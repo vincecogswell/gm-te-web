@@ -1,17 +1,38 @@
-<h1>Campuses</h1>
-<table>
-    <tr>
-        <th>Campus</th>
-        <th>Status</th>
-        <th>No. of Buildings</th>
-        <th>No. of Parking Lots</th>
-    </tr>
-    <tr ng-repeat="campus in vm.campuses">
-        <td><a href="#!/campus/{{ campus.id }}">{{ campus.name }}</a></td>
-        <td>{{ campus.status }}</td>
-        <td>{{ campus.num_buildings }}</td>
-        <td>{{ campus.num_lots }}</td>
-        <td><button ng-click="vm.showMap(campus)">Edit</button></td>
-        <td>Delete</td>
-    </tr>
-</table>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="page-header">Campuses</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div id="map"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table st-table="vm.campuses" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Campus</th>
+                    <th>Status</th>
+                    <th>No. of Buildings</th>
+                    <th>No. of Parking Lots</th>
+                    <th>No. of Gates</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="campus in vm.campuses">
+                    <td><a href="#!/campus/{{ campus.id }}">{{ campus.name }}</a></td>
+                    <td>{{ campus.status }}</td>
+                    <td>{{ campus.num_buildings }}</td>
+                    <td>{{ campus.num_lots }}</td>
+                    <td>{{ campus.num_gates }}</td>
+                    <td><button>Edit</button></td>
+                    <td>Delete</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

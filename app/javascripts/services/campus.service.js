@@ -29,6 +29,7 @@
 				status: "Active",
 				num_buildings: 38,
 				num_lots: 30,
+				num_gates: 5,
 				location: null
 			},
 			{
@@ -37,6 +38,7 @@
 				status: "Active",
 				num_buildings: 120,
 				num_lots: 80,
+				num_gates: 0,
 				location: null
 			}
         ];
