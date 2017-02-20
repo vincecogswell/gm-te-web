@@ -1,9 +1,15 @@
 /* app css stylesheet */
 
-#map, #modal-map {
+#map {
     height: 420px;
     width: 600px;
     display: block;
+}
+
+#modal-map {
+  height: 387.5px;
+  width: 567.5px;
+  display: block;
 }
 
 .menu {

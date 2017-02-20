@@ -50,16 +50,6 @@
             drawingManager.setMap(map);*/
         }
 
-        google.maps.event.addListenerOnce(map, 'idle', function() {
-            google.maps.event.trigger(map, 'resize');
-        });        
-
-/*
-        $("#modal-map").on("shown.bs.modal", function () {
-            console.log("HEREEE");
-            
-        });*/
-
         self.ok = function () {
             $uibModalInstance.close(self.campus);
         }

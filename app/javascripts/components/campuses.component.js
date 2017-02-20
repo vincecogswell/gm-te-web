@@ -23,7 +23,12 @@
             var map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: 38.0902, lng: -95.7129},
                 zoom: 4
-            });         
+            });
+
+            var modalMap = new google.maps.Map(document.getElementById('modal-map'), {
+                center: {lat: 38.0902, lng: -95.7129},
+                zoom: 4
+            });       
             var drawingManager = new google.maps.drawing.DrawingManager({
                 drawingControl: true,
                 drawingControlOptions: {
@@ -39,19 +44,13 @@
                     editable: true
                 }
             });
-            drawingManager.setMap(map);
+            drawingManager.setMap(modalMap);
 
-            self.addCampus = function () {
-                var modalInstance = $uibModal.open({   
-                    controller: 'AddCampusController',
-                    controllerAs: 'vm',           
-                    templateUrl: 'partials/modals/addCampus.modal.html',
-                    size: 'lg'           
-                });
+            $("#modal-add-campus").on("shown.bs.modal", function () {
+                var curCenter = modalMap.getCenter();
+                google.maps.event.trigger(modalMap, 'resize');
+                modalMap.setCenter(curCenter);
+            });
 
-                modalInstance.result.then(function (campus) {
-                    console.log(campus);
-                });             
-            }
         }]);
 })();

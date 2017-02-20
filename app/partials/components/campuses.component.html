@@ -15,7 +15,10 @@
                 <i class="glyphicon glyphicon-plus"></i>
                 Add Campus
             </button>-->
-            <a class="btn btn-lg btn-default" data-toggle="modal" data-target="#testModal" href="../../partials/modals/addCampus.modal.html">Click to open Modal</a>
+            <button type="button" class="btn btn-md btn-success" data-toggle="modal" data-target="#modal-add-campus">
+                <i class="glyphicon glyphicon-plus"></i>
+                Add Campus
+            </button>
         </div>
     </div>
     <div class="row">
@@ -50,4 +53,26 @@
             </table>
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="modal-add-campus" tabindex="-1" role="dialog" aria-labelledby="add-campus-label">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title" id="add-campus-label">Add Campus</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" ng-model="vm.campus.name">
+        </div>
+        <label for="modal-map">Location:</label>
+        <div id="modal-map"></div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="vm.ok()">Save</button>
+        <button class="btn btn-cancel" type="button" data-dismiss="modal">Cancel</button>
+    </div>
+    </div>
+</div>
 </div>
