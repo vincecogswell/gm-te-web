@@ -16,7 +16,7 @@
                 }
             });
         }])
-        .controller('CampusesCtrl', ['campuses', function (campuses) {
+        .controller('CampusesCtrl', ['campuses', '$uibModal', function (campuses, $uibModal) {
             var self = this;
             self.campuses = campuses;
 
@@ -42,7 +42,16 @@
             drawingManager.setMap(map);
 
             self.addCampus = function () {
-                
+                var modalInstance = $uibModal.open({   
+                    controller: 'AddCampusController',
+                    controllerAs: 'vm',           
+                    templateUrl: 'partials/modals/addCampus.modal.html',
+                    size: 'lg'           
+                });
+
+                modalInstance.result.then(function (campus) {
+                    console.log(campus);
+                });             
             }
         }]);
 })();
