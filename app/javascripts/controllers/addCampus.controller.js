@@ -3,9 +3,9 @@
 
     angular
         .module('app')
-        .controller('AddCampusController', ['$uibModalInstance', 'NgMap', '$scope', AddCampusController]);
+        .controller('AddCampusController', ['$uibModalInstance', '$scope', AddCampusController]);
 
-    function AddCampusController($uibModalInstance, NgMap, $scope) {
+    function AddCampusController($uibModalInstance, $scope) {
         var self = this;
         //$scope.render = true;
         /*console.log(NgMap.getMap());
