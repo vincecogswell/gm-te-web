@@ -22,6 +22,6 @@
         .controller('LotCtrl', ['campusService', 'lotService', '$routeParams', function(campusService, lotService, $routeParams) {
             var self = this;
             var campusId = parseInt($routeParams.campusId);
-            self.campus = campusService.getCampusById(campusId);
+            self.campus = campusService.getCampus(campusId);
         }]);
 })();

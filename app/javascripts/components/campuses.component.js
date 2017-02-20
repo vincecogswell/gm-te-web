@@ -40,5 +40,9 @@
                 }
             });
             drawingManager.setMap(map);
+
+            self.addCampus = function () {
+                
+            }
         }]);
 })();

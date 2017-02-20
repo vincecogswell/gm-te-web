@@ -11,6 +11,14 @@
     </div>
     <div class="row">
         <div class="col-md-12">
+            <button type="button" ng-click="vm.addCampus()" class="btn btn-md btn-success">
+                <i class="glyphicon glyphicon-plus"></i>
+                Add Campus
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             <table st-table="vm.campuses" class="table table-striped">
                 <thead>
                 <tr>
@@ -19,17 +27,23 @@
                     <th>No. of Buildings</th>
                     <th>No. of Parking Lots</th>
                     <th>No. of Gates</th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="campus in vm.campuses">
-                    <td><a href="#!/campus/{{ campus.id }}">{{ campus.name }}</a></td>
+                <tr ng-repeat="(campusId, campus) in vm.campuses">
+                    <td><a href="#!/campus/{{ campusId }}">{{ campus.name }}</a></td>
                     <td>{{ campus.status }}</td>
                     <td>{{ campus.num_buildings }}</td>
                     <td>{{ campus.num_lots }}</td>
                     <td>{{ campus.num_gates }}</td>
-                    <td><button>Edit</button></td>
-                    <td>Delete</td>
+                    <td><button type="button" ng-click="vm.editCampus(campus)" class="btn btn-sm btn-primary">
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </td>
+                    <td><button type="button" ng-click="vm.deleteCampus(campus)" class="btn btn-sm btn-danger">
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
                 </tr>
                 </tbody>
             </table>

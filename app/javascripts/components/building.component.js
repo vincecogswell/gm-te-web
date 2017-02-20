@@ -22,6 +22,6 @@
         .controller('BuildingCtrl', ['campusService', 'buildingService', '$routeParams', function(campusService, buildingService, $routeParams) {
             var self = this;
             var campusId = parseInt($routeParams.campusId);
-            self.campus = campusService.getCampusById(campusId);
+            self.campus = campusService.getCampus(campusId);
         }]);
 })();

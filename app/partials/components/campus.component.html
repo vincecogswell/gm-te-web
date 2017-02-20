@@ -27,12 +27,12 @@
                             <th>Building</th>
                             <th>Status</th>
                             <th></th>
-                            <th></th>                            
+                            <th></th>                   
                         </tr>
                         </thead>
                         <tbody>
                         <tr ng-repeat="building in vm.buildings">
-                            <td><a href="#!/campus/{{ vm.campus.id }}/building/{{ building.id }}">{{ building.name }}</a></td>
+                            <td>{{ building.name }}</td>
                             <td>{{ building.status }}</td>
                             <td><button ng-click="vm.showMap(vm.campus)">Edit</button></td>
                             <td>Delete</td>
@@ -53,7 +53,7 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="lot in vm.lots">
-                            <td><a href="#!/campus/{{ vm.campus.id }}/lot/{{ lot.id }}">{{ lot.name }}</a></td>
+                            <td>{{ lot.name }}</td>
                             <td>{{ lot.status }}</td>
                             <td>{{ lot.access }}</td>
                             <td><button ng-click="vm.showMap(vm.campus)">Edit</button></td>
@@ -77,7 +77,7 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="gate in vm.gates">
-                            <td><a href="#!/campus/{{ vm.campus.id }}/gate/{{ gate.id }}">{{ gate.name }}</a></td>
+                            <td>{{ gate.name }}</td>
                             <td>{{ gate.status }}</td>
                             <td>{{ gate.access }}</td>
                             <td>{{ gate.hours }}</td>
