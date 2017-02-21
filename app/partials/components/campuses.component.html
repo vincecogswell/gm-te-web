@@ -9,7 +9,7 @@
             <div id="map"></div>
         </div>
     </div>
-    <div class="row">
+    <div class="row add-btn">
         <div class="col-md-12">
             <!--<button type="button" ng-click="vm.addCampus()" class="btn btn-md btn-success">
                 <i class="glyphicon glyphicon-plus"></i>
@@ -21,7 +21,7 @@
             </button>
         </div>
     </div>
-    <div class="row">
+    <div class="row tabs">
         <div class="col-md-12">
             <table st-table="vm.campuses" class="table table-striped">
                 <thead>
@@ -56,23 +56,24 @@
 </div>
 
 <div class="modal fade" id="modal-add-campus" tabindex="-1" role="dialog" aria-labelledby="add-campus-label">
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-    <div class="modal-header">
-        <h4 class="modal-title" id="add-campus-label">Add Campus</h4>
-    </div>
-    <div class="modal-body">
-        <div class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" class="form-control" id="name" ng-model="vm.campus.name">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="add-campus-label">Add Campus</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" id="name">
+                </div>
+                <label for="modal-map">Location:</label>
+                <input id="pac-input" class="form-control controls" type="text" placeholder="Search Box">
+                <div id="modal-map"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" ng-click="vm.saveCampus()">Save</button>
+                <button class="btn btn-cancel" type="button" data-dismiss="modal">Cancel</button>
+            </div>
         </div>
-        <label for="modal-map">Location:</label>
-        <div id="modal-map"></div>
     </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" type="button" ng-click="vm.ok()">Save</button>
-        <button class="btn btn-cancel" type="button" data-dismiss="modal">Cancel</button>
-    </div>
-    </div>
-</div>
 </div>

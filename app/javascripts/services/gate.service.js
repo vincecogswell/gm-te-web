@@ -15,7 +15,7 @@
 					}
 				}
 			}
-			return null;
+			return [];
 		}
 
 		function getGate(campusId, gateId) {
@@ -52,6 +52,10 @@
 		}*/
 
 		var gates = {
+
+		};
+
+		/*var gates = {
 			1: [
 				{
 					id: 1,
@@ -76,7 +80,7 @@
 					deleted: false
 				}
 			]
-		};
+		};*/
 
 /*
 		var gates = [

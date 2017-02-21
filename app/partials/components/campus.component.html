@@ -14,13 +14,29 @@
             <div id="map"></div>
         </div>
     </div>
-    <div class="row">
+    <div class="row add-btn">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-md btn-success" data-toggle="modal" data-target="#modal-add-building">
+                <i class="glyphicon glyphicon-plus"></i>
+                Add Building
+            </button>
+            <button type="button" class="btn btn-md btn-success" data-toggle="modal" data-target="#modal-add-lot">
+                <i class="glyphicon glyphicon-plus"></i>
+                Add Parking Lot
+            </button>
+            <button type="button" class="btn btn-md btn-success" data-toggle="modal" data-target="#modal-add-gate">
+                <i class="glyphicon glyphicon-plus"></i>
+                Add Gate
+            </button>
+        </div>
+    </div>
+    <div class="row tabs">
         <div class="col-md-12">
             <uib-tabset>
-                <uib-tab index="0" heading="All">
+                <!--<uib-tab index="0" heading="All">
                     <h2>All</h2>
-                </uib-tab>
-                <uib-tab index="1" heading="Buildings">
+                </uib-tab>-->
+                <uib-tab index="0" heading="Buildings">
                     <table st-table="vm.buildings" class="table table-striped">
                         <thead>
                         <tr>
@@ -34,19 +50,24 @@
                         <tr ng-repeat="building in vm.buildings">
                             <td>{{ building.name }}</td>
                             <td>{{ building.status }}</td>
-                            <td><button ng-click="vm.showMap(vm.campus)">Edit</button></td>
-                            <td>Delete</td>
+                            <td><button type="button" ng-click="vm.editBuilding(building)" class="btn btn-sm btn-primary">
+                                <i class="glyphicon glyphicon-edit"></i>
+                            </td>
+                            <td><button type="button" ng-click="vm.deleteBuilding(building)" class="btn btn-sm btn-danger">
+                                <i class="glyphicon glyphicon-remove-circle"></i>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
                 </uib-tab>
-                <uib-tab index="2" heading="Lots">
+                <uib-tab index="1" heading="Lots">
                     <table st-table="vm.lots" class="table table-striped">
                         <thead>
                         <tr>
                             <th>Lot</th>
                             <th>Status</th>
                             <th>Access</th>
+                            <th>Hours</th>
                             <th></th>
                             <th></th>                            
                         </tr>
@@ -56,13 +77,18 @@
                             <td>{{ lot.name }}</td>
                             <td>{{ lot.status }}</td>
                             <td>{{ lot.access }}</td>
-                            <td><button ng-click="vm.showMap(vm.campus)">Edit</button></td>
-                            <td>Delete</td>
+                            <td>{{ lot.hours }}</td>
+                            <td><button type="button" ng-click="vm.editLot(lot)" class="btn btn-sm btn-primary">
+                                <i class="glyphicon glyphicon-edit"></i>
+                            </td>
+                            <td><button type="button" ng-click="vm.deleteLot(lot)" class="btn btn-sm btn-danger">
+                                <i class="glyphicon glyphicon-remove-circle"></i>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
                 </uib-tab>
-                <uib-tab index="3" heading="Gates">
+                <uib-tab index="2" heading="Gates">
                     <table st-table="vm.gates" class="table table-striped">
                         <thead>
                         <tr>
@@ -82,8 +108,12 @@
                             <td>{{ gate.access }}</td>
                             <td>{{ gate.hours }}</td>
                             <td>{{ gate.instructions }}</td>
-                            <td><button ng-click="vm.showMap(vm.campus)">Edit</button></td>
-                            <td>Delete</td>
+                            <td><button type="button" ng-click="vm.editGate(gate)" class="btn btn-sm btn-primary">
+                                <i class="glyphicon glyphicon-edit"></i>
+                            </td>
+                            <td><button type="button" ng-click="vm.deleteGate(gate)" class="btn btn-sm btn-danger">
+                                <i class="glyphicon glyphicon-remove-circle"></i>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -138,4 +168,124 @@
         </tr>
     </table>-->
 
+</div>
+
+
+<div class="modal fade" id="modal-add-building" tabindex="-1" role="dialog" aria-labelledby="add-building-label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="add-building-label">Add Building</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" id="name" ng-model="vm.building.name">
+                </div>
+                <!--<div class="form-group">
+                    <div class="form-group row">
+                        <label for="active" class="col-md-1 control-label">Active:</label>
+                        <div class="col-md-2">
+                            <input type="checkbox" id="active" checked>
+                        </div>
+                    </div>
+                </div>-->
+                <label for="modal-map-building">Location:</label>
+                <div id="modal-map-building"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" ng-click="vm.saveBuilding()">Save</button>
+                <button class="btn btn-cancel" type="button" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-add-lot" tabindex="-1" role="dialog" aria-labelledby="add-lot-label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="add-lot-label">Add Parking Lot</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" id="name" ng-model="vm.lot.name">
+                </div>
+                <div class="form-group">
+                    <label>Access:</label>
+                    <select multiple class="form-control">
+                        <option>Student</option>
+                        <option>Faculty</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Hours:</label>
+                    <div class="form-group row">
+                        <label for="from" class="col-md-1 control-label" style="font-weight: normal;">From:</label>
+                        <div class="col-md-5">
+                            <div uib-timepicker ng-model="time1" minute-step="15" show-meridian="['AM','PM']" id="from"></div>
+                        </div>
+                        <label for="to" class="col-md-1 control-label" style="font-weight: normal;">To:</label>
+                        <div class="col-md-5">
+                            <div uib-timepicker ng-model="time2" minute-step="15" show-meridian="['AM','PM']"></div>
+                        </div>
+                    </div>
+                </div>
+                <label for="modal-map-lot">Location:</label>
+                <div id="modal-map-lot"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" ng-click="vm.saveLot()">Save</button>
+                <button class="btn btn-cancel" type="button" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-add-gate" tabindex="-1" role="dialog" aria-labelledby="add-gate-label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="add-gate-label">Add Gate</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" id="name" ng-model="vm.gate.name">
+                </div>
+                <div class="form-group">
+                    <label>Access:</label>
+                    <select multiple class="form-control">
+                        <option>Employee</option>
+                        <option>Executive</option>
+                        <option>Visitor</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Hours:</label>
+                    <div class="form-group row">
+                        <label for="from" class="col-md-1 control-label" style="font-weight: normal;">From:</label>
+                        <div class="col-md-5">
+                            <div uib-timepicker ng-model="time3" minute-step="15" show-meridian="['AM','PM']" id="from"></div>
+                        </div>
+                        <label for="to" class="col-md-1 control-label" style="font-weight: normal;">To:</label>
+                        <div class="col-md-5">
+                            <div uib-timepicker ng-model="time4" minute-step="15" show-meridian="['AM','PM']"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="instructions">Instructions:</label>
+                    <textarea class="form-control" rows="3" id="instructions"></textarea>
+                </div>
+                <label for="modal-map-gate">Location:</label>
+                <div id="modal-map-gate"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" ng-click="vm.saveGate()">Save</button>
+                <button class="btn btn-cancel" type="button" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
 </div>

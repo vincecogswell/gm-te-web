@@ -30,6 +30,10 @@
 		}
 
 		var campuses = {
+
+		};
+
+		/*var campuses = {
 			1: {
 				name: "GM Technical Center",
 				status: "Active",
@@ -48,7 +52,7 @@
 				location: null,
 				deleted: false				
 			}
-		};
+		};*/
 
 /*
 		var campuses = [

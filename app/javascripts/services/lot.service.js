@@ -15,7 +15,7 @@
 					}
 				}
 			}
-			return null;
+			return [];
 		}
 
 		function getLot(campusId, lotId) {
@@ -52,12 +52,17 @@
 		}*/
 
 		var lots = {
+
+		};
+
+		/*var lots = {
 			1: [
 				{
 					id: 1,
 					name: "Lot A",
 					status: "Active",
 					access: "Everyone",
+					hours: null,
 					location: null,
 					deleted: false
 				}
@@ -68,11 +73,12 @@
 					name: "Lot B",
 					status: "Active",
 					access: "Everyone",
+					hours: null,
 					location: null,
 					deleted: false
 				}
 			]
-		};
+		};*/
 
 /*
 		var lots = [

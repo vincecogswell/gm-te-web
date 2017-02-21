@@ -15,7 +15,7 @@
 					}
 				}
 			}
-			return null;
+			return [];
 		}
 
 		function getBuilding(campusId, buildingId) {
@@ -42,6 +42,10 @@
 		}
 
 		var buildings = {
+
+		};
+
+		/*var buildings = {
 			1: [
 				{
 					id: 1,
@@ -60,7 +64,7 @@
 					deleted: false
 				}
 			]			
-		};
+		};*/
 
 /*
 		var buildings = [

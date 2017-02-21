@@ -6,10 +6,23 @@
     display: block;
 }
 
-#modal-map {
+#modal-map, #modal-map-building, #modal-map-lot, #modal-map-gate {
   height: 387.5px;
   width: 567.5px;
   display: block;
+}
+
+.pac-container {
+    z-index: 1051 !important;
+}
+
+.add-btn {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.tabs {
+  padding-bottom: 20px;
 }
 
 .menu {
