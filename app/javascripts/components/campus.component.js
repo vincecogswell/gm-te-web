@@ -35,16 +35,29 @@
             self.lots = self.campus ? lotService.getLotsOnCampus(campusId) : null;
             self.gates = self.campus ? gateService.getGatesOnCampus(campusId) : null;
 
+            var counter1 = 0;
             self.saveBuilding = function () {
                 // Api Call
-                var newBuilding = {
-                    id: 1,
-                    name: "College of Engineering",
-                    status: "Active",
-                    location: modalMapBuilding.getCenter(),
-                    deleted: false
-                };
-                self.buildings = [newBuilding];
+                if (counter1 === 0) {
+                    var newBuilding = {
+                        id: 1,
+                        name: "College of Engineering",
+                        status: "Active",
+                        location: modalMapBuilding.getCenter(),
+                        deleted: false
+                    };
+                    self.buildings = [newBuilding];
+                    counter1++;
+                } else {
+                     var newBuilding = {
+                        id: 2,
+                        name: "Shaw Hall",
+                        status: "Active",
+                        location: modalMapBuilding.getCenter(),
+                        deleted: false
+                    };
+                    self.buildings.push(newBuilding);                
+                }
 
                 var marker = new google.maps.Marker({
                     position: modalMapBuilding.getCenter(),
@@ -55,28 +68,53 @@
                 $('#modal-add-building').modal('toggle');
             }
 
+            var counter2 = 0;
             self.saveLot = function () {
                 // Api Call
+                if (counter2 === 0) {
+                    var newLot = {
+                        id: 1,
+                        name: "Lot 39",
+                        status: "Active",
+                        access: "Everyone",
+                        hours: "24/7",
+                        location: modalMapLot.getCenter(),
+                        deleted: false
+                    };
+                    self.lots = [newLot];
+
+                    var rectangle = new google.maps.Rectangle({
+                        map: map,
+                        bounds: {
+                            north: 42.725871,
+                            south: 42.725387,
+                            east: -84.480211,
+                            west: -84.481833
+                        }
+                    });
+                    counter2++;
+                } else {
                 var newLot = {
-                    id: 1,
-                    name: "Lot 39",
+                    id: 2,
+                    name: "Lot 40",
                     status: "Active",
                     access: "Everyone",
                     hours: "24/7",
                     location: modalMapLot.getCenter(),
                     deleted: false
                 };
-                self.lots = [newLot];
+                self.lots.push(newLot);
 
                 var rectangle = new google.maps.Rectangle({
                     map: map,
                     bounds: {
-                        north: 42.725871,
-                        south: 42.725387,
-                        east: -84.480211,
-                        west: -84.481833
+                        north: 42.725853,
+                        south: 42.725396,
+                        east: -84.478305,
+                        west: -84.479550
                     }
                 });
+                }
 
                 $('#modal-add-lot').modal('toggle');
             }
