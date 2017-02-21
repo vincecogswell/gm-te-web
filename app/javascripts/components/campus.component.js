@@ -38,6 +38,7 @@
             var counter1 = 0;
             self.saveBuilding = function () {
                 // Api Call
+                drawingManagerBuilding.setDrawingMode(null);
                 if (counter1 === 0) {
                     var newBuilding = {
                         id: 1,
@@ -71,6 +72,7 @@
             var counter2 = 0;
             self.saveLot = function () {
                 // Api Call
+                drawingManagerLot.setDrawingMode(null);
                 if (counter2 === 0) {
                     var newLot = {
                         id: 1,
@@ -121,6 +123,7 @@
 
             self.saveGate = function () {
                 // Api Call
+                drawingManagerGate.setDrawingMode(null);
                 var newGate = {
                     id: 1,
                     name: "Gate A",
