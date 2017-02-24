@@ -20,10 +20,11 @@
             var self = this;
             self.campuses = campuses;
 
+            var id = 1; // will be replaced by Api Call
             self.saveCampus = function () {
                 // TO DO: Api Call
                 var newCampus = {
-                    name: "Michigan State University",
+                    name: $("#name").val(),
                     status: "Active",
                     num_buildings: 0,
                     num_lots: 0,
@@ -31,7 +32,8 @@
                     location: modalMap.getBounds(),
                     deleted: false
                 };
-                self.campuses["1"] = newCampus;
+                self.campuses[id] = newCampus;
+                id++;
 
                 var marker = new google.maps.Marker({
                     position: modalMap.getCenter(),
@@ -39,6 +41,8 @@
                     title: newCampus.name
                 });
 
+                $("#name").val("");
+                $("#pac-input").val("");
                 $('#modal-add-campus').modal('toggle');
             }
 
@@ -67,6 +71,18 @@
                 }
             });
             drawingManager.setMap(modalMap);
+
+            var campusPoints = new google.maps.MVCArray();
+            google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
+                if (event.type == 'rectangle') {
+                    //campusPoints = [event.overlay.getBounds().getNorthEast(), event.overlay.getBounds().getSouthWest()];
+                    campusPoints.push(event.overlay.getBounds().getNorthEast());
+                    campusPoints.push(event.overlay.getBounds().getSouthWest());
+                } else if (event.type == 'polygon') {
+                    campusPoints = event.overlay.getPaths();
+                }
+                console.log(campusPoints.getArray());
+            });
 
             // Create the search box and link it to the UI element.
             var input = document.getElementById('pac-input');
