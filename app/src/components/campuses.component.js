@@ -21,7 +21,7 @@
             self.campuses = campuses;
 
             self.saveCampus = function () {
-                // Api Call
+                // TO DO: Api Call
                 var newCampus = {
                     name: "Michigan State University",
                     status: "Active",

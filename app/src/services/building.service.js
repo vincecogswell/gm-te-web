@@ -7,7 +7,7 @@
 	function buildingService() {
 
 		function getBuildingsOnCampus(campusId) {
-			// API call
+			// TO DO: API call
 			for (var _campusId in buildings) {
 				if (buildings.hasOwnProperty(_campusId)) {
 					if (Number(_campusId) === campusId) {
@@ -19,12 +19,6 @@
 		}
 
 		function getBuilding(campusId, buildingId) {
-			/*for (var i = 0; i < buildings.length; i++) {
-				let building = buildings[i];
-				if (building.id === buildingId) {
-					return building;
-				}
-			}*/
 			for (var _campusId in buildings) {
 				if (buildings.hasOwnProperty(_campusId)) {
 					if (Number(_campusId) === campusId) {
@@ -41,48 +35,7 @@
 			return null;
 		}
 
-		var buildings = {
-
-		};
-
-		/*var buildings = {
-			1: [
-				{
-					id: 1,
-					name: "College of Engineering",
-					status: "Active",
-					location: null,
-					deleted: false
-				}
-			],
-			2: [
-				{
-					id: 2,
-					name: "International Center",
-					status: "Active",
-					location: null,
-					deleted: false
-				}
-			]			
-		};*/
-
-/*
-		var buildings = [
-			{
-				id: 1,
-				name: "College of Engineering",
-				status: "Active",
-				location: null,
-				deleted: false
-			},
-			{
-				id: 2,
-				name: "International Center",
-				status: "Active",
-				location: null,
-				deleted: false
-			}
-        ];*/
+		var buildings = { };
 
 		return {
 			getBuildingsOnCampus: getBuildingsOnCampus,
