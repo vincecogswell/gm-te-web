@@ -16,7 +16,7 @@
                 }
             });
         }])
-        .controller('CampusesCtrl', ['campuses', '$uibModal', function (campusService, $uibModal) {
+        .controller('CampusesCtrl', ['campusService', '$uibModal', function (campusService, $uibModal) {
             var self = this;
             //self.campuses = campusService.getCampuses();
             self.campuses = { };
