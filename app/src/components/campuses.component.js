@@ -83,6 +83,7 @@
                     }
                 }
                 overlay = event.overlay;
+                drawingManager.setDrawingMode(null);
                 drawingManager.setOptions({
                     drawingControl: false
                 });
