@@ -47,9 +47,11 @@
 			$http.post('/campus', campus)
 			.then( function (response) {
 				if (response && response.data && response.data.status === 200) {
-					var campus = response.data.campus;
-					campuses[response.data.campusId] = campus;
-					next(campus);
+					//var campusId = response.data.campusId;
+					console.log(response);
+					var campusId = 1;
+					campuses[campusId] = campus;
+					next(campusId);
 				} else {
 					// error
 					next(null);
@@ -61,9 +63,9 @@
 			$http.put('/campus/' + campusId.toString(), campus)
 			.then( function (response) {
 				if (response && response.data && response.data.status === 200) {
-					var campus = response.data.campus;
-					campuses[response.data.campusId] = campus;
-					next(campus);
+					var campusId = response.data.campusId;
+					campuses[campusId] = campus;
+					next(campusId);
 				} else {
 					// error
 					next(null);
@@ -75,9 +77,9 @@
 			$http.delete('/campus/' + campusId.toString())
 			.then( function (response) {
 				if (response && response.data && response.data.status === 200) {
-					var campus = response.data.campus;
-					delete campuses[response.data.campusId];
-					next(campus);
+					var campusId = response.data.campusId;
+					delete campuses[campusId];
+					next(campusId);
 				} else {
 					// error
 					next(null);
