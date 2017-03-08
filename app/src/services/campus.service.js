@@ -13,7 +13,7 @@
 		function getCampuses() {
 			if (!_campusesPromise) {
 				var deferred = $q.defer();
-				$http.get("/campus/1/gates")
+				$http.get("/campus")
 				.then( function (response) {
 					console.log(response);
 					deferred.resolve(response);
@@ -22,8 +22,8 @@
 				_campusesPromise = deferred.promise;
 			}
 
-            return campuses;
 			//return _campusesPromise;
+			return campuses;
 		}
 
         var _usersPromise;
