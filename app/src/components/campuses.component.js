@@ -18,8 +18,12 @@
         }])
         .controller('CampusesCtrl', ['campusService', '$uibModal', function (campusService, $uibModal) {
             var self = this;
-            //self.campuses = campusService.getCampuses();
-            self.campuses = { };
+            campusService.getCampuses()
+            .then( function (response) {
+                self.campuses = response;
+                // populate map
+            });
+            //self.campuses = { };
 
             self.saveCampus = function () {
                 var newCampus = {
@@ -27,10 +31,13 @@
                     active: true,
                     perimeter: perimeter.getArray()
                 };
-                console.log(newCampus);
-                /*campusService.saveCampus(newCampus)
+                campusService.saveCampus(newCampus)
                 .then( function (response) {
                     if (response) {
+                        console.log(response);
+                        newCampus['num_buildings'] = 0;
+                        newCampus['num_lots'] = 0;
+                        newCampus['num_gates'] = 0;
                         var marker = new google.maps.Marker({
                             position: modalMap.getCenter(),
                             map: map,
@@ -38,8 +45,9 @@
                         });
                     } else {
                         // error
+                        console.log("error");
                     }
-                });*/
+                });
 
                 $('#modal-add-campus').modal('toggle');
             }
@@ -149,6 +157,8 @@
                 drawingManager.setOptions({
                     drawingControl: true
                 });
+                modalMap.setCenter({lat: 38.0902, lng: -95.7129});
+                modalMap.setZoom(4);
             });
 
         }]);
