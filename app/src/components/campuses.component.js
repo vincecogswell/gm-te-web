@@ -25,7 +25,7 @@
                 var newCampus = {
                     name: $("#name").val(),
                     active: true,
-                    perimeter: perimeter
+                    perimeter: perimeter.getArray()
                 };
                 console.log(newCampus);
                 /*campusService.saveCampus(newCampus)
@@ -41,8 +41,6 @@
                     }
                 });*/
 
-                $("#name").val("");
-                $("#pac-input").val("");
                 $('#modal-add-campus').modal('toggle');
             }
 
@@ -72,6 +70,7 @@
             });
             drawingManager.setMap(modalMap);
 
+            var overlay;
             var perimeter = new google.maps.MVCArray();
             google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
                 if (event.type == 'rectangle') {
@@ -83,8 +82,8 @@
                         perimeter.push(path.getAt(i));
                     }
                 }
-                console.log(perimeter.getArray());
-                console.log(perimeter.getArray()[0].lat());
+                overlay = event.overlay;
+                drawingManager.setDrawingMode(null);
             });
 
             // Create the search box and link it to the UI element.
@@ -136,6 +135,13 @@
                 var curCenter = modalMap.getCenter();
                 google.maps.event.trigger(modalMap, 'resize');
                 modalMap.setCenter(curCenter);
+            });
+
+            $("#modal-add-campus").on("hidden.bs.modal", function () {
+                $("#name").val("");
+                $("#pac-input").val("");
+                overlay.setMap(null);
+                drawingManager.setDrawingMode(['rectangle', 'polygon']);
             });
 
         }]);
