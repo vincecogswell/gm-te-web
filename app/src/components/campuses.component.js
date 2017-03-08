@@ -140,7 +140,9 @@
             $("#modal-add-campus").on("hidden.bs.modal", function () {
                 $("#name").val("");
                 $("#pac-input").val("");
-                overlay.setMap(null);
+                if (overlay) {
+                    overlay.setMap(null);
+                }
                 drawingManager.setDrawingMode(['rectangle', 'polygon']);
             });
 
