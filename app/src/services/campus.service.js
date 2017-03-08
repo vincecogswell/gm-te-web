@@ -8,15 +8,15 @@
 
 	function campusService($http, $q) {
 
-		var _campusesPromise;
+		/*var _campusesPromise;
 
 		function getCampuses() {
 			if (!_campusesPromise) {
 				var deferred = $q.defer();
-				$http.get("/campus")
+				$http.get('/campus')
 				.then( function (response) {
 					console.log(response);
-					deferred.resolve(response);
+					deferred.resolve(response.data);
 				});
 
 				_campusesPromise = deferred.promise;
@@ -24,36 +24,66 @@
 
 			//return _campusesPromise;
 			return campuses;
+		}*/
+
+		function getCampuses(next) {
+			if (campuses) {
+				next(campuses);
+			} else {
+				$http.get('/campus')
+				.then( function (response) {
+					if (response && response.data && response.data.status === 200) {
+						campuses = response.data.campuses;
+						next(campuses);
+					} else {
+						// error
+						next(null);
+					}
+				});
+			}
 		}
 
-        var _usersPromise;
+		function saveCampus(campus, next) {
+			$http.post('/campus', campus)
+			.then( function (response) {
+				if (response && response.data && response.data.status === 200) {
+					var campus = response.data.campus;
+					campuses[response.data.campusId] = campus;
+					next(campus);
+				} else {
+					// error
+					next(null);
+				}
+			});
+		}
 
-        function getUsers() {
-            if(!_usersPromise) {          
-                var deferred = $q.defer();
-                var username = '';
-                if (simulatedUser) {
-                    username = simulatedUser.username;
-                }
-                Users.query({ username: username }, function (allUsers) {
-                    var windowsUsername = allUsers[1];
-                    users = Object.keys(allUsers[0]).map(function (key) { return allUsers[0][key] } ); // converting object to array
+		function updateCampus(campusId, campus, next) {
+			$http.put('/campus/' + campusId.toString(), campus)
+			.then( function (response) {
+				if (response && response.data && response.data.status === 200) {
+					var campus = response.data.campus;
+					campuses[response.data.campusId] = campus;
+					next(campus);
+				} else {
+					// error
+					next(null);
+				}
+			});
+		}
 
-                    users.forEach(function(user, index) {
-                        if (!simulatedUser && user.username === windowsUsername) {
-                            curUser = user;
-                        }
-                        user.projects = user.projects.map(projectsService.normalizeProjectFromDB);
-                    });
-                                               
-                    deferred.resolve(users);
-                });
-                
-                _usersPromise = deferred.promise;
-            }
-
-            return _usersPromise;
-        }
+		function deleteCampus(campusId, next) {
+			$http.delete('/campus/' + campusId.toString())
+			.then( function (response) {
+				if (response && response.data && response.data.status === 200) {
+					var campus = response.data.campus;
+					delete campuses[response.data.campusId];
+					next(campus);
+				} else {
+					// error
+					next(null);
+				}
+			});
+		}
 
 		function getCampus(campusId) {
 			for (var _campusId in campuses) {
@@ -66,10 +96,13 @@
 			return null;
 		}
 
-		var campuses = { };
+		var campuses = null;
 
 		return {
 			getCampuses: getCampuses,
+			saveCampus: saveCampus,
+			updateCampus: updateCampus,
+			deleteCampus: deleteCampus,
 			getCampus: getCampus
 		}
 	}

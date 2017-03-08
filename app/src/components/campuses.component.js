@@ -10,36 +10,36 @@
                 controllerAs: 'vm',
                 controller: 'CampusesCtrl',
                 resolve: {
-                    campuses: function (campusService) {
-                        return campusService.getCampuses();
-                    }
+                    campusService: function(campusService) {
+                        return campusService;
+                    },
                 }
             });
         }])
-        .controller('CampusesCtrl', ['campuses', '$uibModal', function (campuses, $uibModal) {
+        .controller('CampusesCtrl', ['campuses', '$uibModal', function (campusService, $uibModal) {
             var self = this;
-            self.campuses = campuses;
+            //self.campuses = campusService.getCampuses();
+            self.campuses = { };
 
-            var id = 1; // will be replaced by Api Call
             self.saveCampus = function () {
-                // TO DO: Api Call
                 var newCampus = {
                     name: $("#name").val(),
-                    status: "Active",
-                    num_buildings: 0,
-                    num_lots: 0,
-                    num_gates: 0,
-                    location: modalMap.getBounds(),
-                    deleted: false
+                    active: true,
+                    perimeter: perimeter
                 };
-                self.campuses[id] = newCampus;
-                id++;
-
-                var marker = new google.maps.Marker({
-                    position: modalMap.getCenter(),
-                    map: map,
-                    title: newCampus.name
-                });
+                console.log(newCampus);
+                /*campusService.saveCampus(newCampus)
+                .then( function (response) {
+                    if (response) {
+                        var marker = new google.maps.Marker({
+                            position: modalMap.getCenter(),
+                            map: map,
+                            title: newCampus.name
+                        });
+                    } else {
+                        // error
+                    }
+                });*/
 
                 $("#name").val("");
                 $("#pac-input").val("");
@@ -72,16 +72,15 @@
             });
             drawingManager.setMap(modalMap);
 
-            var campusPoints = new google.maps.MVCArray();
+            var perimeter = new google.maps.MVCArray();
             google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
                 if (event.type == 'rectangle') {
-                    //campusPoints = [event.overlay.getBounds().getNorthEast(), event.overlay.getBounds().getSouthWest()];
-                    campusPoints.push(event.overlay.getBounds().getNorthEast());
-                    campusPoints.push(event.overlay.getBounds().getSouthWest());
+                    perimeter.push(event.overlay.getBounds().getNorthEast());
+                    perimeter.push(event.overlay.getBounds().getSouthWest());
                 } else if (event.type == 'polygon') {
-                    campusPoints = event.overlay.getPaths();
+                    perimeter = event.overlay.getPaths();
                 }
-                console.log(campusPoints.getArray());
+                console.log(perimeter.getArray());
             });
 
             // Create the search box and link it to the UI element.
