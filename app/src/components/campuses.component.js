@@ -83,7 +83,9 @@
                     }
                 }
                 overlay = event.overlay;
-                drawingManager.setDrawingMode(null);
+                drawingManager.setOptions({
+                    drawingControl: false
+                });
             });
 
             // Create the search box and link it to the UI element.
@@ -143,7 +145,9 @@
                 if (overlay) {
                     overlay.setMap(null);
                 }
-                drawingManager.setDrawingMode(['rectangle', 'polygon']);
+                drawingManager.setOptions({
+                    drawingControl: true
+                });
             });
 
         }]);
