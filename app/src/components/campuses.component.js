@@ -18,8 +18,7 @@
         }])
         .controller('CampusesCtrl', ['campusService', '$uibModal', function (campusService, $uibModal) {
             var self = this;
-            campusService.getCampuses()
-            .then( function (response) {
+            campusService.getCampuses(function (response) {
                 self.campuses = response;
                 // populate map
             });
@@ -31,8 +30,7 @@
                     active: true,
                     perimeter: perimeter.getArray()
                 };
-                campusService.saveCampus(newCampus)
-                .then( function (response) {
+                campusService.saveCampus(newCampus, function (response) {
                     if (response) {
                         console.log(response);
                         newCampus['num_buildings'] = 0;
