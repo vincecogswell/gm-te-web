@@ -78,13 +78,13 @@
                     perimeter.push(event.overlay.getBounds().getNorthEast());
                     perimeter.push(event.overlay.getBounds().getSouthWest());
                 } else if (event.type == 'polygon') {
-                    var paths = event.overlay.getPaths();
-                    for (var i = 0; i < paths.getLength(); i++) {
-                        perimeter.push(paths.getAt(i));
+                    var path = event.overlay.getPath();
+                    for (var i = 0; i < path.getLength(); i++) {
+                        perimeter.push(path.getAt(i));
                     }
                 }
                 console.log(perimeter.getArray());
-                console.log(perimeter.getArray()[0].lat);
+                console.log(perimeter.getArray()[0].lat());
             });
 
             // Create the search box and link it to the UI element.
