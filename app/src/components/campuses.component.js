@@ -18,11 +18,14 @@
         }])
         .controller('CampusesCtrl', ['campusService', '$uibModal', function (campusService, $uibModal) {
             var self = this;
-            campusService.getCampuses(function (response) {
-                self.campuses = response;
-                // populate map
-            });
-            //self.campuses = { };
+            getCampuses();
+
+            function getCampuses() {
+                campusService.getCampuses(function (response) {
+                    self.campuses = response;
+                    // populate map
+                });
+            }
 
             self.saveCampus = function () {
                 var perimeter = [];
@@ -30,6 +33,7 @@
                     let point = bounds.getAt(i);
                     perimeter.push([point.lat(), point.lng()]);
                 }
+                console.log(perimeter);
                 var newCampus = {
                     name: $("#name").val(),
                     active: true,
@@ -49,6 +53,7 @@
                     } else {
                         // error
                         console.log("error");
+                        getCampuses();
                     }
                 });
 
