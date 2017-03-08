@@ -25,10 +25,15 @@
             //self.campuses = { };
 
             self.saveCampus = function () {
+                var perimeter = [];
+                for (var i = 0; i < bounds.getLength(); i++) {
+                    let point = bounds.getAt(i);
+                    perimeter.push([point.lat(), point.lng()]);
+                }
                 var newCampus = {
                     name: $("#name").val(),
                     active: true,
-                    perimeter: perimeter.getArray()
+                    perimeter: perimeter
                 };
                 campusService.saveCampus(newCampus, function (response) {
                     if (response) {
@@ -77,15 +82,15 @@
             drawingManager.setMap(modalMap);
 
             var overlay;
-            var perimeter = new google.maps.MVCArray();
+            var bounds = new google.maps.MVCArray();
             google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
                 if (event.type == 'rectangle') {
-                    perimeter.push(event.overlay.getBounds().getNorthEast());
-                    perimeter.push(event.overlay.getBounds().getSouthWest());
+                    bounds.push(event.overlay.getBounds().getNorthEast());
+                    bounds.push(event.overlay.getBounds().getSouthWest());
                 } else if (event.type == 'polygon') {
                     var path = event.overlay.getPath();
                     for (var i = 0; i < path.getLength(); i++) {
-                        perimeter.push(path.getAt(i));
+                        bounds.push(path.getAt(i));
                     }
                 }
                 overlay = event.overlay;
@@ -149,8 +154,10 @@
             $("#modal-add-campus").on("hidden.bs.modal", function () {
                 $("#name").val("");
                 $("#pac-input").val("");
+                bounds.clear();
                 if (overlay) {
                     overlay.setMap(null);
+                    overlay = null;
                 }
                 drawingManager.setOptions({
                     drawingControl: true
