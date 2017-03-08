@@ -12,7 +12,7 @@
                 resolve: {
                     campusService: function(campusService) {
                         return campusService;
-                    },
+                    }
                 }
             });
         }])
