@@ -32,8 +32,8 @@
 			} else {
 				$http.get('/campus')
 				.then( function (response) {
+					console.log(response);
 					if (response && response.data && response.data.status === 200) {
-						console.log(response);
 						campuses = response.data.campuses;
 						next(campuses);
 					} else {
@@ -63,6 +63,7 @@
 		function updateCampus(campusId, campus, next) {
 			$http.put('/campus/' + campusId.toString(), campus)
 			.then( function (response) {
+				console.log(response);
 				if (response && response.data && response.data.status === 200) {
 					var campusId = response.data.campusId;
 					campuses[campusId] = campus;
@@ -77,6 +78,7 @@
 		function deleteCampus(campusId, next) {
 			$http.delete('/campus/' + campusId.toString())
 			.then( function (response) {
+				console.log(response);
 				if (response && response.data && response.data.status === 200) {
 					var campusId = response.data.campusId;
 					delete campuses[campusId];
