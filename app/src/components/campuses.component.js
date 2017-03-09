@@ -45,7 +45,7 @@
                         newCampus['num_buildings'] = 0;
                         newCampus['num_lots'] = 0;
                         newCampus['num_gates'] = 0;
-                        var marker = new google.maps.Marker({
+                        newCampus['marker'] = new google.maps.Marker({
                             position: modalMap.getCenter(),
                             map: map,
                             title: newCampus.name
@@ -53,11 +53,20 @@
                     } else {
                         // error
                         console.log("error");
-                        getCampuses();
+                        //getCampuses();
                     }
                 });
 
                 $('#modal-add-campus').modal('toggle');
+            }
+
+            self.deleteCampus = function (campusId) {
+                campusService.deleteCampus(campusId, function (response) {
+                    if (!response) {
+                        // error
+                        console.log("error");
+                    }
+                });
             }
 
             var map = new google.maps.Map(document.getElementById('map'), {

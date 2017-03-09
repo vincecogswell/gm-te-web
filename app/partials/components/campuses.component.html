@@ -42,7 +42,7 @@
                     <td><button type="button" ng-click="vm.editCampus(campus)" class="btn btn-sm btn-primary">
                         <i class="glyphicon glyphicon-edit"></i>
                     </td>
-                    <td><button type="button" ng-click="vm.deleteCampus(campus)" class="btn btn-sm btn-danger">
+                    <td><button type="button" ng-click="vm.deleteCampus(campusId)" class="btn btn-sm btn-danger">
                         <i class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
@@ -72,6 +72,9 @@
             <div class="modal-footer">
                 <button class="btn btn-primary" type="button" ng-click="vm.saveCampus()">Save</button>
                 <button class="btn btn-cancel" type="button" data-dismiss="modal">Cancel</button>
+                <div>
+                     <button class="btn btn-danger" type="button">Clear Map</button>   
+                </div>
             </div>
         </div>
     </div>
