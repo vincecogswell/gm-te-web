@@ -31,7 +31,7 @@
                 var perimeter = [];
                 for (var i = 0; i < bounds.getLength(); i++) {
                     let point = bounds.getAt(i);
-                    perimeter.push([point.lat(), point.lng()]);
+                    perimeter.push({ 'lat': point.lat(), 'lng': point.lng() });
                 }
                 console.log(perimeter);
                 var newCampus = {
