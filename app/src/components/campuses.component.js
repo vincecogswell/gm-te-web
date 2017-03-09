@@ -28,10 +28,11 @@
             }
 
             self.saveCampus = function () {
-                var perimeter = [];
+                var perimeter = { };
                 for (var i = 0; i < bounds.getLength(); i++) {
                     let point = bounds.getAt(i);
-                    perimeter.push({ 'lat': point.lat(), 'lng': point.lng() });
+                    //perimeter.push({ 'lat': point.lat(), 'lng': point.lng() });
+                    perimeter[i] = { 'lat': point.lat(), 'lng': point.lng() };
                 }
                 console.log(perimeter);
                 var newCampus = {
