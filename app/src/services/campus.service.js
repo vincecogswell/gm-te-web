@@ -33,6 +33,7 @@
 				$http.get('/campus')
 				.then( function (response) {
 					if (response && response.data && response.data.status === 200) {
+						console.log(response);
 						campuses = response.data.campuses;
 						next(campuses);
 					} else {
