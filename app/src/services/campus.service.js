@@ -46,9 +46,9 @@
 		function saveCampus(campus, next) {
 			$http.post('/campus', campus)
 			.then( function (response) {
+				console.log(response);
 				if (response && response.data && response.data.status === 200) {
 					//var campusId = response.data.campusId;
-					console.log(response);
 					var campusId = 1;
 					campuses[campusId] = campus;
 					next(campusId);
