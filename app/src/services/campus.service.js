@@ -48,8 +48,8 @@
 			.then( function (response) {
 				console.log(response);
 				if (response && response.data && response.data.status === 200) {
-					//var campusId = response.data.campusId;
-					var campusId = 1;
+					var campusId = response.data.campusId;
+					//var campusId = 1;
 					campuses[campusId] = campus;
 					next(campusId);
 				} else {
