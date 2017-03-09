@@ -22,7 +22,7 @@
             <table st-table="vm.campuses" class="table table-striped">
                 <thead>
                 <tr>
-                    <th>Campus</th>
+                    <th>Name</th>
                     <th>Status</th>
                     <th>No. of Buildings</th>
                     <th>No. of Parking Lots</th>
@@ -34,7 +34,8 @@
                 <tbody>
                 <tr ng-repeat="(campusId, campus) in vm.campuses">
                     <td><a href="#!/campus/{{ campusId }}">{{ campus.name }}</a></td>
-                    <td>{{ campus.status }}</td>
+                    <td ng-if="campus.active">Active</td>
+                    <td ng-if="!campus.active">Closed</td>
                     <td>{{ campus.num_buildings }}</td>
                     <td>{{ campus.num_lots }}</td>
                     <td>{{ campus.num_gates }}</td>
