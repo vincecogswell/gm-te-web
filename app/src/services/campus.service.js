@@ -4,27 +4,9 @@
 	angular
 		.module('app').factory('campusService', campusService);
 
-	campusService.$inject = ['$http', '$q'];
+	campusService.$inject = ['$http'];
 
-	function campusService($http, $q) {
-
-		/*var _campusesPromise;
-
-		function getCampuses() {
-			if (!_campusesPromise) {
-				var deferred = $q.defer();
-				$http.get('/campus')
-				.then( function (response) {
-					console.log(response);
-					deferred.resolve(response.data);
-				});
-
-				_campusesPromise = deferred.promise;
-			}
-
-			//return _campusesPromise;
-			return campuses;
-		}*/
+	function campusService($http) {
 
 		function getCampuses(next) {
 			if (campuses) {

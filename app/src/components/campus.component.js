@@ -21,15 +21,20 @@
                     },
                     gateService: function(gateService) {
                         return gateService;
+                    },
+                    mapService: function(mapService) {
+                        return mapService;
                     }
                 }
             });
         }])
-        .controller('CampusCtrl', ['campusService', 'buildingService', 'lotService', 'gateService', '$routeParams', '$location', function(campusService, buildingService, lotService, gateService, $routeParams, $location) {
+        .controller('CampusCtrl', ['campusService', 'buildingService', 'lotService', 'gateService', 'mapService', '$routeParams', '$location', function(campusService, buildingService, lotService, gateService, mapService, $routeParams, $location) {
             var self = this;
 
             var campusId = parseInt($routeParams.campusId);
             self.campus = campusService.getCampus(campusId);
+            
+            self.campus.perimeter = mapService.convertToGMPolygon(self.campus.perimeter);
 
             self.buildings = self.campus ? buildingService.getBuildingsOnCampus(campusId) : null;
             self.lots = self.campus ? lotService.getLotsOnCampus(campusId) : null;
@@ -149,13 +154,13 @@
                 center: {lat: 42.5122427, lng: -83.0334234},
                 zoom: 12
             });
-            map.fitBounds(self.campus.location);
+            map.fitBounds(self.campus.perimeter);
 
             var modalMapBuilding = new google.maps.Map(document.getElementById('modal-map-building'), {
                 center: {lat: 38.0902, lng: -95.7129},
                 zoom: 12
             });
-            modalMapBuilding.fitBounds(self.campus.location);  
+            modalMapBuilding.fitBounds(self.campus.perimeter);  
 
             var drawingManagerBuilding = new google.maps.drawing.DrawingManager({
                 drawingControl: true,
@@ -179,7 +184,7 @@
                 center: {lat: 38.0902, lng: -95.7129},
                 zoom: 12
             });
-            modalMapLot.fitBounds(self.campus.location); 
+            modalMapLot.fitBounds(self.campus.perimeter); 
 
             var drawingManagerLot = new google.maps.drawing.DrawingManager({
                 drawingControl: true,
@@ -203,7 +208,7 @@
                 center: {lat: 38.0902, lng: -95.7129},
                 zoom: 12
             });
-            modalMapGate.fitBounds(self.campus.location); 
+            modalMapGate.fitBounds(self.campus.perimeter); 
 
             var drawingManagerGate = new google.maps.drawing.DrawingManager({
                 drawingControl: true,
@@ -227,21 +232,21 @@
                 var curCenter = modalMapBuilding.getCenter();
                 google.maps.event.trigger(modalMapBuilding, 'resize');
                 modalMapBuilding.setCenter(curCenter);
-                modalMapBuilding.fitBounds(self.campus.location);
+                modalMapBuilding.fitBounds(self.campus.perimeter);
             });
 
             $("#modal-add-lot").on("shown.bs.modal", function () {
                 var curCenter = modalMapLot.getCenter();
                 google.maps.event.trigger(modalMapLot, 'resize');
                 modalMapLot.setCenter(curCenter);
-                modalMapLot.fitBounds(self.campus.location);
+                modalMapLot.fitBounds(self.campus.perimeter);
             });
 
             $("#modal-add-gate").on("shown.bs.modal", function () {
                 var curCenter = modalMapGate.getCenter();
                 google.maps.event.trigger(modalMapGate, 'resize');
                 modalMapGate.setCenter(curCenter);
-                modalMapGate.fitBounds(self.campus.location);
+                modalMapGate.fitBounds(self.campus.perimeter);
             });
 
 
