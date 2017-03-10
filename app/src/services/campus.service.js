@@ -81,7 +81,6 @@
 			}
 			return null;*/
 			if (campuses.hasOwnProperty(campusId)) {
-				console.log('return campus');
 				return campuses[campusId];
 			}
 			return null;
