@@ -90,12 +90,17 @@
 		}
 
 		function getCampus(campusId) {
-			for (var _campusId in campuses) {
+			/*for (var _campusId in campuses) {
 				if (campuses.hasOwnProperty(_campusId)) {
 					if (Number(_campusId) === campusId) {
 						return campuses[_campusId];
 					}
 				}
+			}
+			return null;*/
+			if (campuses.hasOwnProperty(campusId)) {
+				console.log('return campus');
+				return campuses[campusId];
 			}
 			return null;
 		}
