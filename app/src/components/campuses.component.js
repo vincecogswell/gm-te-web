@@ -74,7 +74,7 @@
                             newCampus['bounds'] = mapService.convertToGMBounds(newCampus.perimeter);
                             newCampus['paths'] = mapService.convertToGMPaths(newCampus.perimeter);
                             newCampus['marker'] = new google.maps.Marker({
-                                position: bounds.getCenter(),
+                                position: newCampus.bounds.getCenter(),
                                 map: map,
                                 title: newCampus.name
                             });
@@ -96,7 +96,7 @@
                             
                             oldCampus.marker.setMap(null);
                             newCampus['marker'] = new google.maps.Marker({
-                                position: bounds.getCenter(),
+                                position: newCampus.bounds.getCenter(),
                                 map: map,
                                 title: newCampus.name
                             });
