@@ -175,13 +175,14 @@
                         bounds.push(path.getAt(i));
                     }
                 }
-                console.log(event);
             }
 
             function updateListenersOnPolygon(addListeners) {
                 var path = overlay.getPath();
                 if (addListeners) {
-                    google.maps.event.addListener(path, 'insert_at', updateBounds);
+                    google.maps.event.addListener(path, 'insert_at', function(event) {
+                        console.log(event);
+                    });
                     google.maps.event.addListener(path, 'remove_at', updateBounds);
                     google.maps.event.addListener(path, 'set_at', updateBounds);
                 } else {
