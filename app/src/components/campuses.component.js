@@ -212,7 +212,7 @@
                 } else if (self.modalMode === self.modalModeEnum.EDIT) {
                     var campus = self.campuses[self.campusToEdit];
                     $("#name").val(campus.name);
-                    modalMap.fitBounds(bounds);
+                    modalMap.fitBounds(campus.bounds);
                     overlay = new google.maps.Polygon({
                         paths: campus.perimeter
                     });
