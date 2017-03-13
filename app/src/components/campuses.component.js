@@ -112,6 +112,19 @@
                 });
             }
 
+            self.clearModalMap = function () {
+                bounds.clear();
+                if (overlay) {
+                    updateListeners(false);
+                    overlay.setMap(null);
+                    overlay = null;
+                }
+                drawingManager.setDrawingMode(null);
+                drawingManager.setOptions({
+                    drawingControl: true
+                });
+            }
+
             var map = new google.maps.Map(document.getElementById('map'), {
                 center: USA_CENTER,
                 zoom: DEFAULT_ZOOM
@@ -145,17 +158,7 @@
                 overlay = event.overlay;
                 curType = event.type;
                 updateBounds();
-                if (event.type === 'rectangle') {
-                    //bounds.push(event.overlay.getBounds().getNorthEast());
-                    //bounds.push(event.overlay.getBounds().getSouthWest());
-                    updateListenerOnRectangle(true);
-                } else if (event.type === 'polygon') {
-                    /*var path = event.overlay.getPath();
-                    for (var i = 0; i < path.getLength(); i++) {
-                        bounds.push(path.getAt(i));
-                    }*/
-                    updateListenersOnPolygon(true);
-                }
+                updateListeners(true);
                 drawingManager.setDrawingMode(null);
                 drawingManager.setOptions({
                     drawingControl: false
@@ -173,34 +176,32 @@
                         bounds.push(path.getAt(i));
                     }
                 }
-                console.log(bounds.getAt(0).lat());
-                console.log(bounds.getAt(0).lng());
             }
 
-            function updateListenersOnPolygon(addListeners) {
-                var path = overlay.getPath();
-                if (addListeners) {
-                    google.maps.event.addListener(path, 'insert_at', function () {
-                        updateBounds();
-                    });
-                    google.maps.event.addListener(path, 'remove_at', function () {
-                        updateBounds();
-                    });
-                    google.maps.event.addListener(path, 'set_at', function () {
-                        updateBounds();
-                    });
-                } else {
-                    google.maps.event.clearInstanceListeners(path);
-                }
-            }
-
-            function updateListenerOnRectangle(addListener) {
-                if (addListener) {
-                    google.maps.event.addListener(overlay, 'bounds_changed', function () {
-                        updateBounds();
-                    });
-                } else {
-                    google.maps.event.clearInstanceListeners(overlay);
+            function updateListeners(addListeners) {
+                if (curType === 'rectangle') {
+                    if (addListener) {
+                        google.maps.event.addListener(overlay, 'bounds_changed', function () {
+                            updateBounds();
+                        });
+                    } else {
+                        google.maps.event.clearInstanceListeners(overlay);
+                    }
+                } else if (curType === 'polygon') {
+                    var path = overlay.getPath();
+                    if (addListeners) {
+                        google.maps.event.addListener(path, 'insert_at', function () {
+                            updateBounds();
+                        });
+                        google.maps.event.addListener(path, 'remove_at', function () {
+                            updateBounds();
+                        });
+                        google.maps.event.addListener(path, 'set_at', function () {
+                            updateBounds();
+                        });
+                    } else {
+                        google.maps.event.clearInstanceListeners(path);
+                    }                    
                 }
             }
 
@@ -271,7 +272,7 @@
                     });
                     overlay.setMap(modalMap); 
                     curType = 'polygon';
-                    updateListenersOnPolygon(true); 
+                    updateListeners(true); 
                     drawingManager.setOptions({
                         drawingControl: false
                     });              
@@ -283,16 +284,11 @@
                 $("#pac-input").val("");
                 bounds.clear();
                 if (overlay) {
-                    if (curType === 'rectangle') {
-                        updateListenerOnRectangle(false);
-                    } else if (curType === 'polygon') {
-                        updateListenersOnPolygon(false);
-                    }
+                    updateListeners(false);
                     overlay.setMap(null);
                     overlay = null;
                 }
             });
-
 
             getCampuses();
 
