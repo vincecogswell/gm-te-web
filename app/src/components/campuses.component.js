@@ -180,7 +180,10 @@
             function updateListenersOnPolygon(addListeners) {
                 var path = overlay.getPath();
                 if (addListeners) {
-                    google.maps.event.addListener(path, 'insert_at', function(event) {
+                    /*google.maps.event.addListener(path, 'insert_at', function(event) {
+                        console.log(event);
+                    });*/
+                    path.addListener('insert_at', function(event) {
                         console.log(event);
                     });
                     google.maps.event.addListener(path, 'remove_at', updateBounds);
