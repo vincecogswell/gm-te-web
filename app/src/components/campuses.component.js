@@ -142,9 +142,9 @@
             var bounds = new google.maps.MVCArray();
             var curType = null;
             google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
-                //overlay = event.overlay;
-                //curType = event.type;
-                updateBounds(event);
+                overlay = event.overlay;
+                curType = event.type;
+                updateBounds();
                 if (event.type === 'rectangle') {
                     //bounds.push(event.overlay.getBounds().getNorthEast());
                     //bounds.push(event.overlay.getBounds().getSouthWest());
@@ -162,32 +162,32 @@
                 });
             });
 
-            function updateBounds(event) {
+            function updateBounds() {
                 bounds.clear();
-                overlay = event.overlay;
-                curType = event.type;
                 if (curType === 'rectangle') {
-                    bounds.push(event.overlay.getBounds().getNorthEast());
-                    bounds.push(event.overlay.getBounds().getSouthWest());
+                    bounds.push(overlay.getBounds().getNorthEast());
+                    bounds.push(overlay.getBounds().getSouthWest());
                 } else if (curType === 'polygon') {
-                    var path = event.overlay.getPath();
+                    var path = overlay.getPath();
                     for (var i = 0; i < path.getLength(); i++) {
                         bounds.push(path.getAt(i));
                     }
                 }
+                console.log(bounds);
             }
 
             function updateListenersOnPolygon(addListeners) {
                 var path = overlay.getPath();
                 if (addListeners) {
-                    /*google.maps.event.addListener(path, 'insert_at', function(event) {
-                        console.log(event);
-                    });*/
-                    path.addListener('insert_at', function(event) {
-                        console.log(event);
+                    google.maps.event.addListener(path, 'insert_at', function () {
+                        updateBounds();
                     });
-                    google.maps.event.addListener(path, 'remove_at', updateBounds);
-                    google.maps.event.addListener(path, 'set_at', updateBounds);
+                    google.maps.event.addListener(path, 'remove_at', function () {
+                        updateBounds();
+                    });
+                    google.maps.event.addListener(path, 'set_at', function () {
+                        updateBounds();
+                    });
                 } else {
                     google.maps.event.clearInstanceListeners(path);
                 }
@@ -195,7 +195,9 @@
 
             function updateListenerOnRectangle(addListener) {
                 if (addListener) {
-                    google.maps.event.addListener(overlay, 'bounds_changed', updateBounds);
+                    google.maps.event.addListener(overlay, 'bounds_changed', function () {
+                        updateBounds();
+                    });
                 } else {
                     google.maps.event.clearInstanceListeners(overlay);
                 }
@@ -267,6 +269,7 @@
                         editable: true
                     });
                     overlay.setMap(modalMap); 
+                    curType = 'polygon';
                     updateListenersOnPolygon(true); 
                     drawingManager.setOptions({
                         drawingControl: false
