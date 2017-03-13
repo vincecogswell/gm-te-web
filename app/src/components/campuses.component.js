@@ -84,12 +84,17 @@
                         }
                     });
                 } else if (self.modalMode === self.modalModeEnum.EDIT) {
+                    var oldCampus = self.campuses[self.campusToUpdate];
                     campusService.updateCampus(self.campusToUpdate, newCampus, function (response) {
                         if (response) {
                             console.log(response);
+                            newCampus['num_buildings'] = oldCampus.num_buildings;
+                            newCampus['num_lots'] = oldCampus.num_lots;
+                            newCampus['num_gates'] = oldCampus.num_gates;
                             newCampus['bounds'] = mapService.convertToGMBounds(newCampus.perimeter);
                             newCampus['paths'] = mapService.convertToGMPaths(newCampus.perimeter);
-                            newCampus['marker'].setMap(null);
+                            
+                            oldCampus.marker.setMap(null);
                             newCampus['marker'] = new google.maps.Marker({
                                 position: bounds.getCenter(),
                                 map: map,
