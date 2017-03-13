@@ -142,17 +142,18 @@
             var bounds = new google.maps.MVCArray();
             var curType = null;
             google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
-                overlay = event.overlay;
-                curType = event.type;
-                if (curType === 'rectangle') {
-                    bounds.push(event.overlay.getBounds().getNorthEast());
-                    bounds.push(event.overlay.getBounds().getSouthWest());
+                //overlay = event.overlay;
+                //curType = event.type;
+                updateBounds(event);
+                if (event.type === 'rectangle') {
+                    //bounds.push(event.overlay.getBounds().getNorthEast());
+                    //bounds.push(event.overlay.getBounds().getSouthWest());
                     updateListenerOnRectangle(true);
-                } else if (curType === 'polygon') {
-                    var path = event.overlay.getPath();
+                } else if (event.type === 'polygon') {
+                    /*var path = event.overlay.getPath();
                     for (var i = 0; i < path.getLength(); i++) {
                         bounds.push(path.getAt(i));
-                    }
+                    }*/
                     updateListenersOnPolygon(true);
                 }
                 drawingManager.setDrawingMode(null);
@@ -161,18 +162,28 @@
                 });
             });
 
+            function updateBounds(event) {
+                console.log("update with event: " + event);
+                bounds.clear();
+                overlay = event.overlay;
+                curType = event.type;
+                if (curType === 'rectangle') {
+                    bounds.push(event.overlay.getBounds().getNorthEast());
+                    bounds.push(event.overlay.getBounds().getSouthWest());
+                } else if (curType === 'polygon') {
+                    var path = event.overlay.getPath();
+                    for (var i = 0; i < path.getLength(); i++) {
+                        bounds.push(path.getAt(i));
+                    }
+                }
+            }
+
             function updateListenersOnPolygon(addListeners) {
                 var path = overlay.getPath();
                 if (addListeners) {
-                    google.maps.event.addListener(path, 'insert_at', function() {
-                        console.log('Vertex inserted on path.');
-                    });
-                    google.maps.event.addListener(path, 'remove_at', function() {
-                        console.log('Vertex removed on path.');
-                    });
-                    google.maps.event.addListener(path, 'set_at', function() {
-                        console.log('Vertex moved on path.');
-                    });
+                    google.maps.event.addListener(path, 'insert_at', updateBounds);
+                    google.maps.event.addListener(path, 'remove_at', updateBounds);
+                    google.maps.event.addListener(path, 'set_at', updateBounds);
                 } else {
                     google.maps.event.clearInstanceListeners(path);
                 }
@@ -180,9 +191,7 @@
 
             function updateListenerOnRectangle(addListener) {
                 if (addListener) {
-                    google.maps.event.addListener(overlay, 'bounds_changed', function() {
-                        console.log('Bounds changed.');
-                    });
+                    google.maps.event.addListener(overlay, 'bounds_changed', updateBounds);
                 } else {
                     google.maps.event.clearInstanceListeners(overlay);
                 }
