@@ -30,7 +30,7 @@
         }
 
 		return {
-            convertToGMPoint: convertToGMPoint,
+            convertToGMCoord: convertToGMCoord,
             convertToGMPolygon: convertToGMPolygon
 		}
 	}
