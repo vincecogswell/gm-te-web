@@ -175,7 +175,7 @@
                         bounds.push(path.getAt(i));
                     }
                 }
-                console.log(bounds);
+                console.log(event);
             }
 
             function updateListenersOnPolygon(addListeners) {
