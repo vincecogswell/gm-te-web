@@ -218,7 +218,9 @@
                     $("#name").val(campus.name);
                     modalMap.fitBounds(campus.bounds);
                     overlay = new google.maps.Polygon({
-                        paths: campus.perimeter
+                        paths: campus.perimeter,
+                        draggable: true,
+                        editable: true
                     });
                     overlay.setMap(modalMap);  
                     drawingManager.setOptions({
