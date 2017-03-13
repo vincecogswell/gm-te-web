@@ -206,9 +206,13 @@
             $("#modal-campus").on("shown.bs.modal", function () {
                 //var curCenter = modalMap.getCenter();
                 google.maps.event.trigger(modalMap, 'resize');
+                drawingManager.setDrawingMode(null);
                 if (self.modalMode === self.modalModeEnum.ADD) {
                     modalMap.setCenter(USA_CENTER);
                     modalMap.setZoom(DEFAULT_ZOOM);
+                    drawingManager.setOptions({
+                        drawingControl: true
+                    });
                 } else if (self.modalMode === self.modalModeEnum.EDIT) {
                     var campus = self.campuses[self.campusToEdit];
                     $("#name").val(campus.name);
@@ -216,7 +220,10 @@
                     overlay = new google.maps.Polygon({
                         paths: campus.perimeter
                     });
-                    overlay.setMap(modalMap);                
+                    overlay.setMap(modalMap);  
+                    drawingManager.setOptions({
+                        drawingControl: false
+                    });              
                 }
             });
 
@@ -228,11 +235,6 @@
                     overlay.setMap(null);
                     overlay = null;
                 }
-                drawingManager.setOptions({
-                    drawingControl: true
-                });
-                //modalMap.setCenter({lat: 38.0902, lng: -95.7129});
-                //modalMap.setZoom(4);
             });
 
 
