@@ -22,7 +22,7 @@
         .controller('CampusesCtrl', ['campusService', 'mapService', '$uibModal', function (campusService, mapService, $uibModal) {
             var self = this;
 
-            self.campusToEdit = null;
+            self.campusToUpdate = null;
 
             self.modalModeEnum = {
                 ADD: 0,
@@ -55,7 +55,7 @@
                 var perimeter = [];
                 for (var i = 0; i < bounds.getLength(); i++) {
                     let coord = bounds.getAt(i);
-                    perimeter.push({ 'lat': coord.lat(), 'lng': coord.lng() });
+                    perimeter.push([ coord.lat(), coord.lng() ]);
                 }
                 console.log(perimeter);
                 var newCampus = {
@@ -70,6 +70,7 @@
                             newCampus['num_buildings'] = 0;
                             newCampus['num_lots'] = 0;
                             newCampus['num_gates'] = 0;
+                            newCampus['bounds'] = mapService.convertToGMPolygon(newCampus.perimeter);
                             newCampus['marker'] = new google.maps.Marker({
                                 position: bounds.getCenter(),
                                 map: map,
@@ -81,9 +82,10 @@
                         }
                     });
                 } else if (self.modalMode === self.modalModeEnum.EDIT) {
-                    campusService.updateCampus(self.campusToEdit, newCampus, function (response) {
+                    campusService.updateCampus(self.campusToUpdate, newCampus, function (response) {
                         if (response) {
                             console.log(response);
+                            newCampus['bounds'] = mapService.convertToGMPolygon(newCampus.perimeter);
                             newCampus['marker'].setMap(null);
                             newCampus['marker'] = new google.maps.Marker({
                                 position: bounds.getCenter(),
@@ -262,7 +264,7 @@
                         drawingControl: true
                     });
                 } else if (self.modalMode === self.modalModeEnum.EDIT) {
-                    var campus = self.campuses[self.campusToEdit];
+                    var campus = self.campuses[self.campusToUpdate];
                     $("#name").val(campus.name);
                     modalMap.fitBounds(campus.bounds);
                     overlay = new google.maps.Polygon({

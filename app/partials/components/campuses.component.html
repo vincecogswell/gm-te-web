@@ -39,7 +39,7 @@
                     <td>{{ campus.num_buildings }}</td>
                     <td>{{ campus.num_lots }}</td>
                     <td>{{ campus.num_gates }}</td>
-                    <td><button type="button" ng-click="vm.campusToEdit = campusId; vm.modalMode = vm.modalModeEnum.EDIT" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-campus">
+                    <td><button type="button" ng-click="vm.campusToUpdate = campusId; vm.modalMode = vm.modalModeEnum.EDIT" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-campus">
                         <i class="glyphicon glyphicon-edit"></i>
                     </td>
                     <td><button type="button" ng-click="vm.deleteCampus(campusId)" class="btn btn-sm btn-danger">
