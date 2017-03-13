@@ -140,23 +140,54 @@
 
             var overlay;
             var bounds = new google.maps.MVCArray();
+            var curType = null;
             google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
-                console.log("OVERLAY COMPLETE TRIGGERED");
-                if (event.type == 'rectangle') {
+                overlay = event.overlay;
+                curType = event.type;
+                if (curType === 'rectangle') {
                     bounds.push(event.overlay.getBounds().getNorthEast());
                     bounds.push(event.overlay.getBounds().getSouthWest());
-                } else if (event.type == 'polygon') {
+                    updateListenerOnRectangle(true);
+                } else if (curType === 'polygon') {
                     var path = event.overlay.getPath();
                     for (var i = 0; i < path.getLength(); i++) {
                         bounds.push(path.getAt(i));
                     }
+                    updateListenersOnPolygon(true);
                 }
-                overlay = event.overlay;
                 drawingManager.setDrawingMode(null);
                 drawingManager.setOptions({
                     drawingControl: false
                 });
             });
+
+            function updateListenersOnPolygon(addListeners) {
+                var path = overlay.getPath();
+                if (addListeners) {
+                    google.maps.event.addListener(path, 'insert_at', function() {
+                        console.log('Vertex inserted on path.');
+                    });
+                    google.maps.event.addListener(path, 'remove_at', function() {
+                        console.log('Vertex removed on path.');
+                    });
+                    google.maps.event.addListener(path, 'set_at', function() {
+                        console.log('Vertex moved on path.');
+                    });
+                } else {
+                    google.maps.event.clearInstanceListeners(path);
+                }
+            }
+
+            function updateListenerOnRectangle(addListener) {
+                if (addListener) {
+                    google.maps.event.addListener(overlay, 'bounds_changed', function() {
+                        console.log('Bounds changed.');
+                    });
+                } else {
+                    google.maps.event.clearInstanceListeners(overlay);
+                }
+            }
+
 
             // Create the search box and link it to the UI element.
             var input = document.getElementById('pac-input');
@@ -222,7 +253,8 @@
                         draggable: true,
                         editable: true
                     });
-                    overlay.setMap(modalMap);  
+                    overlay.setMap(modalMap); 
+                    updateListenersOnPolygon(true); 
                     drawingManager.setOptions({
                         drawingControl: false
                     });              
@@ -234,6 +266,11 @@
                 $("#pac-input").val("");
                 bounds.clear();
                 if (overlay) {
+                    if (curType === 'rectangle') {
+                        updateListenerOnRectangle(false);
+                    } else if (curType === 'polygon') {
+                        updateListenersOnPolygon(false);
+                    }
                     overlay.setMap(null);
                     overlay = null;
                 }
