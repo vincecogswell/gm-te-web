@@ -173,8 +173,8 @@
                         bounds.push(path.getAt(i));
                     }
                 }
-                console.log(bounds.getAt(i).lat());
-                console.log(bounds.getAt(i).lng());
+                console.log(bounds.getAt(0).lat());
+                console.log(bounds.getAt(0).lng());
             }
 
             function updateListenersOnPolygon(addListeners) {
