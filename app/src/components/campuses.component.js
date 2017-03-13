@@ -37,7 +37,7 @@
                 campusService.getCampuses(function (campuses) {
                     self.campuses = campuses;
                     // populate map
-                    for (key in self.campuses) {
+                    for (var key in self.campuses) {
                         if (self.campuses.hasOwnProperty(key)) {
                             let campus = self.campuses[key];
                             campus['bounds'] = mapService.convertToGMPolygon(campus.perimeter);
