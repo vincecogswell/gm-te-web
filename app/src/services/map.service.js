@@ -7,7 +7,7 @@
 	function mapService() {
 
         function convertToGMPoint(point) {
-            return new google.maps.LatLng(Number(point['lat']), Number(point['lng']));
+            return new google.maps.LatLng(point['lat'], point['lng']);
         }
 
         function convertToGMPolygon(perimeter) {
@@ -15,7 +15,7 @@
             for (var key in perimeter) {
                 if (perimeter.hasOwnProperty(key)) {
                     let point = perimeter[key];
-                    bounds.extend(new google.maps.LatLng(Number(point['lat']), Number(point['lng'])));
+                    bounds.extend(new google.maps.LatLng(point['lat'], point['lng']));
                 }
             }
             return bounds;

@@ -4,7 +4,74 @@
 	angular
 		.module('app').factory('lotService', lotService);
 
-	function lotService() {
+	lotService.$inject = ['$http'];
+	
+	function lotService($http) {
+
+		function getLots(campusId, next) {
+			if (lots) {
+				next(lots);
+			} else {
+				$http.get('/campuses/' + campusId.toString() + '/lots')
+				.then( function (response) {
+					console.log(response);
+					if (response && response.data && response.data.status === 200) {
+						lots = response.data.lots;
+						next(lots);
+					} else {
+						// error
+						next(null);
+					}
+				});
+			}
+		}
+
+		function saveLot(campusId, lot, next) {
+			$http.post('/campuses/' + campusId.toString() + '/lots', lot)
+			.then( function (response) {
+				console.log(response);
+				if (response && response.data && response.data.status === 200) {
+					var lotId = response.data.lotId;
+					lots[lotId] = lot;
+					next(lotId);
+				} else {
+					// error
+					next(null);
+				}
+			});
+		}
+
+		function updateLot(campusId, lotId, lot, next) {
+			$http.put('/campuses/' + campusId.toString() + '/lots/' + lotId.toString(), lot)
+			.then( function (response) {
+				console.log(response);
+				if (response && response.data && response.data.status === 200) {
+					var lotId = response.data.lotId;
+					lots[lotId] = lot;
+					next(lotId);
+				} else {
+					// error
+					next(null);
+				}
+			});
+		}
+
+		function deleteLot(campusId, lotId, next) {
+			$http.delete('/campuses/' + campusId.toString() + '/lots/' + lotId.toString())
+			.then( function (response) {
+				console.log(response);
+				if (response && response.data && response.data.status === 200) {
+					var lotId = response.data.lotId;
+					delete lots[lotId];
+					next(lotId);
+				} else {
+					// error
+					next(null);
+				}
+			});
+		}
+
+		/*
 
 		function getLotsOnCampus(campusId) {
 			// TO DO: API call
@@ -33,13 +100,15 @@
 				}
 			}
 			return null;
-		}
+		}*/
 
 		var lots = { };
 
 		return {
-			getLotsOnCampus: getLotsOnCampus,
-			getLot: getLot
+			getLots: getLots,
+			saveLot: saveLot,
+			updateLot: updateLot,
+			deleteLot: deleteLot
 		}
 	}
 })();

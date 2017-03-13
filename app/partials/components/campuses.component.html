@@ -11,7 +11,7 @@
     </div>
     <div class="row add-btn">
         <div class="col-md-12">
-            <button type="button" class="btn btn-md btn-success" data-toggle="modal" data-target="#modal-add-campus">
+            <button type="button" ng-click="vm.modalMode = vm.modalModeEnum.ADD" class="btn btn-md btn-success" data-toggle="modal" data-target="#modal-campus">
                 <i class="glyphicon glyphicon-plus"></i>
                 Add Campus
             </button>
@@ -39,7 +39,7 @@
                     <td>{{ campus.num_buildings }}</td>
                     <td>{{ campus.num_lots }}</td>
                     <td>{{ campus.num_gates }}</td>
-                    <td><button type="button" ng-click="vm.editCampus(campus)" class="btn btn-sm btn-primary">
+                    <td><button type="button" ng-click="vm.campusToEdit = campusId; vm.modalMode = vm.modalModeEnum.EDIT" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-campus">
                         <i class="glyphicon glyphicon-edit"></i>
                     </td>
                     <td><button type="button" ng-click="vm.deleteCampus(campusId)" class="btn btn-sm btn-danger">
@@ -54,11 +54,12 @@
 
 <!-- MODALS -->
 
-<div class="modal fade" id="modal-add-campus" tabindex="-1" role="dialog" aria-labelledby="add-campus-label">
+<div class="modal fade" id="modal-campus" tabindex="-1" role="dialog" aria-labelledby="campus-label">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="add-campus-label">Add Campus</h4>
+                <h4 class="modal-title" id="campus-label" ng-if="vm.modalMode === vm.modalModeEnum.ADD">Add Campus</h4>
+                <h4 class="modal-title" id="campus-label" ng-if="vm.modalMode === vm.modalModeEnum.EDIT">Edit Campus</h4>
             </div>
             <div class="modal-body">
                 <div class="form-group">

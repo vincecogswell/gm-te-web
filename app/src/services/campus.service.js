@@ -12,7 +12,7 @@
 			if (campuses) {
 				next(campuses);
 			} else {
-				$http.get('/campus')
+				$http.get('/campuses')
 				.then( function (response) {
 					console.log(response);
 					if (response && response.data && response.data.status === 200) {
@@ -27,7 +27,7 @@
 		}
 
 		function saveCampus(campus, next) {
-			$http.post('/campus', campus)
+			$http.post('/campuses', campus)
 			.then( function (response) {
 				console.log(response);
 				if (response && response.data && response.data.status === 200) {
@@ -42,7 +42,7 @@
 		}
 
 		function updateCampus(campusId, campus, next) {
-			$http.put('/campus/' + campusId.toString(), campus)
+			$http.put('/campuses/' + campusId.toString(), campus)
 			.then( function (response) {
 				console.log(response);
 				if (response && response.data && response.data.status === 200) {
@@ -57,7 +57,7 @@
 		}
 
 		function deleteCampus(campusId, next) {
-			$http.delete('/campus/' + campusId.toString())
+			$http.delete('/campuses/' + campusId.toString())
 			.then( function (response) {
 				console.log(response);
 				if (response && response.data && response.data.status === 200) {
@@ -71,6 +71,7 @@
 			});
 		}
 
+		// dont need this function
 		function getCampus(campusId) {
 			/*for (var _campusId in campuses) {
 				if (campuses.hasOwnProperty(_campusId)) {

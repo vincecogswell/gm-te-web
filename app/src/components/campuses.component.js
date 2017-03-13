@@ -12,26 +12,50 @@
                 resolve: {
                     campusService: function(campusService) {
                         return campusService;
+                    },
+                    mapService: function(mapService) {
+                        return mapService;
                     }
                 }
             });
         }])
-        .controller('CampusesCtrl', ['campusService', '$uibModal', function (campusService, $uibModal) {
+        .controller('CampusesCtrl', ['campusService', 'mapService', '$uibModal', function (campusService, mapService, $uibModal) {
             var self = this;
-            getCampuses();
+
+            self.campusToEdit = null;
+
+            self.modalModeEnum = {
+                ADD: 0,
+                EDIT: 1
+            };
+            self.modalMode = null;
+
+            var USA_CENTER = {lat: 38.0902, lng: -95.7129};
+            var DEFAULT_ZOOM = 4;
 
             function getCampuses() {
-                campusService.getCampuses(function (response) {
-                    self.campuses = response;
+                campusService.getCampuses(function (campuses) {
+                    self.campuses = campuses;
                     // populate map
+                    for (key in self.campuses) {
+                        if (self.campuses.hasOwnProperty(key)) {
+                            let campus = self.campuses[key];
+                            campus['bounds'] = mapService.convertToGMPolygon(campus.perimeter);
+                            campus['marker'] = new google.maps.Marker({
+                                position: campus.bounds.getCenter(),
+                                map: map,
+                                title: campus.name
+                            });
+                        }
+                    }
                 });
             }
 
             self.saveCampus = function () {
-                var perimeter = { };
+                var perimeter = [];
                 for (var i = 0; i < bounds.getLength(); i++) {
                     let point = bounds.getAt(i);
-                    perimeter[i] = { 'lat': point.lat(), 'lng': point.lng() };
+                    perimeter.push({ 'lat': point.lat(), 'lng': point.lng() });
                 }
                 console.log(perimeter);
                 var newCampus = {
@@ -39,30 +63,49 @@
                     active: true,
                     perimeter: perimeter
                 };
-                campusService.saveCampus(newCampus, function (response) {
-                    if (response) {
-                        console.log(response);
-                        newCampus['num_buildings'] = 0;
-                        newCampus['num_lots'] = 0;
-                        newCampus['num_gates'] = 0;
-                        newCampus['marker'] = new google.maps.Marker({
-                            position: modalMap.getCenter(),
-                            map: map,
-                            title: newCampus.name
-                        });
-                    } else {
-                        // error
-                        console.log("error");
-                        //getCampuses();
-                    }
-                });
+                if (vm.modalMode === vm.modalModeEnum.ADD) {
+                    campusService.saveCampus(newCampus, function (response) {
+                        if (response) {
+                            console.log(response);
+                            newCampus['num_buildings'] = 0;
+                            newCampus['num_lots'] = 0;
+                            newCampus['num_gates'] = 0;
+                            newCampus['marker'] = new google.maps.Marker({
+                                position: bounds.getCenter(),
+                                map: map,
+                                title: newCampus.name
+                            });
+                        } else {
+                            // error
+                            console.log("error");
+                        }
+                    });
+                } else if (vm.modalMode === vm.modalModeEnum.EDIT) {
+                    campusService.updateCampus(self.campusToEdit, newCampus, function (response) {
+                        if (response) {
+                            console.log(response);
+                            newCampus['marker'].setMap(null);
+                            newCampus['marker'] = new google.maps.Marker({
+                                position: bounds.getCenter(),
+                                map: map,
+                                title: newCampus.name
+                            });
+                        } else {
+                            // error
+                            console.log("error");
+                            getCampuses();                            
+                        }
+                    });
+                }
 
-                $('#modal-add-campus').modal('toggle');
+                $('#modal-campus').modal('toggle');
             }
 
             self.deleteCampus = function (campusId) {
                 campusService.deleteCampus(campusId, function (response) {
-                    if (!response) {
+                    if (response) {
+                        self.campuses[campusId]['marker'].setMap(null);
+                    } else {
                         // error
                         console.log("error");
                     }
@@ -70,13 +113,13 @@
             }
 
             var map = new google.maps.Map(document.getElementById('map'), {
-                center: {lat: 38.0902, lng: -95.7129},
-                zoom: 4
+                center: USA_CENTER,
+                zoom: DEFAULT_ZOOM
             });
 
             var modalMap = new google.maps.Map(document.getElementById('modal-map'), {
-                center: {lat: 38.0902, lng: -95.7129},
-                zoom: 4
+                center: USA_CENTER,
+                zoom: DEFAULT_ZOOM
             });       
             var drawingManager = new google.maps.drawing.DrawingManager({
                 drawingControl: true,
@@ -98,6 +141,7 @@
             var overlay;
             var bounds = new google.maps.MVCArray();
             google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
+                console.log("OVERLAY COMPLETE TRIGGERED");
                 if (event.type == 'rectangle') {
                     bounds.push(event.overlay.getBounds().getNorthEast());
                     bounds.push(event.overlay.getBounds().getSouthWest());
@@ -159,13 +203,24 @@
                 modalMap.fitBounds(bounds);
             });
 
-            $("#modal-add-campus").on("shown.bs.modal", function () {
-                var curCenter = modalMap.getCenter();
+            $("#modal-campus").on("shown.bs.modal", function () {
+                //var curCenter = modalMap.getCenter();
                 google.maps.event.trigger(modalMap, 'resize');
-                modalMap.setCenter(curCenter);
+                if (vm.modalMode === vm.modalModeEnum.ADD) {
+                    modalMap.setCenter(USA_CENTER);
+                    modalMap.setZoom(DEFAULT_ZOOM);
+                } else if (vm.modalMode === vm.modalModeEnum.EDIT) {
+                    $("#name").val(self.campusToEdit.campus.name);
+                    //angular.copy(self.campusToEdit.campus.bounds, bounds);
+                    modalMap.fitBounds(bounds);
+                    overlay = new google.maps.Polygon({
+                        paths: self.campuses[self.campusToEdit].perimeter
+                    });
+                    overlay.setMap(modalMap);                
+                }
             });
 
-            $("#modal-add-campus").on("hidden.bs.modal", function () {
+            $("#modal-campus").on("hidden.bs.modal", function () {
                 $("#name").val("");
                 $("#pac-input").val("");
                 bounds.clear();
@@ -176,9 +231,12 @@
                 drawingManager.setOptions({
                     drawingControl: true
                 });
-                modalMap.setCenter({lat: 38.0902, lng: -95.7129});
-                modalMap.setZoom(4);
+                //modalMap.setCenter({lat: 38.0902, lng: -95.7129});
+                //modalMap.setZoom(4);
             });
+
+
+            getCampuses();
 
         }]);
 })();

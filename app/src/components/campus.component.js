@@ -21,49 +21,59 @@
                     },
                     gateService: function(gateService) {
                         return gateService;
-                    },
-                    mapService: function(mapService) {
-                        return mapService;
                     }
                 }
             });
         }])
-        .controller('CampusCtrl', ['campusService', 'buildingService', 'lotService', 'gateService', 'mapService', '$routeParams', '$location', function(campusService, buildingService, lotService, gateService, mapService, $routeParams, $location) {
+        .controller('CampusCtrl', ['campusService', 'buildingService', 'lotService', 'gateService', '$routeParams', '$location', function(campusService, buildingService, lotService, gateService, $routeParams, $location) {
             var self = this;
 
             var campusId = parseInt($routeParams.campusId);
-            self.campus = campusService.getCampus(campusId);
+            campusService.getCampuses( function (campuses) {
+                self.campus = campuses[campusId];
+            });
+            //self.campus = campusService.getCampus(campusId);
             
-            self.campus.perimeter = mapService.convertToGMPolygon(self.campus.perimeter);
+            // should convert when first created in campus.service.js
+            //self.campus.perimeter = mapService.convertToGMPolygon(self.campus.perimeter);
 
-            self.buildings = self.campus ? buildingService.getBuildingsOnCampus(campusId) : null;
-            self.lots = self.campus ? lotService.getLotsOnCampus(campusId) : null;
-            self.gates = self.campus ? gateService.getGatesOnCampus(campusId) : null;
+            getBuildings();
+            getLots();
+            getGates();
 
-            var counter1 = 0;
+            function getBuildings() {
+                buildingService.getBuildings(campusId, function (response) {
+                    self.buildings = response;
+                    // populate map
+                });
+            }
+
+            function getLots() {
+                lotService.getLots(campusId, function (response) {
+                    self.lots = response;
+                    // populate map
+                });
+            }
+
+            function getGates() {
+                gateService.getGates(campusId, function (response) {
+                    self.gates = response;
+                    // populate map
+                });
+            }
+
             self.saveBuilding = function () {
                 // TO DO: Api Call
                 drawingManagerBuilding.setDrawingMode(null);
-                if (counter1 === 0) {
-                    var newBuilding = {
-                        id: 1,
-                        name: "College of Engineering",
-                        status: "Active",
-                        location: modalMapBuilding.getCenter(),
-                        deleted: false
-                    };
-                    self.buildings = [newBuilding];
-                    counter1++;
-                } else {
-                     var newBuilding = {
-                        id: 2,
-                        name: "Shaw Hall",
-                        status: "Active",
-                        location: modalMapBuilding.getCenter(),
-                        deleted: false
-                    };
-                    self.buildings.push(newBuilding);                
-                }
+                var newBuilding = {
+                    id: 1,
+                    name: "College of Engineering",
+                    status: "Active",
+                    location: modalMapBuilding.getCenter(),
+                    deleted: false
+                };
+                self.buildings = [newBuilding];
+                counter1++;
 
                 var marker = new google.maps.Marker({
                     position: modalMapBuilding.getCenter(),
@@ -74,54 +84,29 @@
                 $('#modal-add-building').modal('toggle');
             }
 
-            var counter2 = 0;
             self.saveLot = function () {
                 // TO DO: Api Call
                 drawingManagerLot.setDrawingMode(null);
-                if (counter2 === 0) {
-                    var newLot = {
-                        id: 1,
-                        name: "Lot 39",
-                        status: "Active",
-                        access: "Everyone",
-                        hours: "24/7",
-                        location: modalMapLot.getCenter(),
-                        deleted: false
-                    };
-                    self.lots = [newLot];
-
-                    var rectangle = new google.maps.Rectangle({
-                        map: map,
-                        bounds: {
-                            north: 42.725871,
-                            south: 42.725387,
-                            east: -84.480211,
-                            west: -84.481833
-                        }
-                    });
-                    counter2++;
-                } else {
                 var newLot = {
-                    id: 2,
-                    name: "Lot 40",
+                    id: 1,
+                    name: "Lot 39",
                     status: "Active",
                     access: "Everyone",
                     hours: "24/7",
                     location: modalMapLot.getCenter(),
                     deleted: false
                 };
-                self.lots.push(newLot);
+                self.lots = [newLot];
 
                 var rectangle = new google.maps.Rectangle({
                     map: map,
                     bounds: {
-                        north: 42.725853,
-                        south: 42.725396,
-                        east: -84.478305,
-                        west: -84.479550
+                        north: 42.725871,
+                        south: 42.725387,
+                        east: -84.480211,
+                        west: -84.481833
                     }
                 });
-                }
 
                 $('#modal-add-lot').modal('toggle');
             }
@@ -149,6 +134,32 @@
 
                 $('#modal-add-gate').modal('toggle');
             }
+
+            self.updateBuilding = function (buildingId) {
+
+            }
+
+            self.updateLot = function (lotId) {
+
+            }
+
+            self.updateGate = function (gateId) {
+                
+            }
+
+            self.deleteBuilding = function (buildingId) {
+
+            }
+
+            self.deleteLot = function (lotId) {
+
+            }
+
+            self.deleteGate = function (gateId) {
+
+            }
+
+
 
             var map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: 42.5122427, lng: -83.0334234},
