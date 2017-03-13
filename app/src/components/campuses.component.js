@@ -163,7 +163,6 @@
             });
 
             function updateBounds(event) {
-                console.log("update with event: " + event);
                 bounds.clear();
                 overlay = event.overlay;
                 curType = event.type;
@@ -176,6 +175,7 @@
                         bounds.push(path.getAt(i));
                     }
                 }
+                console.log(bounds);
             }
 
             function updateListenersOnPolygon(addListeners) {
