@@ -40,7 +40,8 @@
                     for (var key in self.campuses) {
                         if (self.campuses.hasOwnProperty(key)) {
                             let campus = self.campuses[key];
-                            campus['bounds'] = mapService.convertToGMPolygon(campus.perimeter);
+                            campus['bounds'] = mapService.convertToGMBounds(campus.perimeter);
+                            campus['paths'] = mapService.convertToGMPaths(campus.perimeter);
                             campus['marker'] = new google.maps.Marker({
                                 position: campus.bounds.getCenter(),
                                 map: map,
@@ -70,7 +71,8 @@
                             newCampus['num_buildings'] = 0;
                             newCampus['num_lots'] = 0;
                             newCampus['num_gates'] = 0;
-                            newCampus['bounds'] = mapService.convertToGMPolygon(newCampus.perimeter);
+                            newCampus['bounds'] = mapService.convertToGMBounds(newCampus.perimeter);
+                            newCampus['paths'] = mapService.convertToGMPaths(newCampus.perimeter);
                             newCampus['marker'] = new google.maps.Marker({
                                 position: bounds.getCenter(),
                                 map: map,
@@ -85,7 +87,8 @@
                     campusService.updateCampus(self.campusToUpdate, newCampus, function (response) {
                         if (response) {
                             console.log(response);
-                            newCampus['bounds'] = mapService.convertToGMPolygon(newCampus.perimeter);
+                            newCampus['bounds'] = mapService.convertToGMBounds(newCampus.perimeter);
+                            newCampus['paths'] = mapService.convertToGMPaths(newCampus.perimeter);
                             newCampus['marker'].setMap(null);
                             newCampus['marker'] = new google.maps.Marker({
                                 position: bounds.getCenter(),
@@ -268,7 +271,7 @@
                     $("#name").val(campus.name);
                     modalMap.fitBounds(campus.bounds);
                     overlay = new google.maps.Polygon({
-                        paths: campus.perimeter,
+                        paths: campus.paths,
                         draggable: true,
                         editable: true
                     });
