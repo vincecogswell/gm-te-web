@@ -54,8 +54,8 @@
             self.saveCampus = function () {
                 var perimeter = [];
                 for (var i = 0; i < bounds.getLength(); i++) {
-                    let point = bounds.getAt(i);
-                    perimeter.push({ 'lat': point.lat(), 'lng': point.lng() });
+                    let coord = bounds.getAt(i);
+                    perimeter.push({ 'lat': coord.lat(), 'lng': coord.lng() });
                 }
                 console.log(perimeter);
                 var newCampus = {
@@ -173,7 +173,8 @@
                         bounds.push(path.getAt(i));
                     }
                 }
-                console.log(bounds);
+                console.log(bounds.getAt(i).lat());
+                console.log(bounds.getAt(i).lng());
             }
 
             function updateListenersOnPolygon(addListeners) {
