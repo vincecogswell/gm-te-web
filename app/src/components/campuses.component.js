@@ -63,7 +63,7 @@
                     active: true,
                     perimeter: perimeter
                 };
-                if (vm.modalMode === vm.modalModeEnum.ADD) {
+                if (self.modalMode === self.modalModeEnum.ADD) {
                     campusService.saveCampus(newCampus, function (response) {
                         if (response) {
                             console.log(response);
@@ -80,7 +80,7 @@
                             console.log("error");
                         }
                     });
-                } else if (vm.modalMode === vm.modalModeEnum.EDIT) {
+                } else if (self.modalMode === self.modalModeEnum.EDIT) {
                     campusService.updateCampus(self.campusToEdit, newCampus, function (response) {
                         if (response) {
                             console.log(response);
@@ -206,15 +206,15 @@
             $("#modal-campus").on("shown.bs.modal", function () {
                 //var curCenter = modalMap.getCenter();
                 google.maps.event.trigger(modalMap, 'resize');
-                if (vm.modalMode === vm.modalModeEnum.ADD) {
+                if (self.modalMode === self.modalModeEnum.ADD) {
                     modalMap.setCenter(USA_CENTER);
                     modalMap.setZoom(DEFAULT_ZOOM);
-                } else if (vm.modalMode === vm.modalModeEnum.EDIT) {
-                    $("#name").val(self.campusToEdit.campus.name);
-                    //angular.copy(self.campusToEdit.campus.bounds, bounds);
+                } else if (self.modalMode === self.modalModeEnum.EDIT) {
+                    var campus = self.campuses[self.campusToEdit];
+                    $("#name").val(campus.name);
                     modalMap.fitBounds(bounds);
                     overlay = new google.maps.Polygon({
-                        paths: self.campuses[self.campusToEdit].perimeter
+                        paths: campus.perimeter
                     });
                     overlay.setMap(modalMap);                
                 }
