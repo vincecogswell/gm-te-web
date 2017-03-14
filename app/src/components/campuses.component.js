@@ -53,6 +53,11 @@
             }
 
             self.saveCampus = function () {
+                if (curType === 'polygon' && bounds.getLength() <= 2) {
+                    // error - should have at least 3 points
+                    return;
+                }
+
                 var perimeter = [];
                 for (var i = 0; i < bounds.getLength(); i++) {
                     let coord = bounds.getAt(i);
@@ -112,12 +117,19 @@
             }
 
             self.deleteCampus = function (campusId) {
+                var campus = self.campuses[campusId];
+                campus.marker.setMap(null);
                 campusService.deleteCampus(campusId, function (response) {
-                    if (response) {
-                        self.campuses[campusId]['marker'].setMap(null);
-                    } else {
+                    if (!response) {
                         // error
                         console.log("error");
+
+                        // add marker back since we deleted it at the start of this function
+                        campus['marker'] = new google.maps.Marker({
+                            position: campus.bounds.getCenter(),
+                            map: map,
+                            title: campus.name
+                        });
                     }
                 });
             }
@@ -190,7 +202,7 @@
 
             function updateListeners(addListeners) {
                 if (curType === 'rectangle') {
-                    if (addListener) {
+                    if (addListeners) {
                         google.maps.event.addListener(overlay, 'bounds_changed', function () {
                             updateBounds();
                         });
@@ -275,13 +287,22 @@
                     var campus = self.campuses[self.campusToUpdate];
                     $("#name").val(campus.name);
                     modalMap.fitBounds(campus.bounds);
-                    overlay = new google.maps.Polygon({
-                        paths: campus.paths,
-                        draggable: true,
-                        editable: true
-                    });
+                    if (campus.bounds.getLength() > 2) {
+                        curType = 'polygon';
+                        overlay = new google.maps.Polygon({
+                            paths: campus.paths,
+                            draggable: true,
+                            editable: true
+                        });
+                    } else {
+                        curType = 'rectangle';
+                        overlay = new google.maps.Rectangle({
+                            bounds: campus.bounds,
+                            draggable: true,
+                            editable: true
+                        });
+                    }
                     overlay.setMap(modalMap); 
-                    curType = 'polygon';
                     updateListeners(true); 
                     drawingManager.setOptions({
                         drawingControl: false
