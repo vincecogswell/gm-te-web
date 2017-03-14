@@ -53,6 +53,11 @@
             }
 
             self.saveCampus = function () {
+                if ($("#name").val() === '') {
+                    // error - name can't be empty
+                    return;
+                }
+
                 if (curType === 'polygon' && bounds.getLength() <= 2) {
                     // error - should have at least 3 points
                     return;

@@ -28,36 +28,35 @@
         .controller('CampusCtrl', ['campusService', 'buildingService', 'lotService', 'gateService', '$routeParams', '$location', function(campusService, buildingService, lotService, gateService, $routeParams, $location) {
             var self = this;
 
+            // implement checkboxes that control which components (buildings, lots, gates) are displayed on the map
+
             var campusId = parseInt($routeParams.campusId);
             campusService.getCampuses( function (campuses) {
                 self.campus = campuses[campusId];
             });
             //self.campus = campusService.getCampus(campusId);
-            
-            // should convert when first created in campus.service.js
-            //self.campus.perimeter = mapService.convertToGMPolygon(self.campus.perimeter);
 
             getBuildings();
             getLots();
             getGates();
 
             function getBuildings() {
-                buildingService.getBuildings(campusId, function (response) {
-                    self.buildings = response;
+                buildingService.getBuildings(campusId, function (buildings) {
+                    self.buildings = buildings;
                     // populate map
                 });
             }
 
             function getLots() {
-                lotService.getLots(campusId, function (response) {
-                    self.lots = response;
+                lotService.getLots(campusId, function (lots) {
+                    self.lots = lots;
                     // populate map
                 });
             }
 
             function getGates() {
-                gateService.getGates(campusId, function (response) {
-                    self.gates = response;
+                gateService.getGates(campusId, function (gates) {
+                    self.gates = gates;
                     // populate map
                 });
             }
@@ -81,7 +80,7 @@
                     title: newBuilding.name
                 });
 
-                $('#modal-add-building').modal('toggle');
+                $('#modal-building').modal('toggle');
             }
 
             self.saveLot = function () {
@@ -108,7 +107,7 @@
                     }
                 });
 
-                $('#modal-add-lot').modal('toggle');
+                $('#modal-lot').modal('toggle');
             }
 
             self.saveGate = function () {
@@ -132,7 +131,7 @@
                     title: newGate.name
                 });
 
-                $('#modal-add-gate').modal('toggle');
+                $('#modal-gate').modal('toggle');
             }
 
             self.updateBuilding = function (buildingId) {
@@ -165,13 +164,13 @@
                 center: {lat: 42.5122427, lng: -83.0334234},
                 zoom: 12
             });
-            map.fitBounds(self.campus.perimeter);
+            map.fitBounds(self.campus.bounds);
 
             var modalMapBuilding = new google.maps.Map(document.getElementById('modal-map-building'), {
                 center: {lat: 38.0902, lng: -95.7129},
                 zoom: 12
             });
-            modalMapBuilding.fitBounds(self.campus.perimeter);  
+            modalMapBuilding.fitBounds(self.campus.bounds);  
 
             var drawingManagerBuilding = new google.maps.drawing.DrawingManager({
                 drawingControl: true,
@@ -195,7 +194,7 @@
                 center: {lat: 38.0902, lng: -95.7129},
                 zoom: 12
             });
-            modalMapLot.fitBounds(self.campus.perimeter); 
+            modalMapLot.fitBounds(self.campus.bounds); 
 
             var drawingManagerLot = new google.maps.drawing.DrawingManager({
                 drawingControl: true,
@@ -219,7 +218,7 @@
                 center: {lat: 38.0902, lng: -95.7129},
                 zoom: 12
             });
-            modalMapGate.fitBounds(self.campus.perimeter); 
+            modalMapGate.fitBounds(self.campus.bounds); 
 
             var drawingManagerGate = new google.maps.drawing.DrawingManager({
                 drawingControl: true,
@@ -239,25 +238,25 @@
             drawingManagerGate.setMap(modalMapGate);
 
 
-            $("#modal-add-building").on("shown.bs.modal", function () {
+            $("#modal-building").on("shown.bs.modal", function () {
                 var curCenter = modalMapBuilding.getCenter();
                 google.maps.event.trigger(modalMapBuilding, 'resize');
                 modalMapBuilding.setCenter(curCenter);
-                modalMapBuilding.fitBounds(self.campus.perimeter);
+                modalMapBuilding.fitBounds(self.campus.bounds);
             });
 
-            $("#modal-add-lot").on("shown.bs.modal", function () {
+            $("#modal-lot").on("shown.bs.modal", function () {
                 var curCenter = modalMapLot.getCenter();
                 google.maps.event.trigger(modalMapLot, 'resize');
                 modalMapLot.setCenter(curCenter);
-                modalMapLot.fitBounds(self.campus.perimeter);
+                modalMapLot.fitBounds(self.campus.bounds);
             });
 
-            $("#modal-add-gate").on("shown.bs.modal", function () {
+            $("#modal-gate").on("shown.bs.modal", function () {
                 var curCenter = modalMapGate.getCenter();
                 google.maps.event.trigger(modalMapGate, 'resize');
                 modalMapGate.setCenter(curCenter);
-                modalMapGate.fitBounds(self.campus.perimeter);
+                modalMapGate.fitBounds(self.campus.bounds);
             });
 
 
