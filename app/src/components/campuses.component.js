@@ -287,7 +287,7 @@
                     var campus = self.campuses[self.campusToUpdate];
                     $("#name").val(campus.name);
                     modalMap.fitBounds(campus.bounds);
-                    if (campus.bounds.getLength() > 2) {
+                    if (campus.perimeter.length > 2) {
                         curType = 'polygon';
                         overlay = new google.maps.Polygon({
                             paths: campus.paths,
