@@ -400,6 +400,7 @@
                         markers.push(new google.maps.Marker({
                             position: mapService.convertToGMCoord(entrance),
                             map: modalMapBuilding,
+                            draggable: true,
                             title: building.name
                         }));
                     }
