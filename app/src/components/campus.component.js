@@ -29,21 +29,143 @@
             var self = this;
 
             // implement checkboxes that control which components (buildings, lots, gates) are displayed on the map
-
             var campusId = parseInt($routeParams.campusId);
             campusService.getCampuses( function (campuses) {
                 self.campus = campuses[campusId];
             });
-            //self.campus = campusService.getCampus(campusId);
 
-            getBuildings();
-            getLots();
-            getGates();
+            self.structureToUpdate = null;
+
+            self.modalModeEnum = {
+                ADD: 0,
+                EDIT: 1
+            };
+            self.modalMode = null;
+
+            var overlay;
+            var bounds = new google.maps.MVCArray();
+            var markers = new google.maps.MVCArray();
+            var curType = null;
+
+
+            self.goBack = function () {
+                // will probably have to reset stuff here
+                $location.path('/campuses');
+            }
 
             function getBuildings() {
                 buildingService.getBuildings(campusId, function (buildings) {
                     self.buildings = buildings;
                     // populate map
+                    for (var key in self.buildings) {
+                        if (self.buildings.hasOwnProperty(key)) {
+                            let building = self.buildings[key];
+                            building['markers'] = [];
+                            for (let i = 0; i < building.entrances.length; i++) {
+                                let entrance = building.entrances[i];
+                                building.markers.push(new google.maps.Marker({
+                                    position: mapService.convertToGMCoord(entrance),
+                                    map: map,
+                                    title: building.name
+                                }));
+                            }
+                        }
+                    }
+                });
+            }
+
+            self.saveBuilding = function () {
+                if ($("#building-name").val() === '') {
+                    // error - name can't be empty
+                    return;
+                }
+
+                if (markers.getLength() === 0) {
+                    // error - should have at least 1 marker
+                    return;
+                }
+
+                var entrances = [];
+                for (var i = 0; i < markers.getLength(); i++) {
+                    let coord = markers.getAt(i).getPosition();
+                    entrances.push([ coord.lat(), coord.lng() ]);
+                }
+                console.log(entrances);
+                var newBuilding = {
+                    name: $("#building-name").val(),
+                    active: true,
+                    entrances: entrances
+                };
+                if (self.modalMode === self.modalModeEnum.ADD) {
+                    buildingService.saveBuilding(campusId, newBuilding, function (response) {
+                        if (response) {
+                            console.log(response);
+                            newBuilding['markers'] = [];
+                            for (var i = 0; i < newBuilding.entrances.length; i++) {
+                                let entrance = newBuilding.entrances[i];
+                                newBuilding.markers.push(new google.maps.Marker({
+                                    position: mapService.convertToGMCoord(entrance),
+                                    map: map,
+                                    title: newBuilding.name
+                                }));
+                            }
+                        } else {
+                            // error
+                            console.log("error");
+                        }
+                    });
+                } else if (self.modalMode === self.modalModeEnum.EDIT) {
+                    var oldBuilding = self.buildings[self.structureToUpdate];
+                    buildingService.updateBuilding(campusId, self.structureToUpdate, newBuilding, function (response) {
+                        if (response) {
+                            console.log(response);
+                            for (var i = 0; i < oldBuilding.markers.length; i++) {
+                                let marker = oldBuilding.markers[i];
+                                marker.setMap(null);
+                            }
+                            oldBuilding.markers = [];
+
+                            for (var i = 0; i < newBuilding.entrances.length; i++) {
+                                let entrance = newBuilding.entrances[i];
+                                newBuilding.markers.push(new google.maps.Marker({
+                                    position: mapService.convertToGMCoord(entrance),
+                                    map: map,
+                                    title: newBuilding.name
+                                }));
+                            }
+                        } else {
+                            // error
+                            console.log("error");
+                            getBuildings();                            
+                        }
+                    });
+                }
+
+                $('#modal-building').modal('toggle');
+            }
+
+            self.deleteBuilding = function (buildingId) {
+                var building = self.buildings[buildingId];
+                for (var i = 0; i < building.markers.length; i++) {
+                    let marker = building.markers[i];
+                    marker.setMap(null);
+                }
+                building.markers = [];
+
+                buildingService.deleteBuilding(campusId, buildingId, function (response) {
+                    if (!response) {
+                        // error
+                        console.log("error");
+
+                        for (var i = 0; i < building.entrances.length; i++) {
+                            let entrance = building.entrances[i];
+                            building.markers.push(new google.maps.Marker({
+                                position: mapService.convertToGMCoord(entrance),
+                                map: map,
+                                title: building.name
+                            }));
+                        }
+                    }
                 });
             }
 
@@ -51,102 +173,17 @@
                 lotService.getLots(campusId, function (lots) {
                     self.lots = lots;
                     // populate map
+                    for (var key in self.lots) {
+                        if (self.lots.hasOwnProperty(key)) {
+                            let lot = self.lots[key];
+                            lot['bounds'] = mapService.convertToGMBounds(lot.perimeter);
+                            lot['paths'] = mapService.convertToGMPaths(lot.perimeter);
+                        }
+                    }
                 });
-            }
-
-            function getGates() {
-                gateService.getGates(campusId, function (gates) {
-                    self.gates = gates;
-                    // populate map
-                });
-            }
-
-            self.saveBuilding = function () {
-                // TO DO: Api Call
-                drawingManagerBuilding.setDrawingMode(null);
-                var newBuilding = {
-                    id: 1,
-                    name: "College of Engineering",
-                    status: "Active",
-                    location: modalMapBuilding.getCenter(),
-                    deleted: false
-                };
-                self.buildings = [newBuilding];
-                counter1++;
-
-                var marker = new google.maps.Marker({
-                    position: modalMapBuilding.getCenter(),
-                    map: map,
-                    title: newBuilding.name
-                });
-
-                $('#modal-building').modal('toggle');
             }
 
             self.saveLot = function () {
-                // TO DO: Api Call
-                drawingManagerLot.setDrawingMode(null);
-                var newLot = {
-                    id: 1,
-                    name: "Lot 39",
-                    status: "Active",
-                    access: "Everyone",
-                    hours: "24/7",
-                    location: modalMapLot.getCenter(),
-                    deleted: false
-                };
-                self.lots = [newLot];
-
-                var rectangle = new google.maps.Rectangle({
-                    map: map,
-                    bounds: {
-                        north: 42.725871,
-                        south: 42.725387,
-                        east: -84.480211,
-                        west: -84.481833
-                    }
-                });
-
-                $('#modal-lot').modal('toggle');
-            }
-
-            self.saveGate = function () {
-                // TO DO: Api Call
-                drawingManagerGate.setDrawingMode(null);
-                var newGate = {
-                    id: 1,
-                    name: "Gate A",
-                    status: "Active",
-                    access: "Everyone",
-                    hours: "24/7",
-                    instructions: null,
-                    location: modalMapGate.getCenter(),
-                    deleted: false
-                };
-                self.gates = [newGate];
-
-                var marker = new google.maps.Marker({
-                    position: modalMapGate.getCenter(),
-                    map: map,
-                    title: newGate.name
-                });
-
-                $('#modal-gate').modal('toggle');
-            }
-
-            self.updateBuilding = function (buildingId) {
-
-            }
-
-            self.updateLot = function (lotId) {
-
-            }
-
-            self.updateGate = function (gateId) {
-                
-            }
-
-            self.deleteBuilding = function (buildingId) {
 
             }
 
@@ -154,21 +191,52 @@
 
             }
 
+            function getGates() {
+                gateService.getGates(campusId, function (gates) {
+                    self.gates = gates;
+                    // populate map
+                    for (var key in self.gates) {
+                        if (self.gates.hasOwnProperty(key)) {
+                            let gate = self.gates[key];
+                            // probably have to convert location with convertToGMCoord in mapService
+                            gate['marker'] = new google.maps.Marker({
+                                position: gate.location,
+                                map: map,
+                                title: gate.name
+                            });
+                        }
+                    }
+                });
+            }
+
+            self.saveGate = function () {
+
+            }
+
             self.deleteGate = function (gateId) {
 
             }
 
-
+            self.clearModalMap = function () {
+                bounds.clear();
+                if (overlay) {
+                    updateListeners(false);
+                    overlay.setMap(null);
+                    overlay = null;
+                }
+                drawingManager.setDrawingMode(null);
+                drawingManager.setOptions({
+                    drawingControl: true
+                });
+            }
 
             var map = new google.maps.Map(document.getElementById('map'), {
-                center: {lat: 42.5122427, lng: -83.0334234},
-                zoom: 12
+                center: self.campus.bounds.getCenter()
             });
             map.fitBounds(self.campus.bounds);
 
             var modalMapBuilding = new google.maps.Map(document.getElementById('modal-map-building'), {
-                center: {lat: 38.0902, lng: -95.7129},
-                zoom: 12
+                center: self.campus.bounds.getCenter()
             });
             modalMapBuilding.fitBounds(self.campus.bounds);  
 
@@ -178,21 +246,15 @@
                     position: google.maps.ControlPosition.TOP_CENTER,
                     drawingModes: ['marker']
                 },
-                rectangleOptions: {
-                    draggable: true,
-                    editable: true
-                },
-                polygonOptions: {
-                    draggable: true,
-                    editable: true
+                markerOptions: {
+                    draggable: true
                 }
             });
             drawingManagerBuilding.setMap(modalMapBuilding);
 
 
             var modalMapLot = new google.maps.Map(document.getElementById('modal-map-lot'), {
-                center: {lat: 38.0902, lng: -95.7129},
-                zoom: 12
+                center: self.campus.bounds.getCenter()
             });
             modalMapLot.fitBounds(self.campus.bounds); 
 
@@ -200,7 +262,10 @@
                 drawingControl: true,
                 drawingControlOptions: {
                     position: google.maps.ControlPosition.TOP_CENTER,
-                    drawingModes: ['rectangle', 'polygon']
+                    drawingModes: ['marker', 'rectangle', 'polygon']
+                },
+                markerOptions: {
+                    draggable: true
                 },
                 rectangleOptions: {
                     draggable: true,
@@ -215,10 +280,9 @@
 
 
             var modalMapGate = new google.maps.Map(document.getElementById('modal-map-gate'), {
-                center: {lat: 38.0902, lng: -95.7129},
-                zoom: 12
+                center: self.campus.bounds.getCenter()
             });
-            modalMapGate.fitBounds(self.campus.bounds); 
+            modalMapGate.fitBounds(self.campus.bounds);
 
             var drawingManagerGate = new google.maps.drawing.DrawingManager({
                 drawingControl: true,
@@ -226,23 +290,127 @@
                     position: google.maps.ControlPosition.TOP_CENTER,
                     drawingModes: ['marker']
                 },
-                rectangleOptions: {
-                    draggable: true,
-                    editable: true
-                },
-                polygonOptions: {
-                    draggable: true,
-                    editable: true
+                markerOptions: {
+                    draggable: true
                 }
             });
             drawingManagerGate.setMap(modalMapGate);
 
 
+            function updateBounds() {
+                bounds.clear();
+                if (curType === 'rectangle') {
+                    bounds.push(overlay.getBounds().getNorthEast());
+                    bounds.push(overlay.getBounds().getSouthWest());
+                } else if (curType === 'polygon') {
+                    var path = overlay.getPath();
+                    for (var i = 0; i < path.getLength(); i++) {
+                        bounds.push(path.getAt(i));
+                    }
+                }
+            }
+
+            function updateListeners(addListeners) {
+                /*if (curType === 'marker') {
+                    if (addListeners) {
+                        for (var i = 0; i < markers.getLength(); i++) {
+                            let marker = markers.getAt(i);
+                            google.maps.event.addListener(marker, 'dragend', function () {
+                                updateBounds();
+                            });
+                        }
+                    } else {
+
+                    }
+                }*/
+                if (curType === 'rectangle') {
+                    if (addListeners) {
+                        google.maps.event.addListener(overlay, 'bounds_changed', function () {
+                            updateBounds();
+                        });
+                    } else {
+                        google.maps.event.clearInstanceListeners(overlay);
+                    }
+                } else if (curType === 'polygon') {
+                    var path = overlay.getPath();
+                    if (addListeners) {
+                        google.maps.event.addListener(path, 'insert_at', function () {
+                            updateBounds();
+                        });
+                        google.maps.event.addListener(path, 'remove_at', function () {
+                            updateBounds();
+                        });
+                        google.maps.event.addListener(path, 'set_at', function () {
+                            updateBounds();
+                        });
+                    } else {
+                        google.maps.event.clearInstanceListeners(path);
+                    }                    
+                }
+            }
+
+
+            google.maps.event.addListener(drawingManagerBuilding, 'markercomplete', function(marker) {
+                markers.push(marker);
+                //curType = 'marker';
+                //updateBounds();
+                //updateListeners(true);
+            });
+
+            google.maps.event.addListener(drawingManagerLot, 'overlaycomplete', function(event) {
+                overlay = event.overlay;
+                curType = event.type;
+                updateBounds();
+                updateListeners(true);
+                drawingManager.setDrawingMode(null);
+                drawingManager.setOptions({
+                    drawingControl: false
+                });
+            });
+
+            /*
+            google.maps.event.addListener(drawingManagerGate, 'overlaycomplete', function(event) {
+                overlay = event.overlay;
+                curType = event.type;
+                updateBounds();
+                updateListeners(true);
+                drawingManager.setDrawingMode(null);
+                drawingManager.setOptions({
+                    drawingControl: false
+                });
+            });*/
+
             $("#modal-building").on("shown.bs.modal", function () {
-                var curCenter = modalMapBuilding.getCenter();
                 google.maps.event.trigger(modalMapBuilding, 'resize');
-                modalMapBuilding.setCenter(curCenter);
+                drawingManagerBuilding.setDrawingMode(null);
                 modalMapBuilding.fitBounds(self.campus.bounds);
+                if (self.modalMode === self.modalModeEnum.ADD) {
+                    drawingManagerBuilding.setOptions({
+                        drawingControl: true
+                    });
+                } else if (self.modalMode === self.modalModeEnum.EDIT) {
+                    var building = self.buildings[self.structureToUpdate];
+                    $("#building-name").val(building.name);
+                    //curType = 'marker';
+                    for (var i = 0; i < building.entrances.length; i++) {
+                        let entrance = building.entrances[i];
+                        markers.push(new google.maps.Marker({
+                            position: mapService.convertToGMCoord(entrance),
+                            map: modalMapBuilding,
+                            title: building.name
+                        }));
+                    }
+                    //updateListeners(true);   
+                }
+            });
+
+            $("#modal-building").on("hidden.bs.modal", function () {
+                $("#building-name").val("");
+                for (var i = 0; i < markers.getLength(); i++) {
+                    let marker = markers.getAt(i);
+                    marker.setMap(null);
+                }
+                markers.clear();
             });
 
             $("#modal-lot").on("shown.bs.modal", function () {
@@ -259,9 +427,8 @@
                 modalMapGate.fitBounds(self.campus.bounds);
             });
 
-
-            self.goBack = function () {
-                $location.path('/campuses');
-            }
+            getBuildings();
+            getLots();
+            getGates();
         }]);
 })();

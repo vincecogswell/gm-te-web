@@ -33,6 +33,10 @@
             var USA_CENTER = {lat: 38.0902, lng: -95.7129};
             var DEFAULT_ZOOM = 4;
 
+            var overlay;
+            var bounds = new google.maps.MVCArray();
+            var curType = null;
+
             function getCampuses() {
                 campusService.getCampuses(function (campuses) {
                     self.campuses = campuses;
@@ -56,6 +60,10 @@
                 if ($("#name").val() === '') {
                     // error - name can't be empty
                     return;
+                }
+
+                if (bounds.getLength() === 0) {
+                    // error - need to draw something
                 }
 
                 if (curType === 'polygon' && bounds.getLength() <= 2) {
@@ -178,9 +186,6 @@
             });
             drawingManager.setMap(modalMap);
 
-            var overlay;
-            var bounds = new google.maps.MVCArray();
-            var curType = null;
             google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
                 overlay = event.overlay;
                 curType = event.type;
@@ -279,7 +284,6 @@
             });
 
             $("#modal-campus").on("shown.bs.modal", function () {
-                //var curCenter = modalMap.getCenter();
                 google.maps.event.trigger(modalMap, 'resize');
                 drawingManager.setDrawingMode(null);
                 if (self.modalMode === self.modalModeEnum.ADD) {

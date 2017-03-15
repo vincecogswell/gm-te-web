@@ -16,15 +16,15 @@
     </div>
     <div class="row add-btn">
         <div class="col-md-12">
-            <button type="button" class="btn btn-md btn-success" data-toggle="modal" data-target="#modal-building">
+            <button type="button" ng-click="vm.modalMode = vm.modalModeEnum.ADD" class="btn btn-md btn-success" data-toggle="modal" data-target="#modal-building">
                 <i class="glyphicon glyphicon-plus"></i>
                 Add Building
             </button>
-            <button type="button" class="btn btn-md btn-success" data-toggle="modal" data-target="#modal-lot">
+            <button type="button" ng-click="vm.modalMode = vm.modalModeEnum.ADD" class="btn btn-md btn-success" data-toggle="modal" data-target="#modal-lot">
                 <i class="glyphicon glyphicon-plus"></i>
                 Add Parking Lot
             </button>
-            <button type="button" class="btn btn-md btn-success" data-toggle="modal" data-target="#modal-gate">
+            <button type="button" ng-click="vm.modalMode = vm.modalModeEnum.ADD" class="btn btn-md btn-success" data-toggle="modal" data-target="#modal-gate">
                 <i class="glyphicon glyphicon-plus"></i>
                 Add Gate
             </button>
@@ -33,9 +33,6 @@
     <div class="row tabs">
         <div class="col-md-12">
             <uib-tabset>
-                <!--<uib-tab index="0" heading="All">
-                    <h2>All</h2>
-                </uib-tab>-->
                 <uib-tab index="0" heading="Buildings">
                     <table st-table="vm.buildings" class="table table-striped">
                         <thead>
@@ -47,13 +44,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="building in vm.buildings">
+                        <tr ng-repeat="(buildingId, building) in vm.buildings">
                             <td>{{ building.name }}</td>
-                            <td>{{ building.status }}</td>
-                            <td><button type="button" ng-click="vm.editBuilding(building)" class="btn btn-sm btn-primary">
+                            <td ng-if="building.active">Active</td>
+                            <td ng-if="!building.active">Closed</td>
+                            <td><button type="button" ng-click="vm.structureToUpdate = buildingId; vm.modalMode = vm.modalModeEnum.EDIT" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-building">
                                 <i class="glyphicon glyphicon-edit"></i>
                             </td>
-                            <td><button type="button" ng-click="vm.deleteBuilding(building)" class="btn btn-sm btn-danger">
+                            <td><button type="button" ng-click="vm.deleteBuilding(buildingId)" class="btn btn-sm btn-danger">
                                 <i class="glyphicon glyphicon-remove-circle"></i>
                             </td>
                         </tr>
@@ -73,15 +71,16 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="lot in vm.lots">
+                        <tr ng-repeat="(lotId, lot) in vm.lots">
                             <td>{{ lot.name }}</td>
-                            <td>{{ lot.status }}</td>
+                            <td ng-if="lot.active">Active</td>
+                            <td ng-if="!lot.active">Closed</td>
                             <td>{{ lot.access }}</td>
                             <td>{{ lot.hours }}</td>
-                            <td><button type="button" ng-click="vm.editLot(lot)" class="btn btn-sm btn-primary">
+                            <td><button type="button" ng-click="vm.structureToUpdate = lotId; vm.modalMode = vm.modalModeEnum.EDIT" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-lot">
                                 <i class="glyphicon glyphicon-edit"></i>
                             </td>
-                            <td><button type="button" ng-click="vm.deleteLot(lot)" class="btn btn-sm btn-danger">
+                            <td><button type="button" ng-click="vm.deleteLot(lotId)" class="btn btn-sm btn-danger">
                                 <i class="glyphicon glyphicon-remove-circle"></i>
                             </td>
                         </tr>
@@ -102,16 +101,17 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="gate in vm.gates">
+                        <tr ng-repeat="(gateId, gate) in vm.gates">
                             <td>{{ gate.name }}</td>
-                            <td>{{ gate.status }}</td>
+                            <td ng-if="gate.active">Active</td>
+                            <td ng-if="!gate.active">Closed</td>
                             <td>{{ gate.access }}</td>
                             <td>{{ gate.hours }}</td>
                             <td>{{ gate.instructions }}</td>
-                            <td><button type="button" ng-click="vm.editGate(gate)" class="btn btn-sm btn-primary">
+                            <td><button type="button" ng-click="vm.structureToUpdate = gateId; vm.modalMode = vm.modalModeEnum.EDIT" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-gate">
                                 <i class="glyphicon glyphicon-edit"></i>
                             </td>
-                            <td><button type="button" ng-click="vm.deleteGate(gate)" class="btn btn-sm btn-danger">
+                            <td><button type="button" ng-click="vm.deleteGate(gateId)" class="btn btn-sm btn-danger">
                                 <i class="glyphicon glyphicon-remove-circle"></i>
                             </td>
                         </tr>
@@ -133,12 +133,13 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="building-label">Add Building</h4>
+                <h4 class="modal-title" id="building-label" ng-if="vm.modalMode === vm.modalModeEnum.ADD">Add Building</h4>
+                <h4 class="modal-title" id="building-label" ng-if="vm.modalMode === vm.modalModeEnum.EDIT">Edit Building</h4>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" class="form-control" id="name" ng-model="vm.building.name">
+                    <label for="building-name">Name:</label>
+                    <input type="text" class="form-control" id="building-name">
                 </div>
                 <label for="modal-map-building">Location:</label>
                 <div id="modal-map-building"></div>
@@ -146,6 +147,9 @@
             <div class="modal-footer">
                 <button class="btn btn-primary" type="button" ng-click="vm.saveBuilding()">Save</button>
                 <button class="btn btn-cancel" type="button" data-dismiss="modal">Cancel</button>
+                <div>
+                     <button class="btn btn-danger" type="button" ng-click="vm.clearModalMap()">Clear Map</button>   
+                </div>
             </div>
         </div>
     </div>
@@ -155,12 +159,13 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="lot-label">Add Parking Lot</h4>
+                <h4 class="modal-title" id="lot-label" ng-if="vm.modalMode === vm.modalModeEnum.ADD">Add Parking Lot</h4>
+                <h4 class="modal-title" id="lot-label" ng-if="vm.modalMode === vm.modalModeEnum.EDIT">Edit Parking Lot</h4>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" class="form-control" id="name" ng-model="vm.lot.name">
+                    <label for="lot-name">Name:</label>
+                    <input type="text" class="form-control" id="lot-name">
                 </div>
                 <div class="form-group">
                     <label>Access:</label>
@@ -188,6 +193,9 @@
             <div class="modal-footer">
                 <button class="btn btn-primary" type="button" ng-click="vm.saveLot()">Save</button>
                 <button class="btn btn-cancel" type="button" data-dismiss="modal">Cancel</button>
+                <div>
+                     <button class="btn btn-danger" type="button" ng-click="vm.clearModalMap()">Clear Map</button>   
+                </div>
             </div>
         </div>
     </div>
@@ -197,12 +205,13 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="gate-label">Add Gate</h4>
+                <h4 class="modal-title" id="gate-label" ng-if="vm.modalMode === vm.modalModeEnum.ADD">Add Gate</h4>
+                <h4 class="modal-title" id="gate-label" ng-if="vm.modalMode === vm.modalModeEnum.EDIT">Edit Gate</h4>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" class="form-control" id="name" ng-model="vm.gate.name">
+                    <label for="gate-name">Name:</label>
+                    <input type="text" class="form-control" id="gate-name">
                 </div>
                 <div class="form-group">
                     <label>Access:</label>
@@ -235,6 +244,9 @@
             <div class="modal-footer">
                 <button class="btn btn-primary" type="button" ng-click="vm.saveGate()">Save</button>
                 <button class="btn btn-cancel" type="button" data-dismiss="modal">Cancel</button>
+                <div>
+                     <button class="btn btn-danger" type="button" ng-click="vm.clearModalMap()">Clear Map</button>   
+                </div>
             </div>
         </div>
     </div>
