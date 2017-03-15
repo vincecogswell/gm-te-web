@@ -104,7 +104,7 @@
 			return null;
 		}*/
 
-		var buildings = { };
+		var buildings = null;
 
 		return {
 			getBuildings: getBuildings,
