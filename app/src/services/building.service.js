@@ -12,6 +12,8 @@
 			if (buildings) {
 				next(buildings);
 			} else {
+				console.log("here");
+				console.log(campusId);
 				$http.get('/campuses/' + campusId.toString() + '/buildings')
 				.then( function (response) {
 					console.log(response);
