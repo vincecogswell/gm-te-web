@@ -57,7 +57,9 @@
             }
 
             function getBuildings() {
+                console.log("hiii");
                 buildingService.getBuildings(campusId, function (buildings) {
+                    console.log(buildings);
                     self.buildings = buildings;
                     // populate map
                     for (var key in self.buildings) {
