@@ -97,13 +97,13 @@
                 var newBuilding = {
                     name: $("#building-name").val(),
                     active: true,
-                    entrances: entrances
+                    entrances: entrances,
+                    markers: []
                 };
                 if (self.modalMode === self.modalModeEnum.ADD) {
                     buildingService.saveBuilding(campusId, newBuilding, function (response) {
                         if (response) {
                             console.log(response);
-                            newBuilding['markers'] = [];
                             for (var i = 0; i < newBuilding.entrances.length; i++) {
                                 let entrance = newBuilding.entrances[i];
                                 newBuilding.markers.push(new google.maps.Marker({
