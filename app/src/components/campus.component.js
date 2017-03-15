@@ -21,11 +21,14 @@
                     },
                     gateService: function(gateService) {
                         return gateService;
+                    },
+                    mapService: function(mapService) {
+                        return mapService;
                     }
                 }
             });
         }])
-        .controller('CampusCtrl', ['campusService', 'buildingService', 'lotService', 'gateService', '$routeParams', '$location', function(campusService, buildingService, lotService, gateService, $routeParams, $location) {
+        .controller('CampusCtrl', ['campusService', 'buildingService', 'lotService', 'gateService', 'mapService', '$routeParams', '$location', function(campusService, buildingService, lotService, gateService, mapService, $routeParams, $location) {
             var self = this;
 
             // implement checkboxes that control which components (buildings, lots, gates) are displayed on the map
