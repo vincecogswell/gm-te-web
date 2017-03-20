@@ -109,14 +109,15 @@
                 var newCampus = {
                     name: $("#name").val(),
                     active: true,
-                    perimeter: perimeter
+                    perimeter: perimeter,
+                    roles: []
                 };
                 if (self.modalMode === self.modalModeEnum.ADD) {
                     campusService.saveCampus(newCampus, function (response) {
                         if (response) {
                             roleService.saveRoles(response, self.roles, function (roles) {
                                 if (roles) {
-                                    newCampus['roles'] = roles;
+                                    newCampus.roles = roles;
                                 } else {
                                     // error
                                     console.log("error");
@@ -142,22 +143,49 @@
                     var oldCampus = self.campuses[self.campusToUpdate];
                     campusService.updateCampus(self.campusToUpdate, newCampus, function (response) {
                         if (response) {
-                            roleService.updateRoles(self.campusToUpdate, self.roles, function (roles) {
+                            var createRoles = [];
+                            var updateRoles = [];
+                            for (var i = 0; i < self.roles.length; i++) {
+                                let role = self.roles[i];
+                                if (role.hasOwnProperty('id')) {
+                                    updateRoles.append(role);
+                                } else {
+                                    createRoles.append(role);
+                                }
+                            }
+
+                            roleService.saveRoles(self.campusToUpdate, createRoles, function (roles) {
                                 if (roles) {
-                                    newCampus['roles'] = roles;
+                                    newCampus.roles.push.apply(newCampus.roles, roles);
                                 } else {
                                     // error
                                     console.log("error");
                                     newCampus['roles'] = oldCampus.roles;
                                 }
                             });
-                            roleService.deleteRoles(self.campusToUpdate, self.deleteRoles, function (roles) {
+
+                            roleService.updateRoles(self.campusToUpdate, updateRoles, function (roles) {
                                 if (roles) {
-                                    //newCampus['roles'] = roles;
+                                    newCampus.roles.push.apply(newCampus.roles, roles);
                                 } else {
                                     // error
                                     console.log("error");
-                                    //newCampus['roles'] = oldCampus.roles;
+                                    newCampus['roles'] = oldCampus.roles;
+                                }
+                            });
+
+                            var deleteRoles = [];
+                            for (var i = 0; i < self.deleteRoles.length; i++) {
+                                let deleteRole = self.deleteRoles[i];
+                                if (deleteRole.hasOwnProperty('id')) {
+                                    deleteRoles.append(deleteRole);
+                                }
+                            }
+                            roleService.deleteRoles(self.campusToUpdate, deleteRoles, function (roles) {
+                                if (!roles) {
+                                    // error
+                                    console.log("error");
+                                    newCampus['roles'] = oldCampus.roles;
                                 }
                             });
                             console.log(response);
