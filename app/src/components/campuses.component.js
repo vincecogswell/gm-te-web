@@ -340,7 +340,7 @@
                 } else if (self.modalMode === self.modalModeEnum.EDIT) {
                     var campus = self.campuses[self.campusToUpdate];
                     $("#name").val(campus.name);
-                    self.roles = campus.roles;
+                    angular.copy(campus.roles, self.roles);
                     modalMap.fitBounds(campus.bounds);
                     if (campus.perimeter.length > 2) {
                         curType = 'polygon';
