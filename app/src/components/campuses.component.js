@@ -339,6 +339,7 @@
                     });
                 } else if (self.modalMode === self.modalModeEnum.EDIT) {
                     var campus = self.campuses[self.campusToUpdate];
+                    console.log(campus);
                     $("#name").val(campus.name);
                     self.roles = campus.roles;
                     modalMap.fitBounds(campus.bounds);
