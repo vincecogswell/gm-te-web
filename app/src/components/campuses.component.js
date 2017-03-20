@@ -13,13 +13,16 @@
                     campusService: function(campusService) {
                         return campusService;
                     },
+                    roleService: function(roleService) {
+                        return roleService;
+                    },
                     mapService: function(mapService) {
                         return mapService;
                     }
                 }
             });
         }])
-        .controller('CampusesCtrl', ['campusService', 'mapService', '$uibModal', function (campusService, mapService, $uibModal) {
+        .controller('CampusesCtrl', ['campusService', 'roleService', 'mapService', '$uibModal', function (campusService, roleService, mapService, $uibModal) {
             var self = this;
 
             self.campusToUpdate = null;
@@ -59,6 +62,9 @@
                                 map: map,
                                 title: campus.name
                             });
+                            roleService.getRoles(key, function (roles) {
+                                campus['roles'] = roles;
+                            });
                         }
                     }
                 });
@@ -68,6 +74,10 @@
                 if ($("#name").val() === '') {
                     // error - name can't be empty
                     return;
+                }
+
+                if (self.roles.length === 0) {
+                    // error - need at least 1 role
                 }
 
                 if (bounds.getLength() === 0) {
@@ -93,6 +103,14 @@
                 if (self.modalMode === self.modalModeEnum.ADD) {
                     campusService.saveCampus(newCampus, function (response) {
                         if (response) {
+                            roleService.saveRoles(response, self.roles, function (roles) {
+                                if (roles) {
+                                    newCampus['roles'] = roles;
+                                } else {
+                                    // error
+                                    console.log("error");
+                                }
+                            });
                             console.log(response);
                             newCampus['num_buildings'] = 0;
                             newCampus['num_lots'] = 0;
@@ -113,6 +131,15 @@
                     var oldCampus = self.campuses[self.campusToUpdate];
                     campusService.updateCampus(self.campusToUpdate, newCampus, function (response) {
                         if (response) {
+                            roleService.updateRoles(self.campusToUpdate, self.roles, function (roles) {
+                                if (roles) {
+                                    newCampus['roles'] = roles;
+                                } else {
+                                    // error
+                                    console.log("error");
+                                    newCampus['roles'] = oldCampus.roles;
+                                }
+                            });
                             console.log(response);
                             newCampus['num_buildings'] = oldCampus.num_buildings;
                             newCampus['num_lots'] = oldCampus.num_lots;

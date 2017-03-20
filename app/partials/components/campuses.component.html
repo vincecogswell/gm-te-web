@@ -70,9 +70,14 @@
                 <div class="form-group">
                     <label for="roles">Roles:</label>
                     <div ng-repeat="role in vm.roles" id="roles">
-                        <input type="text" class="form-control" id="name" ng-model="role.name">
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" id="name" ng-model="role.name">
+                        </div>
+                        <div class="col-xs-2"><button type="button" ng-click="vm.roles.splice($index, 1)" class="btn btn-sm btn-danger">
+                            <i class="glyphicon glyphicon-remove-circle"></i>
+                        </div>
                     </div>
-                    <div id="add-role-btn">
+                    <div id="modify-roles">
                         <button type="button" ng-click="vm.addRole()" class="btn btn-md btn-success">
                             <i class="glyphicon glyphicon-plus"></i>
                             Add Role
