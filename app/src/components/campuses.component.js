@@ -78,6 +78,7 @@
 
                 if (self.roles.length === 0) {
                     // error - need at least 1 role
+                    console.log("1");
                     return;
                 }
 
@@ -85,6 +86,8 @@
                     let role = self.roles[i];
                     if (role.name === '') {
                         // error - needs a name
+                        console.log("2");
+                        console.log(role);
                         return;
                     }
                 }
