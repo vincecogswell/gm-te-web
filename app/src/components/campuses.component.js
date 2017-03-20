@@ -71,8 +71,10 @@
             }
 
             self.saveCampus = function () {
+                console.log("were here");
                 if ($("#name").val() === '') {
                     // error - name can't be empty
+                    console.log("0");
                     return;
                 }
 
@@ -94,11 +96,13 @@
 
                 if (bounds.getLength() === 0) {
                     // error - need to draw something
+                    console.log("3");
                     return;
                 }
 
                 if (curType === 'polygon' && bounds.getLength() <= 2) {
                     // error - should have at least 3 points
+                    console.log("4");
                     return;
                 }
 
