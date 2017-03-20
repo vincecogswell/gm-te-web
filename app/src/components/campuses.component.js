@@ -78,10 +78,20 @@
 
                 if (self.roles.length === 0) {
                     // error - need at least 1 role
+                    return;
+                }
+
+                for (var i = 0; i < self.roles.length; i++) {
+                    let role = self.roles[i];
+                    if (role.name === '') {
+                        // error - needs a name
+                        return;
+                    }
                 }
 
                 if (bounds.getLength() === 0) {
                     // error - need to draw something
+                    return;
                 }
 
                 if (curType === 'polygon' && bounds.getLength() <= 2) {
@@ -330,6 +340,7 @@
                 } else if (self.modalMode === self.modalModeEnum.EDIT) {
                     var campus = self.campuses[self.campusToUpdate];
                     $("#name").val(campus.name);
+                    self.roles = campus.roles;
                     modalMap.fitBounds(campus.bounds);
                     if (campus.perimeter.length > 2) {
                         curType = 'polygon';
