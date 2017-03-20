@@ -22,7 +22,7 @@
                 }
             });
         }])
-        .controller('CampusesCtrl', ['campusService', 'roleService', 'mapService', '$uibModal', function (campusService, roleService, mapService, $uibModal) {
+        .controller('CampusesCtrl', ['campusService', 'roleService', 'mapService', '$uibModal', '$scope', function (campusService, roleService, mapService, $uibModal, $scope) {
             var self = this;
 
             self.campusToUpdate = null;
@@ -64,7 +64,6 @@
                             });
                             roleService.getRoles(key, function (roles) {
                                 campus['roles'] = roles;
-                                self.roles = roles;
                             });
                         }
                     }
@@ -329,12 +328,6 @@
                 modalMap.fitBounds(bounds);
             });
 
-            $("#modal-campus").on("show.bs.modal", function () {
-                var campus = self.campuses[self.campusToUpdate];
-                self.roles = campus.roles;
-                console.log("hereee");
-            });
-
             $("#modal-campus").on("shown.bs.modal", function () {
                 google.maps.event.trigger(modalMap, 'resize');
                 drawingManager.setDrawingMode(null);
@@ -347,6 +340,7 @@
                 } else if (self.modalMode === self.modalModeEnum.EDIT) {
                     var campus = self.campuses[self.campusToUpdate];
                     $("#name").val(campus.name);
+                    self.roles = campus.roles;
                     modalMap.fitBounds(campus.bounds);
                     if (campus.perimeter.length > 2) {
                         curType = 'polygon';
@@ -367,7 +361,8 @@
                     updateListeners(true); 
                     drawingManager.setOptions({
                         drawingControl: false
-                    });              
+                    });  
+                    $scope.$apply();            
                 }
             });
 
