@@ -64,6 +64,7 @@
                             });
                             roleService.getRoles(key, function (roles) {
                                 campus['roles'] = roles;
+                                self.roles = roles;
                             });
                         }
                     }
