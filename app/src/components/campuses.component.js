@@ -71,16 +71,13 @@
             }
 
             self.saveCampus = function () {
-                console.log("were here");
                 if ($("#name").val() === '') {
                     // error - name can't be empty
-                    console.log("0");
                     return;
                 }
 
                 if (self.roles.length === 0) {
                     // error - need at least 1 role
-                    console.log("1");
                     return;
                 }
 
@@ -88,21 +85,17 @@
                     let role = self.roles[i];
                     if (role.name === '') {
                         // error - needs a name
-                        console.log("2");
-                        console.log(role);
                         return;
                     }
                 }
 
                 if (bounds.getLength() === 0) {
                     // error - need to draw something
-                    console.log("3");
                     return;
                 }
 
                 if (curType === 'polygon' && bounds.getLength() <= 2) {
                     // error - should have at least 3 points
-                    console.log("4");
                     return;
                 }
 
@@ -365,6 +358,7 @@
                         });
                     }
                     overlay.setMap(modalMap); 
+                    updateBounds();
                     updateListeners(true); 
                     drawingManager.setOptions({
                         drawingControl: false
