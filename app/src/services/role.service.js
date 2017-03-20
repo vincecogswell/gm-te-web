@@ -64,10 +64,31 @@
             }
         }
 
+        function deleteRoles(campusId, roles, next) {
+            var cnt = 0;
+            for (var i = 0; i < roles.length; i++) {
+                let role = roles[i];
+                $http.delete('/campuses/' + campusId.toString() + '/roles/' + role.id.toString())
+                .then( function (response) {
+                    console.log(response);
+                    if (response && response.data && response.data.status === 200) {
+                        cnt++;
+                        if (cnt >= roles.length) {
+                            next(roles);
+                        }
+                    } else {
+                        // error
+                        next(null);
+                    }
+                });
+            }
+        }
+
 		return {
 			getRoles: getRoles,
 			saveRoles: saveRoles,
-			updateRoles: updateRoles
+			updateRoles: updateRoles,
+            deleteRoles: deleteRoles
 		}
 	}
 })();

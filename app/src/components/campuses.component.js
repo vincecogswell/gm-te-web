@@ -34,6 +34,7 @@
             self.modalMode = null;
 
             self.roles = [];
+            self.deleteRoles = [];
 
             var USA_CENTER = {lat: 38.0902, lng: -95.7129};
             var DEFAULT_ZOOM = 4;
@@ -148,6 +149,15 @@
                                     // error
                                     console.log("error");
                                     newCampus['roles'] = oldCampus.roles;
+                                }
+                            });
+                            roleService.deleteRoles(self.campusToUpdate, self.deleteRoles, function (roles) {
+                                if (roles) {
+                                    //newCampus['roles'] = roles;
+                                } else {
+                                    // error
+                                    console.log("error");
+                                    //newCampus['roles'] = oldCampus.roles;
                                 }
                             });
                             console.log(response);
@@ -371,6 +381,7 @@
                 $("#name").val("");
                 $("#pac-input").val("");
                 self.roles = [];
+                self.deleteRoles = [];
                 bounds.clear();
                 if (overlay) {
                     updateListeners(false);
