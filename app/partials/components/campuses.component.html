@@ -72,10 +72,12 @@
                     <div ng-repeat="role in vm.roles" id="roles">
                         <input type="text" class="form-control" id="name" ng-model="role.name">
                     </div>
-                    <button type="button" ng-click="vm.addRole()" class="btn btn-md btn-success">
-                        <i class="glyphicon glyphicon-plus"></i>
-                        Add Role
-                    </button>
+                    <div id="add-role-btn">
+                        <button type="button" ng-click="vm.addRole()" class="btn btn-md btn-success">
+                            <i class="glyphicon glyphicon-plus"></i>
+                            Add Role
+                        </button>
+                    </div>
                 </div>
 
                 <label for="modal-map">Location:</label>

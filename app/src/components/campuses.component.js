@@ -330,6 +330,7 @@
             $("#modal-campus").on("hidden.bs.modal", function () {
                 $("#name").val("");
                 $("#pac-input").val("");
+                self.roles = [];
                 bounds.clear();
                 if (overlay) {
                     updateListeners(false);
