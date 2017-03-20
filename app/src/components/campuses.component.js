@@ -30,12 +30,20 @@
             };
             self.modalMode = null;
 
+            self.roles = [];
+
             var USA_CENTER = {lat: 38.0902, lng: -95.7129};
             var DEFAULT_ZOOM = 4;
 
             var overlay;
             var bounds = new google.maps.MVCArray();
             var curType = null;
+
+            self.addRole = function () {
+                self.roles.push({
+                    name: ''
+                });
+            }
 
             function getCampuses() {
                 campusService.getCampuses(function (campuses) {

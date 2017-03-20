@@ -153,21 +153,28 @@
                     let marker = building.markers[i];
                     marker.setMap(null);
                 }
-                building.markers = [];
+                //building.markers = [];
 
                 buildingService.deleteBuilding(campusId, buildingId, function (response) {
                     if (!response) {
+                        // test this
+
                         // error
                         console.log("error");
 
-                        for (var i = 0; i < building.entrances.length; i++) {
+                        for (var i = 0; i < building.markers.length; i++) {
+                            let marker = building.markers[i];
+                            marker.setMap(map);
+                        }
+
+                        /*for (var i = 0; i < building.entrances.length; i++) {
                             let entrance = building.entrances[i];
                             building.markers.push(new google.maps.Marker({
                                 position: mapService.convertToGMCoord(entrance),
                                 map: map,
                                 title: building.name
                             }));
-                        }
+                        }*/
                     }
                 });
             }
@@ -181,6 +188,29 @@
                             let lot = self.lots[key];
                             lot['bounds'] = mapService.convertToGMBounds(lot.perimeter);
                             lot['paths'] = mapService.convertToGMPaths(lot.perimeter);
+                            lot['markers'] = [];
+                            for (let i = 0; i < lot.entrances.length; i++) {
+                                let entrance = lot.entrances[i];
+                                lot.markers.push(new google.maps.Marker({
+                                    position: mapService.convertToGMCoord(entrance),
+                                    map: map,
+                                    title: lot.name
+                                }));
+                            }
+                            if (lot.perimeter.length > 2) {
+                                lot['overlay'] = new google.maps.Polygon({
+                                    paths: lot.paths,
+                                    draggable: false,
+                                    editable: false
+                                });
+                            } else {
+                                lot['overlay'] = new google.maps.Rectangle({
+                                    bounds: lot.bounds,
+                                    draggable: false,
+                                    editable: false
+                                });
+                            }
+                            lot.overlay.setMap(map); 
                         }
                     }
                 });
@@ -191,7 +221,25 @@
             }
 
             self.deleteLot = function (lotId) {
+                var lot = self.lots[lotId];
+                for (var i = 0; i < lot.markers.length; i++) {
+                    let marker = lot.markers[i];
+                    marker.setMap(null);
+                }
+                lot.overlay.setMap(null);
 
+                lotService.deleteLot(campusId, lotId, function (response) {
+                    if (!response) {
+                        // error
+                        console.log("error");
+
+                        for (var i = 0; i < lot.markers.length; i++) {
+                            let marker = lot.markers[i];
+                            marker.setMap(map);
+                        }
+                        lot.overlay.setMap(map);
+                    }
+                });
             }
 
             function getGates() {
@@ -201,9 +249,8 @@
                     for (var key in self.gates) {
                         if (self.gates.hasOwnProperty(key)) {
                             let gate = self.gates[key];
-                            // probably have to convert location with convertToGMCoord in mapService
                             gate['marker'] = new google.maps.Marker({
-                                position: gate.location,
+                                position: mapService.convertToGMCoord(gate.location),
                                 map: map,
                                 title: gate.name
                             });
@@ -213,11 +260,87 @@
             }
 
             self.saveGate = function () {
+                if ($("#gate-name").val() === '') {
+                    // error - name can't be empty
+                    return;
+                }
 
+                if (markers.getLength() === 0) {
+                    // error - should have 1 marker
+                    return;
+                }
+
+                var location = [];
+                for (var i = 0; i < markers.getLength(); i++) {
+                    let coord = markers.getAt(i).getPosition();
+                    location.push([ coord.lat(), coord.lng() ]);
+                }
+                console.log(location);
+                var newGate = {
+                    name: $("#gate-name").val(),
+                    active: true,
+                    instructions: $("#gate-instructions").val(),
+                    location: location
+                };
+                if (self.modalMode === self.modalModeEnum.ADD) {
+                    buildingService.saveBuilding(campusId, newBuilding, function (response) {
+                        if (response) {
+                            console.log(response);
+                            for (var i = 0; i < newBuilding.entrances.length; i++) {
+                                let entrance = newBuilding.entrances[i];
+                                newBuilding.markers.push(new google.maps.Marker({
+                                    position: mapService.convertToGMCoord(entrance),
+                                    map: map,
+                                    title: newBuilding.name
+                                }));
+                            }
+                        } else {
+                            // error
+                            console.log("error");
+                        }
+                    });
+                } else if (self.modalMode === self.modalModeEnum.EDIT) {
+                    var oldBuilding = self.buildings[self.structureToUpdate];
+                    buildingService.updateBuilding(campusId, self.structureToUpdate, newBuilding, function (response) {
+                        if (response) {
+                            console.log(response);
+                            for (var i = 0; i < oldBuilding.markers.length; i++) {
+                                let marker = oldBuilding.markers[i];
+                                marker.setMap(null);
+                            }
+                            oldBuilding.markers = [];
+
+                            for (var i = 0; i < newBuilding.entrances.length; i++) {
+                                let entrance = newBuilding.entrances[i];
+                                newBuilding.markers.push(new google.maps.Marker({
+                                    position: mapService.convertToGMCoord(entrance),
+                                    map: map,
+                                    title: newBuilding.name
+                                }));
+                            }
+                        } else {
+                            // error
+                            console.log("error");
+                            getGates();                           
+                        }
+                    });
+                }
+
+                $('#modal-gate').modal('toggle');
             }
 
             self.deleteGate = function (gateId) {
+                var gate = self.gates[gateId];
+                gate.marker.setMap(null);
 
+                gateService.deleteGate(campusId, gateId, function (response) {
+                    if (!response) {
+                        // error
+                        console.log("error");
+
+                        gate.marker.setMap(map);
+                    }
+                });
             }
 
             self.clearModalMap = function () {
@@ -314,18 +437,6 @@
             }
 
             function updateListeners(addListeners) {
-                /*if (curType === 'marker') {
-                    if (addListeners) {
-                        for (var i = 0; i < markers.getLength(); i++) {
-                            let marker = markers.getAt(i);
-                            google.maps.event.addListener(marker, 'dragend', function () {
-                                updateBounds();
-                            });
-                        }
-                    } else {
-
-                    }
-                }*/
                 if (curType === 'rectangle') {
                     if (addListeners) {
                         google.maps.event.addListener(overlay, 'bounds_changed', function () {
