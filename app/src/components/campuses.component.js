@@ -148,9 +148,9 @@
                             for (var i = 0; i < self.roles.length; i++) {
                                 let role = self.roles[i];
                                 if (role.hasOwnProperty('id')) {
-                                    updateRoles.append(role);
+                                    updateRoles.push(role);
                                 } else {
-                                    createRoles.append(role);
+                                    createRoles.push(role);
                                 }
                             }
 
@@ -178,7 +178,7 @@
                             for (var i = 0; i < self.deleteRoles.length; i++) {
                                 let deleteRole = self.deleteRoles[i];
                                 if (deleteRole.hasOwnProperty('id')) {
-                                    deleteRoles.append(deleteRole);
+                                    deleteRoles.push(deleteRole);
                                 }
                             }
                             roleService.deleteRoles(self.campusToUpdate, deleteRoles, function (roles) {
