@@ -328,6 +328,12 @@
                 modalMap.fitBounds(bounds);
             });
 
+            $("#modal-campus").on("show.bs.modal", function () {
+                var campus = self.campuses[self.campusToUpdate];
+                self.roles = campus.roles;
+                console.log("hereee");
+            });
+
             $("#modal-campus").on("shown.bs.modal", function () {
                 google.maps.event.trigger(modalMap, 'resize');
                 drawingManager.setDrawingMode(null);
@@ -339,9 +345,7 @@
                     });
                 } else if (self.modalMode === self.modalModeEnum.EDIT) {
                     var campus = self.campuses[self.campusToUpdate];
-                    console.log(campus);
                     $("#name").val(campus.name);
-                    self.roles = campus.roles;
                     modalMap.fitBounds(campus.bounds);
                     if (campus.perimeter.length > 2) {
                         curType = 'polygon';
