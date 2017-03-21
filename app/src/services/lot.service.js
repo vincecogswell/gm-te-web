@@ -36,6 +36,7 @@
 					next(lotId);
 				} else {
 					// error
+					console.log(lot);
 					next(null);
 				}
 			});
