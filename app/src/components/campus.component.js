@@ -267,12 +267,6 @@
                     access.push(Number(selectedRole.id));
                 }*/
 
-                var access = [];
-                for (var i = 0; i < self.selectedRoles.length; i++) {
-                    let selectedRole = self.selectedRoles[i];
-                    access.push(Number(selectedRole.id));
-                }
-
                 var entrances = [];
                 for (var i = 0; i < markers.getLength(); i++) {
                     let coord = markers.getAt(i).getPosition();
@@ -283,7 +277,7 @@
                     name: $("#lot-name").val(),
                     active: true,
                     buildings: null,
-                    access: access,
+                    access: self.selectedRoles,
                     start: convertTimeToString(self.fromTime),
                     end: convertTimeToString(self.toTime),
                     perimeter: null,
@@ -380,12 +374,6 @@
                     return;
                 }
 
-                var access = [];
-                for (var i = 0; i < self.selectedRoles.length; i++) {
-                    let selectedRole = self.selectedRoles[i];
-                    access.push(Number(selectedRole.id));
-                }
-
                 var location = [];
                 for (var i = 0; i < markers.getLength(); i++) {
                     let coord = markers.getAt(i).getPosition();
@@ -395,7 +383,7 @@
                 var newGate = {
                     name: $("#gate-name").val(),
                     active: true,
-                    access: access,
+                    access: self.selectedRoles,
                     start: convertTimeToString(self.fromTime),
                     end: convertTimeToString(self.toTime),
                     instructions: $("#gate-instructions").val(),
