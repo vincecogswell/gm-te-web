@@ -270,11 +270,15 @@
                 var start = convertTimeToString(self.fromTime);
                 var end = convertTimeToString(self.toTime);
 
-                var buildings;
-                angular.copy(self.selectedBuildings, buildings);
+                var buildings = [];
+                for (var i = 0; i < self.selectedBuildings.length; i++) {
+                    buildings.push(self.selectedBuildings[i]);
+                }
 
-                var access;
-                angular.copy(self.selectedRoles, access);
+                var access = [];
+                for (var i = 0; i < self.selectedRoles.length; i++) {
+                    access.push(self.selectedRoles[i]);
+                }
 
                 var perimeter = [];
                 for (var i = 0; i < bounds.getLength(); i++) {
