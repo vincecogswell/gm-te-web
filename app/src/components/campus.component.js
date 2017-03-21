@@ -278,7 +278,6 @@
                     let coord = markers.getAt(i).getPosition();
                     entrances.push([ coord.lat(), coord.lng() ]);
                 }
-                console.log(entrances);
                 var newLot = {
                     name: $("#lot-name").val(),
                     active: true,
@@ -290,6 +289,7 @@
                     entrances: entrances,
                     markers: []
                 };
+                console.log(newLot);
                 if (self.modalMode === self.modalModeEnum.ADD) {
                     lotService.saveLot(campusId, newLot, function (response) {
                         if (response) {
