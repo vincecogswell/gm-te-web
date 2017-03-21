@@ -259,10 +259,16 @@
                     return;
                 }
 
+                /*var buildings = [];
+                for (var i = 0; i < self.selectedBuildings.length; i++) {
+                    let selectedBuilding = self.selectedBuildings[i];
+                    access.push(Number(selectedRole.id));
+                }*/
+
                 var access = [];
                 for (var i = 0; i < self.selectedRoles.length; i++) {
                     let selectedRole = self.selectedRoles[i];
-                    access.push(selectedRole.id);
+                    access.push(Number(selectedRole.id));
                 }
 
                 var entrances = [];
@@ -375,7 +381,7 @@
                 var access = [];
                 for (var i = 0; i < self.selectedRoles.length; i++) {
                     let selectedRole = self.selectedRoles[i];
-                    access.push(selectedRole.id);
+                    access.push(Number(selectedRole.id));
                 }
 
                 var location = [];
