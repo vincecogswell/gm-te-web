@@ -281,10 +281,10 @@
                 var newLot = {
                     name: $("#lot-name").val(),
                     active: true,
-                    buildings: self.selectedBuildings,
-                    access: self.selectedRoles,
-                    start: convertTimeToString(self.fromTime),
-                    end: convertTimeToString(self.toTime),
+                    buildings: [],
+                    access: [],
+                    start: '',
+                    end: '',
                     perimeter: perimeter,
                     entrances: entrances,
                     markers: []
