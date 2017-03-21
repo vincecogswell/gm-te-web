@@ -83,6 +83,7 @@
             function getBuildings() {
                 buildingService.getBuildings(campusId, function (buildings) {
                     self.buildings = buildings;
+                    console.log(self.buildings);
                     // populate map
                     for (var key in self.buildings) {
                         if (self.buildings.hasOwnProperty(key)) {
