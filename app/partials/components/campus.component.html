@@ -174,13 +174,13 @@
                 <div class="form-group">
                     <label>Hours:</label>
                     <div class="form-group row">
-                        <label for="from" class="col-md-1 control-label" style="font-weight: normal;">From:</label>
+                        <label for="lot-from" class="col-md-1 control-label" style="font-weight: normal;">From:</label>
                         <div class="col-md-5">
-                            <div uib-timepicker ng-model="time1" minute-step="15" show-meridian="['AM','PM']" id="from"></div>
+                            <div uib-timepicker ng-model="vm.fromTime" minute-step="15" show-meridian="['AM','PM']" id="lot-from"></div>
                         </div>
-                        <label for="to" class="col-md-1 control-label" style="font-weight: normal;">To:</label>
+                        <label for="lot-to" class="col-md-1 control-label" style="font-weight: normal;">To:</label>
                         <div class="col-md-5">
-                            <div uib-timepicker ng-model="time2" minute-step="15" show-meridian="['AM','PM']"></div>
+                            <div uib-timepicker ng-model="vm.toTime" minute-step="15" show-meridian="['AM','PM']" id="lot-to"></div>
                         </div>
                     </div>
                 </div>
@@ -217,13 +217,13 @@
                 <div class="form-group">
                     <label>Hours:</label>
                     <div class="form-group row">
-                        <label for="from" class="col-md-1 control-label" style="font-weight: normal;">From:</label>
+                        <label for="gate-from" class="col-md-1 control-label" style="font-weight: normal;">From:</label>
                         <div class="col-md-5">
-                            <div uib-timepicker ng-model="time3" minute-step="15" show-meridian="['AM','PM']" id="from"></div>
+                            <div uib-timepicker ng-model="vm.fromTime" minute-step="15" show-meridian="['AM','PM']" id="gate-from"></div>
                         </div>
-                        <label for="to" class="col-md-1 control-label" style="font-weight: normal;">To:</label>
+                        <label for="gate-to" class="col-md-1 control-label" style="font-weight: normal;">To:</label>
                         <div class="col-md-5">
-                            <div uib-timepicker ng-model="time4" minute-step="15" show-meridian="['AM','PM']"></div>
+                            <div uib-timepicker ng-model="vm.toTime" minute-step="15" show-meridian="['AM','PM']" id="gate-to"></div>
                         </div>
                     </div>
                 </div>

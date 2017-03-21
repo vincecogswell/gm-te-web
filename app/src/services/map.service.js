@@ -12,7 +12,6 @@
         };
 
         function convertToGMCoord(coord) {
-            // could make the 0's and 1's into an enum
             coord[COORD.LAT] = Number(coord[COORD.LAT]);
             coord[COORD.LNG] = Number(coord[COORD.LNG]);
             return new google.maps.LatLng(coord[COORD.LAT], coord[COORD.LNG]);
