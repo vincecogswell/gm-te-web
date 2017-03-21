@@ -286,16 +286,15 @@
                     start: convertTimeToString(self.fromTime),
                     end: convertTimeToString(self.toTime),
                     perimeter: perimeter,
-                    entrances: entrances
+                    entrances: entrances,
+                    markers: []
                 };
-                console.log(newLot);
                 if (self.modalMode === self.modalModeEnum.ADD) {
                     lotService.saveLot(campusId, newLot, function (response) {
                         if (response) {
                             console.log(response);
                             newLot['bounds'] = mapService.convertToGMBounds(newLot.perimeter);
                             newLot['paths'] = mapService.convertToGMPaths(newLot.perimeter);
-                            newLot['markers'] = [];
                             for (var i = 0; i < newLot.entrances.length; i++) {
                                 let entrance = newLot.entrances[i];
                                 newLot.markers.push(new google.maps.Marker({
@@ -316,8 +315,7 @@
                             console.log(response);
                             newLot['bounds'] = mapService.convertToGMBounds(newLot.perimeter);
                             newLot['paths'] = mapService.convertToGMPaths(newLot.perimeter);
-                            newLot['markers'] = [];
-                            
+
                             for (var i = 0; i < oldLot.markers.length; i++) {
                                 let marker = oldLot.markers[i];
                                 marker.setMap(null);
