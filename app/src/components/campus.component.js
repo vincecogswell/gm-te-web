@@ -46,20 +46,34 @@
             self.modalMode = null;
 
             self.selectedRoles = [];
-
-            self.fromTime = new Date();
-            self.fromTime.setHours(0);
-            self.fromTime.setMinutes(0);
-
-            self.toTime = new Date();
-            self.toTime.setHours(0);
-            self.toTime.setMinutes(0);
+            self.selectedBuildings = [];
 
             var overlay;
             var bounds = new google.maps.MVCArray();
             var markers = new google.maps.MVCArray();
             var curType = null;
 
+            function resetDates() {
+                self.fromTime = new Date();
+                self.fromTime.setHours(0);
+                self.fromTime.setMinutes(0);
+
+                self.toTime = new Date();
+                self.toTime.setHours(0);
+                self.toTime.setMinutes(0);
+            }
+
+            function convertTimeToString(d) {
+                var hours = d.getHours().toString();
+                var minutes = d.getMinutes().toString();
+                if (hours.length === 1) {
+                    hours = '0' + hours;
+                }
+                if (minutes.length === 1) {
+                    minutes = '0' + minutes;
+                }
+                return hours + ':' + minutes;
+            }
 
             self.goBack = function () {
                 // will probably have to reset stuff here
@@ -227,7 +241,75 @@
             }
 
             self.saveLot = function () {
-                console.log(self.selectedRoles);
+                console.log(self.selectedBuildings);
+                return;
+
+                if ($("#lot-name").val() === '') {
+                    // error - name can't be empty
+                    return;
+                }
+
+                if (markers.getLength() === 0) {
+                    // error - should have at least 1 marker
+                    return;
+                }
+
+                var access = [];
+                for (var i = 0; i < self.selectedRoles.length; i++) {
+                    let selectedRole = self.selectedRoles[i];
+                    access.push(selectedRole.id);
+                }
+
+                var entrances = [];
+                for (var i = 0; i < markers.getLength(); i++) {
+                    let coord = markers.getAt(i).getPosition();
+                    entrances.push([ coord.lat(), coord.lng() ]);
+                }
+                console.log(entrances);
+                var newLot = {
+                    name: $("#lot-name").val(),
+                    active: true,
+                    buildings: null,
+                    access: access,
+                    start: convertTimeToString(self.fromTime),
+                    end: convertTimeToString(self.toTime),
+                    perimeter: null,
+                    entrances: entrances
+                };
+                if (self.modalMode === self.modalModeEnum.ADD) {
+                    gateService.saveGate(campusId, newGate, function (response) {
+                        if (response) {
+                            console.log(response);
+                            newGate['marker'] = new google.maps.Marker({
+                                position: mapService.convertToGMCoord(newGate.location[0]),
+                                map: map,
+                                title: newGate.name
+                            });
+                        } else {
+                            // error
+                            console.log("error");
+                        }
+                    });
+                } else if (self.modalMode === self.modalModeEnum.EDIT) {
+                    var oldGate = self.gates[self.structureToUpdate];
+                    gateService.updateGate(campusId, self.structureToUpdate, newGate, function (response) {
+                        if (response) {
+                            console.log(response);
+                            oldGate.marker.setMap(null);
+                            newGate['marker'] = new google.maps.Marker({
+                                position: mapService.convertToGMCoord(newGate.location[0]),
+                                map: map,
+                                title: newGate.name
+                            });
+                        } else {
+                            // error
+                            console.log("error");
+                            getLots();                          
+                        }
+                    });
+                }
+
+                $('#modal-lot').modal('toggle');
             }
 
             self.deleteLot = function (lotId) {
@@ -270,9 +352,6 @@
             }
 
             self.saveGate = function () {
-
-                return;
-
                 if ($("#gate-name").val() === '') {
                     // error - name can't be empty
                     return;
@@ -299,6 +378,8 @@
                     name: $("#gate-name").val(),
                     active: true,
                     access: access,
+                    start: convertTimeToString(self.fromTime),
+                    end: convertTimeToString(self.toTime),
                     instructions: $("#gate-instructions").val(),
                     location: location
                 };
@@ -552,6 +633,8 @@
                 }
                 markers.clear();
                 self.selectedRoles = [];
+                self.selectedBuildings = [];
+                resetDates();
             });
 
             $("#modal-gate").on("shown.bs.modal", function () {
@@ -569,8 +652,10 @@
                 }
                 markers.clear();
                 self.selectedRoles = [];
+                resetDates();
             });
 
+            resetDates();
             getBuildings();
             getLots();
             getGates();
