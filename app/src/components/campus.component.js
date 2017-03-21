@@ -267,10 +267,10 @@
                     return;
                 }
 
-                var buildings = self.selectedBuildings;
+                /*var buildings = self.selectedBuildings;
                 var access = self.selectedRoles;
                 var start = convertTimeToString(self.fromTime);
-                var end = convertTimeToString(self.toTime);
+                var end = convertTimeToString(self.toTime);*/
 
                 var perimeter = [];
                 for (var i = 0; i < bounds.getLength(); i++) {
@@ -286,10 +286,8 @@
                 var newLot = {
                     name: $("#lot-name").val(),
                     active: true,
-                    buildings: null,
-                    access: null,
-                    start: start,
-                    end: end,
+                    start: "00:00",
+                    end: "00:00",
                     perimeter: perimeter,
                     entrances: entrances,
                     markers: []
