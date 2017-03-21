@@ -303,6 +303,7 @@
                     markers: []
                 };
                 if (self.modalMode === self.modalModeEnum.ADD) {
+                    console.log(Object.keys(newLot));
                     console.log(newLot);
                     lotService.saveLot(campusId, newLot, function (response) {
                         if (response) {
