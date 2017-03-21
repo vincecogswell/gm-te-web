@@ -254,6 +254,11 @@
                     return;
                 }
 
+                if (self.selectedRoles.length === 0) {
+                    // error - should have at least 1 role selected
+                    return;
+                }
+
                 var access = [];
                 for (var i = 0; i < self.selectedRoles.length; i++) {
                     let selectedRole = self.selectedRoles[i];
@@ -359,6 +364,11 @@
 
                 if (markers.getLength() === 0) {
                     // error - should have 1 marker
+                    return;
+                }
+
+                if (self.selectedRoles.length === 0) {
+                    // error - should have at least 1 role selected
                     return;
                 }
 
