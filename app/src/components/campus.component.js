@@ -286,8 +286,8 @@
                 var newLot = {
                     name: $("#lot-name").val(),
                     active: true,
-                    buildings: buildings,
-                    access: access,
+                    buildings: null,
+                    access: null,
                     start: start,
                     end: end,
                     perimeter: perimeter,
