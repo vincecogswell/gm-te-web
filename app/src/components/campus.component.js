@@ -103,6 +103,7 @@
             }
 
             self.saveBuilding = function () {
+                console.log("are we here too?");
                 if ($("#building-name").val() === '') {
                     // error - name can't be empty
                     return;
@@ -242,6 +243,7 @@
             }
 
             self.saveLot = function () {
+                console.log("were here");
                 if ($("#lot-name").val() === '') {
                     // error - name can't be empty
                     return;
