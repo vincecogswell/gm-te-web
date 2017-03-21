@@ -267,6 +267,15 @@
                     return;
                 }
 
+                var start = convertTimeToString(self.fromTime);
+                var end = convertTimeToString(self.toTime);
+
+                var buildings;
+                angular.copy(self.selectedBuildings, buildings);
+
+                var access;
+                angular.copy(self.selectedRoles, access);
+
                 var perimeter = [];
                 for (var i = 0; i < bounds.getLength(); i++) {
                     let coord = bounds.getAt(i);
@@ -281,10 +290,10 @@
                 var newLot = {
                     name: $("#lot-name").val(),
                     active: true,
-                    buildings: self.selectedBuildings,
-                    access: self.selectedRoles,
-                    start: convertTimeToString(self.fromTime),
-                    end: convertTimeToString(self.toTime),
+                    buildings: buildings,
+                    access: access,
+                    start: start,
+                    end: end,
                     perimeter: perimeter,
                     entrances: entrances,
                     markers: []
