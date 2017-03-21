@@ -400,7 +400,7 @@
                     updateListeners(true); 
                     drawingManager.setOptions({
                         drawingControl: false
-                    });  
+                    });
                     $scope.$apply();            
                 }
             });
