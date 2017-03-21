@@ -45,6 +45,8 @@
             };
             self.modalMode = null;
 
+            self.selectedRoles = [];
+
             var overlay;
             var bounds = new google.maps.MVCArray();
             var markers = new google.maps.MVCArray();
@@ -217,7 +219,7 @@
             }
 
             self.saveLot = function () {
-
+                console.log(self.selectedRoles);
             }
 
             self.deleteLot = function (lotId) {
@@ -260,6 +262,9 @@
             }
 
             self.saveGate = function () {
+                console.log(self.selectedRoles);
+                return;
+
                 if ($("#gate-name").val() === '') {
                     // error - name can't be empty
                     return;

@@ -169,10 +169,7 @@
                 </div>
                 <div class="form-group">
                     <label>Access:</label>
-                    <select multiple class="form-control">
-                        <option>Student</option>
-                        <option>Faculty</option>
-                    </select>
+                    <select multiple class="form-control" ng-model="vm.selectedRoles" ng-options="role.name for role in vm.campus.roles"></select>
                 </div>
                 <div class="form-group">
                     <label>Hours:</label>
@@ -215,11 +212,7 @@
                 </div>
                 <div class="form-group">
                     <label>Access:</label>
-                    <select multiple class="form-control">
-                        <option>Employee</option>
-                        <option>Executive</option>
-                        <option>Visitor</option>
-                    </select>
+                    <select multiple class="form-control" ng-model="vm.selectedRoles" ng-options="role.name for role in vm.campus.roles"></select>
                 </div>
                 <div class="form-group">
                     <label>Hours:</label>
