@@ -169,11 +169,11 @@
                 </div>
                 <div class="form-group">
                     <label>Associated Buildings:</label>
-                    <select multiple class="form-control" ng-model="vm.selectedBuildings" ng-options="+(buildingId) as building.name for (buildingId, building) in vm.buildings track by buildingId"></select>
+                    <select multiple class="form-control" ng-model="vm.selectedBuildings" ng-options="+(buildingId) as building.name for (buildingId, building) in vm.buildings"></select>
                 </div>
                 <div class="form-group">
                     <label>Access:</label>
-                    <select multiple class="form-control" ng-model="vm.selectedRoles" ng-options="+(role.id) as role.name for role in vm.campus.roles track by role.id"></select>
+                    <select multiple class="form-control" ng-model="vm.selectedRoles" ng-options="+(role.id) as role.name for role in vm.campus.roles"></select>
                 </div>
                 <div class="form-group">
                     <label>Hours:</label>
