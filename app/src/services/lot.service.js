@@ -27,7 +27,6 @@
 		}
 
 		function saveLot(campusId, lot, next) {
-			console.log(lot);
 			$http.post('/campuses/' + campusId.toString() + '/lots', lot)
 			.then( function (response) {
 				console.log(response);
