@@ -103,7 +103,6 @@
             }
 
             self.saveBuilding = function () {
-                console.log("are we here too?");
                 if ($("#building-name").val() === '') {
                     // error - name can't be empty
                     return;
@@ -243,7 +242,6 @@
             }
 
             self.saveLot = function () {
-                console.log("were here");
                 if ($("#lot-name").val() === '') {
                     // error - name can't be empty
                     return;
@@ -295,6 +293,7 @@
                     markers: []
                 };
                 if (self.modalMode === self.modalModeEnum.ADD) {
+                    console.log(newLot);
                     lotService.saveLot(campusId, newLot, function (response) {
                         if (response) {
                             console.log(response);
