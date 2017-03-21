@@ -242,6 +242,7 @@
 
             self.saveLot = function () {
                 console.log(self.selectedBuildings);
+                console.log(self.selectedRoles);
                 return;
 
                 if ($("#lot-name").val() === '') {
