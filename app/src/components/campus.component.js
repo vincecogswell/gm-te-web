@@ -270,16 +270,6 @@
                 var start = convertTimeToString(self.fromTime);
                 var end = convertTimeToString(self.toTime);
 
-                /*var buildings = [];
-                for (var i = 0; i < self.selectedBuildings.length; i++) {
-                    buildings.push(self.selectedBuildings[i]);
-                }
-
-                var access = [];
-                for (var i = 0; i < self.selectedRoles.length; i++) {
-                    access.push(self.selectedRoles[i]);
-                }*/
-
                 var perimeter = [];
                 for (var i = 0; i < bounds.getLength(); i++) {
                     let coord = bounds.getAt(i);
@@ -411,6 +401,9 @@
                     return;
                 }
 
+                var start = convertTimeToString(self.fromTime);
+                var end = convertTimeToString(self.toTime);
+
                 var location = [];
                 for (var i = 0; i < markers.getLength(); i++) {
                     let coord = markers.getAt(i).getPosition();
@@ -421,8 +414,8 @@
                     name: $("#gate-name").val(),
                     active: true,
                     access: self.selectedRoles,
-                    start: convertTimeToString(self.fromTime),
-                    end: convertTimeToString(self.toTime),
+                    start: start,
+                    end: end,
                     instructions: $("#gate-instructions").val(),
                     location: location
                 };
