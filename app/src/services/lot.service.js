@@ -103,7 +103,7 @@
 			return null;
 		}*/
 
-		var lots = { };
+		var lots = null;
 
 		return {
 			getLots: getLots,

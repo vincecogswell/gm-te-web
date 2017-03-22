@@ -101,7 +101,7 @@
 			return null;
 		}*/
 
-		var gates = { };
+		var gates = null;
 
 		return {
 			getGates: getGates,
