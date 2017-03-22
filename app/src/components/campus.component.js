@@ -761,14 +761,12 @@
                 } else if (self.modalMode === self.modalModeEnum.EDIT) {
                     var gate = self.gates[self.structureToUpdate];
                     $("#gate-name").val(gate.name);
-                    for (var i = 0; i < gate.location.length; i++) {
-                        markers.push(new google.maps.Marker({
-                            position: mapService.convertToGMCoord(location[0]),
-                            map: modalMapGate,
-                            draggable: true,
-                            title: gate.name
-                        }));
-                    }
+                    markers.push(new google.maps.Marker({
+                        position: mapService.convertToGMCoord(gate.location[0]),
+                        map: modalMapGate,
+                        draggable: true,
+                        title: gate.name
+                    }));
                     drawingManagerGate.setOptions({
                         drawingControl: false
                     });
