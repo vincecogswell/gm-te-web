@@ -308,6 +308,20 @@
                                     title: newLot.name
                                 }));
                             }
+                            if (newLot.perimeter.length > 2) {
+                                newLot['overlay'] = new google.maps.Polygon({
+                                    paths: newLot.paths,
+                                    draggable: false,
+                                    editable: false
+                                });
+                            } else {
+                                newLot['overlay'] = new google.maps.Rectangle({
+                                    bounds: newLot.bounds,
+                                    draggable: false,
+                                    editable: false
+                                });
+                            }
+                            newLot.overlay.setMap(map); 
                         } else {
                             // error
                             console.log("error");
@@ -335,6 +349,23 @@
                                     title: newLot.name
                                 }));
                             }
+
+                            oldLot.overlay.setMap(null);
+
+                            if (newLot.perimeter.length > 2) {
+                                newLot['overlay'] = new google.maps.Polygon({
+                                    paths: newLot.paths,
+                                    draggable: false,
+                                    editable: false
+                                });
+                            } else {
+                                newLot['overlay'] = new google.maps.Rectangle({
+                                    bounds: newLot.bounds,
+                                    draggable: false,
+                                    editable: false
+                                });
+                            }
+                            newLot.overlay.setMap(map);
                         } else {
                             // error
                             console.log("error");
