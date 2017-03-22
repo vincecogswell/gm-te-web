@@ -280,9 +280,6 @@
                     access.push(self.selectedRoles[i]);
                 }*/
 
-                var buildings = [1];
-                var access = [1, 2];
-
                 var perimeter = [];
                 for (var i = 0; i < bounds.getLength(); i++) {
                     let coord = bounds.getAt(i);
@@ -297,8 +294,8 @@
                 var newLot = {
                     name: $("#lot-name").val(),
                     active: true,
-                    buildings: '1',
-                    access: '1,2',
+                    buildings: self.selectedBuildings,
+                    access: self.selectedRoles,
                     start: start,
                     end: end,
                     perimeter: perimeter,
