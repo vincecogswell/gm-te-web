@@ -270,7 +270,7 @@
                 var start = convertTimeToString(self.fromTime);
                 var end = convertTimeToString(self.toTime);
 
-                var buildings = [];
+                /*var buildings = [];
                 for (var i = 0; i < self.selectedBuildings.length; i++) {
                     buildings.push(self.selectedBuildings[i]);
                 }
@@ -278,7 +278,10 @@
                 var access = [];
                 for (var i = 0; i < self.selectedRoles.length; i++) {
                     access.push(self.selectedRoles[i]);
-                }
+                }*/
+
+                var buildings = [1];
+                var access = [1, 2];
 
                 var perimeter = [];
                 for (var i = 0; i < bounds.getLength(); i++) {
@@ -294,8 +297,8 @@
                 var newLot = {
                     name: $("#lot-name").val(),
                     active: true,
-                    buildings: [1],
-                    access: [1, 2],
+                    buildings: buildings,
+                    access: access,
                     start: start,
                     end: end,
                     perimeter: perimeter,
