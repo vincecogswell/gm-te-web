@@ -826,15 +826,15 @@
                     }
 
                     var start = gate.start.split(':');
+                    self.fromTime = new Date();
                     self.fromTime.setHours(Number(start[0]));
                     self.fromTime.setMinutes(Number(start[1]));
 
                     var end = gate.end.split(':');
+                    self.toTime = new Date();
                     self.toTime.setHours(Number(end[0]));
                     self.toTime.setMinutes(Number(end[1]));
 
-                    console.log(self.fromTime);
-                    console.log(self.toTime);
 
                     markers.push(new google.maps.Marker({
                         position: mapService.convertToGMCoord(gate.location[0]),
