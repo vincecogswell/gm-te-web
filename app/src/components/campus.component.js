@@ -316,6 +316,8 @@
                 var start = convertTimeToString(self.fromTime);
                 var end = convertTimeToString(self.toTime);
 
+                console.log("Selected buildings:");
+                console.log(self.selectedBuildings);
                 var buildings = [];
                 for (var i = 0; i < self.selectedBuildings.length; i++) {
                     let building = self.selectedBuildings[i];
