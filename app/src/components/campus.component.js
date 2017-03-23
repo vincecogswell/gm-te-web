@@ -235,6 +235,7 @@
                             }
 
                             lot['accessNames'] = '';
+                            console.log(Object.keys(self.campus));
                             for (let i = 0; i < lot.access.length; i++) {
                                 let roleId = lot.access[i];
                                 for (let j = 0; j < self.campus.roles; j++) {
