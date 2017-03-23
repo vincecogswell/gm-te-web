@@ -186,6 +186,8 @@
                                                     console.log("error");
                                                     newCampus['roles'] = oldCampus.roles;
                                                 } else {
+                                                    console.log("made it here");
+                                                    console.log(newCampus);
                                                     updateRoleNames(newCampus);
                                                 }
                                             });
