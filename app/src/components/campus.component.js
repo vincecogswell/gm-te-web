@@ -745,10 +745,12 @@
                     }
 
                     var start = lot.start.split(':');
+                    self.fromTime = new Date();
                     self.fromTime.setHours(Number(start[0]));
                     self.fromTime.setMinutes(Number(start[1]));
 
                     var end = lot.end.split(':');
+                    self.toTime = new Date();
                     self.toTime.setHours(Number(end[0]));
                     self.toTime.setMinutes(Number(end[1]));
 
