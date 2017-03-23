@@ -709,20 +709,22 @@
                     var lot = self.lots[self.structureToUpdate];
                     $("#lot-name").val(lot.name);
 
-                    for (var buildingId in self.buildings) {
+                    /*for (var buildingId in self.buildings) {
                         let index = lot.buildings.indexOf(buildingId);
                         if (index > -1) {
                             self.selectedBuildings.push(buildingId);
                         }
-                    }
+                    }*/
 
                     for (var i = 0; i < self.campus.roles.length; i++) {
-                        let role = self.campus.roles[i];
-                        let index = lot.access.indexOf(role);
+                        let roleId = self.campus.roles[i].id;
+                        let index = lot.access.indexOf(roleId);
                         if (index > -1) {
-                            self.selectedRoles.push(role);
+                            self.selectedRoles.push(roleId);
                         }
                     }
+
+                    console.log(self.selectedRoles);
 
                     var start = lot.start.split(':');
                     self.fromTime.setHours(Number(start[0]));
@@ -799,7 +801,7 @@
 
                     for (var i = 0; i < self.campus.roles.length; i++) {
                         let role = self.campus.roles[i];
-                        let index = lot.access.indexOf(role);
+                        let index = gate.access.indexOf(role);
                         if (index > -1) {
                             self.selectedRoles.push(role);
                         }
