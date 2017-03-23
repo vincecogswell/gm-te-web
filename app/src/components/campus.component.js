@@ -791,7 +791,7 @@
                         let building = self.buildings[buildingId];
                         let index = lot.buildings.indexOf(building.id);
                         if (index > -1) {
-                            self.selectedBuildings.push(building);
+                            self.selectedBuildings.push(building.id);
                         }
                     }
 
