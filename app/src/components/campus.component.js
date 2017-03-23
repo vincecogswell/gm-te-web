@@ -720,8 +720,11 @@
                     $("#lot-name").val(lot.name);
 
                     for (var buildingId in self.buildings) {
+                        console.log(buildingId);
+                        console.log(typeof buildingId);
                         let index = lot.buildings.indexOf(buildingId);
                         if (index > -1) {
+                            console.log("Pushing");
                             self.selectedBuildings.push(self.buildings[buildingId]);
                         }
                     }
