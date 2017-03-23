@@ -321,7 +321,13 @@
                 var buildings = [];
                 for (var i = 0; i < self.selectedBuildings.length; i++) {
                     let building = self.selectedBuildings[i];
-                    buildings.push(building.id);
+                    if (isNan(building)) {
+                        console.log("not a number");
+                        buildings.push(building.id);
+                    } else {
+                        console.log("YES a number");
+                        buildings.push(building);
+                    }
                 }
 
                 var roles = [];
