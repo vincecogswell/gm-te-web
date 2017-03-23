@@ -72,10 +72,10 @@
                 <div class="form-group">
                     <label for="roles">Roles:</label>
                     <div ng-repeat="role in vm.roles" id="roles">
-                        <div class="col-xs-10">
+                        <div class="col-xs-11">
                             <input type="text" class="form-control" id="name" ng-model="role.name">
                         </div>
-                        <div class="col-xs-2"><button type="button" ng-click="vm.deleteRoles.push(role); vm.roles.splice($index, 1)" class="btn btn-sm btn-danger">
+                        <div class="col-xs-1"><button type="button" ng-click="vm.deleteRoles.push(role); vm.roles.splice($index, 1)" class="btn btn-sm btn-danger">
                             <i class="glyphicon glyphicon-remove-circle"></i>
                         </div>
                     </div>
