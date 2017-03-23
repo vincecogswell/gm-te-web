@@ -823,7 +823,7 @@
 
                     for (var i = 0; i < self.campus.roles.length; i++) {
                         let role = self.campus.roles[i];
-                        let index = lot.access.indexOf(role.id);
+                        let index = gate.access.indexOf(role.id);
                         if (index > -1) {
                             self.selectedRoles.push(role);
                         }
