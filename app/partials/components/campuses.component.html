@@ -24,6 +24,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Status</th>
+                    <th>Roles</th>
                     <th>No. of Buildings</th>
                     <th>No. of Parking Lots</th>
                     <th>No. of Gates</th>
@@ -36,6 +37,7 @@
                     <td><a href="#!/campus/{{ campusId }}">{{ campus.name }}</a></td>
                     <td ng-if="campus.active">Active</td>
                     <td ng-if="!campus.active">Closed</td>
+                    <td>{{ campus.roleNames }}</td>
                     <td>{{ campus.num_buildings }}</td>
                     <td>{{ campus.num_lots }}</td>
                     <td>{{ campus.num_gates }}</td>

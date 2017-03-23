@@ -49,6 +49,17 @@
                 });
             }
 
+            function updateRoleNames(campus) {
+                campus['roleNames'] = '';
+                for (var i = 0; i < campus.roles.length; i++) {
+                    let role = campus.roles[i];
+                    campus.roleNames += role.name + ', ';
+                }
+                if (campus.roleNames.length >= 2) {
+                    campus.roleNames = campus.roleNames.slice(0, -2);
+                }
+            }
+
             function getCampuses() {
                 campusService.getCampuses(function (campuses) {
                     self.campuses = campuses;
@@ -65,6 +76,7 @@
                             });
                             roleService.getRoles(key, function (roles) {
                                 campus['roles'] = roles;
+                                updateRoleNames(campus);
                             });
                         }
                     }
@@ -105,7 +117,7 @@
                     let coord = bounds.getAt(i);
                     perimeter.push([ coord.lat(), coord.lng() ]);
                 }
-                console.log(perimeter);
+
                 var newCampus = {
                     name: $("#name").val(),
                     active: true,
@@ -118,6 +130,7 @@
                             roleService.saveRoles(response, self.roles, function (roles) {
                                 if (roles) {
                                     newCampus.roles = roles;
+                                    updateRoleNames(newCampus);
                                 } else {
                                     // error
                                     console.log("error");
@@ -157,6 +170,31 @@
                             roleService.saveRoles(self.campusToUpdate, createRoles, function (roles) {
                                 if (roles) {
                                     newCampus.roles.push.apply(newCampus.roles, roles);
+                                    roleService.updateRoles(self.campusToUpdate, updateRoles, function (roles) {
+                                        if (roles) {
+                                            newCampus.roles.push.apply(newCampus.roles, roles);
+                                            var deleteRoles = [];
+                                            for (var i = 0; i < self.deleteRoles.length; i++) {
+                                                let deleteRole = self.deleteRoles[i];
+                                                if (deleteRole.hasOwnProperty('id')) {
+                                                    deleteRoles.push(deleteRole);
+                                                }
+                                            }
+                                            roleService.deleteRoles(self.campusToUpdate, deleteRoles, function (roles) {
+                                                if (!roles) {
+                                                    // error
+                                                    console.log("error");
+                                                    newCampus['roles'] = oldCampus.roles;
+                                                } else {
+                                                    updateRoleNames(newCampus);
+                                                }
+                                            });
+                                        } else {
+                                            // error
+                                            console.log("error");
+                                            newCampus['roles'] = oldCampus.roles;
+                                        }
+                                    });
                                 } else {
                                     // error
                                     console.log("error");
@@ -164,30 +202,6 @@
                                 }
                             });
 
-                            roleService.updateRoles(self.campusToUpdate, updateRoles, function (roles) {
-                                if (roles) {
-                                    newCampus.roles.push.apply(newCampus.roles, roles);
-                                } else {
-                                    // error
-                                    console.log("error");
-                                    newCampus['roles'] = oldCampus.roles;
-                                }
-                            });
-
-                            var deleteRoles = [];
-                            for (var i = 0; i < self.deleteRoles.length; i++) {
-                                let deleteRole = self.deleteRoles[i];
-                                if (deleteRole.hasOwnProperty('id')) {
-                                    deleteRoles.push(deleteRole);
-                                }
-                            }
-                            roleService.deleteRoles(self.campusToUpdate, deleteRoles, function (roles) {
-                                if (!roles) {
-                                    // error
-                                    console.log("error");
-                                    newCampus['roles'] = oldCampus.roles;
-                                }
-                            });
                             console.log(response);
                             newCampus['num_buildings'] = oldCampus.num_buildings;
                             newCampus['num_lots'] = oldCampus.num_lots;
@@ -226,6 +240,8 @@
                             map: map,
                             title: campus.name
                         });
+                    } else {
+                        updateRoleNames(campus);   
                     }
                 });
             }
