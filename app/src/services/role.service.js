@@ -23,11 +23,14 @@
         }
 
         function saveRoles(campusId, roles, next) {
+            console.log("herey");
             var cnt = 0;
             for (var i = 0; i < roles.length; i++) {
+                console.log(i + " um");
                 let role = roles[i];
                 $http.post('/campuses/' + campusId.toString() + '/roles', role)
                 .then( function (response) {
+                    console.log("que");
                     console.log(response);
                     if (response && response.data && response.data.status === 200) {
                         var roleId = response.data.roleId;
