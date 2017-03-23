@@ -35,6 +35,7 @@
             var campusId = parseInt($routeParams.campusId);
             campusService.getCampuses( function (campuses) {
                 self.campus = campuses[campusId];
+                self.selectedRoles = [];
                 for (var i = 0; i < self.campus.roles.length; i++) {
                     self.selectedRoles.push(self.campus.roles[i]);
                 }
