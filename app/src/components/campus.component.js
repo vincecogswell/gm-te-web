@@ -714,12 +714,12 @@
                     console.log(self.selectedBuildings);
 
                     var start = lot.start.split(':');
-                    self.fromTime.setHours(int(start[0]));
-                    self.fromTime.setMinutes(int(start[1]));
+                    self.fromTime.setHours(Number(start[0]));
+                    self.fromTime.setMinutes(Number(start[1]));
 
                     var end = lot.end.split(':');
-                    self.toTime.setHours(int(end[0]));
-                    self.toTime.setMinutes(int(end[1]));
+                    self.toTime.setHours(Number(end[0]));
+                    self.toTime.setMinutes(Number(end[1]));
 
                     if (lot.perimeter.length > 2) {
                         curType = 'polygon';
@@ -788,12 +788,12 @@
                     self.selectedRoles = gate.access;
 
                     var start = gate.start.split(':');
-                    self.fromTime.setHours(int(start[0]));
-                    self.fromTime.setMinutes(int(start[1]));
+                    self.fromTime.setHours(Number(start[0]));
+                    self.fromTime.setMinutes(Number(start[1]));
 
                     var end = gate.end.split(':');
-                    self.toTime.setHours(int(end[0]));
-                    self.toTime.setMinutes(int(end[1]));
+                    self.toTime.setHours(Number(end[0]));
+                    self.toTime.setMinutes(Number(end[1]));
 
                     markers.push(new google.maps.Marker({
                         position: mapService.convertToGMCoord(gate.location[0]),
