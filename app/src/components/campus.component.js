@@ -102,6 +102,8 @@
                             }
                         }
                     }
+                    // lots rely on buildings
+                    getLots();
                 });
             }
 
@@ -222,6 +224,30 @@
                     for (var key in self.lots) {
                         if (self.lots.hasOwnProperty(key)) {
                             let lot = self.lots[key];
+
+                            lot['buildingNames'] = '';
+                            for (let i = 0; i < lot.buildings.length; i++) {
+                                let buildingId = lot.buildings[i];
+                                lot.buildingNames += self.buildings[buildingId].name + ', ';
+                            }
+                            if (lot.buildingNames.length >= 2) {
+                                lot.buildingNames = lot.buildingNames.slice(0, -2);
+                            }
+
+                            lot['accessNames'] = '';
+                            for (let i = 0; i < lot.access.length; i++) {
+                                let roleId = lot.access[i];
+                                for (let j = 0; j < self.campus.roles; j++) {
+                                    let role = self.campus.roles[i];
+                                    if (role.id === roleId) {
+                                        lot.accessNames += role.name + ', ';
+                                    }
+                                }
+                            }
+                            if (lot.accessNames.length >= 2) {
+                                lot.accessNames = lot.accessNames.slice(0, -2);
+                            }
+
                             lot['bounds'] = mapService.convertToGMBounds(lot.perimeter);
                             lot['paths'] = mapService.convertToGMPaths(lot.perimeter);
                             lot['markers'] = [];
@@ -429,6 +455,21 @@
                     for (var key in self.gates) {
                         if (self.gates.hasOwnProperty(key)) {
                             let gate = self.gates[key];
+
+                            gate['accessNames'] = '';
+                            for (let i = 0; i < gate.access.length; i++) {
+                                let roleId = gate.access[i];
+                                for (let j = 0; j < self.campus.roles; j++) {
+                                    let role = self.campus.roles[i];
+                                    if (role.id === roleId) {
+                                        gate.accessNames += role.name + ', ';
+                                    }
+                                }
+                            }
+                            if (gate.accessNames.length >= 2) {
+                                gate.accessNames = gate.accessNames.slice(0, -2);
+                            }
+
                             gate['marker'] = new google.maps.Marker({
                                 position: mapService.convertToGMCoord(gate.location[0]),
                                 map: map,
@@ -861,7 +902,6 @@
 
             resetDates();
             getBuildings();
-            getLots();
             getGates();
         }]);
 })();

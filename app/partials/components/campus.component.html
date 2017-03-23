@@ -64,6 +64,7 @@
                         <tr>
                             <th>Name</th>
                             <th>Status</th>
+                            <th>Associated Buildings</th>
                             <th>Access</th>
                             <th>Hours</th>
                             <th></th>
@@ -75,7 +76,8 @@
                             <td>{{ lot.name }}</td>
                             <td ng-if="lot.active">Active</td>
                             <td ng-if="!lot.active">Closed</td>
-                            <td>{{ lot.access }}</td>
+                            <td>{{ lot.buildingNames }}</td>
+                            <td>{{ lot.accessNames }}</td>
                             <td>{{ lot.start }}-{{ lot.end }}</td>
                             <td><button type="button" ng-click="vm.structureToUpdate = lotId; vm.modalMode = vm.modalModeEnum.EDIT" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-lot">
                                 <i class="glyphicon glyphicon-edit"></i>
@@ -105,7 +107,7 @@
                             <td>{{ gate.name }}</td>
                             <td ng-if="gate.active">Active</td>
                             <td ng-if="!gate.active">Closed</td>
-                            <td>{{ gate.access }}</td>
+                            <td>{{ gate.accessNames }}</td>
                             <td>{{ gate.start }}-{{ gate.end }}</td>
                             <td>{{ gate.instructions }}</td>
                             <td><button type="button" ng-click="vm.structureToUpdate = gateId; vm.modalMode = vm.modalModeEnum.EDIT" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-gate">
