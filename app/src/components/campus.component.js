@@ -172,6 +172,8 @@
                                     title: newBuilding.name
                                 }));
                             }
+                            newBuilding['id'] = Number(response); // need to do this b/c of ng-options
+                            self.buildingsAry.push(newBuilding);
                         } else {
                             // error
                             console.log("error");
@@ -195,6 +197,14 @@
                                     map: map,
                                     title: newBuilding.name
                                 }));
+                            }
+
+                            for (var i = 0; i < self.buildingsAry.length; i++) {
+                                let building = self.buildingsAry[i];
+                                if (building.id === newBuilding.id) {
+                                    self.buildingsAry[i] = newBuilding;
+                                    break;
+                                }
                             }
                         } else {
                             // error
@@ -241,6 +251,14 @@
                             let index = lot.buildings.indexOf(buildingId);
                             if (index > -1) {
                                 lot.buildings.splice(index, 1);
+                            }
+                        }
+
+                        for (var i = 0; i < self.buildingsAry.length; i++) {
+                            let _building = self.buildingsAry[i];
+                            if (_building.id === building.id) {
+                                self.buildingsAry.splice(i, 1);
+                                break;
                             }
                         }
                     }
