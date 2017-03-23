@@ -266,8 +266,6 @@
                             map: map,
                             title: campus.name
                         });
-                    } else {
-                        updateRoleNames(campus);   
                     }
                 });
             }

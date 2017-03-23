@@ -53,6 +53,35 @@
             var markers = new google.maps.MVCArray();
             var curType = null;
 
+            // structure can be only a lot
+            function updateBuildingNames(lot) {
+                lot['buildingNames'] = '';
+                for (let i = 0; i < lot.buildings.length; i++) {
+                    let buildingId = lot.buildings[i];
+                    lot.buildingNames += self.buildings[buildingId].name + ', ';
+                }
+                if (lot.buildingNames.length >= 2) {
+                    lot.buildingNames = lot.buildingNames.slice(0, -2);
+                }
+            }
+
+            // structure can be a lot or a gate
+            function updateAccessNames(structure) {
+                structure['accessNames'] = '';
+                for (let i = 0; i < structure.access.length; i++) {
+                    let roleId = structure.access[i];
+                    for (let j = 0; j < self.campus.roles.length; j++) {
+                        let role = self.campus.roles[j];
+                        if (role.id === roleId) {
+                            structure.accessNames += role.name + ', ';
+                        }
+                    }
+                }
+                if (structure.accessNames.length >= 2) {
+                    structure.accessNames = structure.accessNames.slice(0, -2);
+                }
+            }
+
             function resetDates() {
                 self.fromTime = new Date();
                 self.fromTime.setHours(0);
@@ -225,28 +254,8 @@
                         if (self.lots.hasOwnProperty(key)) {
                             let lot = self.lots[key];
 
-                            lot['buildingNames'] = '';
-                            for (let i = 0; i < lot.buildings.length; i++) {
-                                let buildingId = lot.buildings[i];
-                                lot.buildingNames += self.buildings[buildingId].name + ', ';
-                            }
-                            if (lot.buildingNames.length >= 2) {
-                                lot.buildingNames = lot.buildingNames.slice(0, -2);
-                            }
-
-                            lot['accessNames'] = '';
-                            for (let i = 0; i < lot.access.length; i++) {
-                                let roleId = lot.access[i];
-                                for (let j = 0; j < self.campus.roles.length; j++) {
-                                    let role = self.campus.roles[j];
-                                    if (role.id === roleId) {
-                                        lot.accessNames += role.name + ', ';
-                                    }
-                                }
-                            }
-                            if (lot.accessNames.length >= 2) {
-                                lot.accessNames = lot.accessNames.slice(0, -2);
-                            }
+                            updateBuildingNames(lot);
+                            updateAccessNames(lot);
 
                             lot['bounds'] = mapService.convertToGMBounds(lot.perimeter);
                             lot['paths'] = mapService.convertToGMPaths(lot.perimeter);
@@ -342,13 +351,17 @@
                     markers: []
                 };
                 if (self.modalMode === self.modalModeEnum.ADD) {
-                    console.log(Object.keys(newLot));
-                    console.log(newLot);
+                    //console.log(Object.keys(newLot));
+                    //console.log(newLot);
                     lotService.saveLot(campusId, newLot, function (response) {
                         if (response) {
                             console.log(response);
                             newLot['bounds'] = mapService.convertToGMBounds(newLot.perimeter);
                             newLot['paths'] = mapService.convertToGMPaths(newLot.perimeter);
+
+                            updateBuildingNames(newLot);
+                            updateAccessNames(newLot);
+
                             for (var i = 0; i < newLot.entrances.length; i++) {
                                 let entrance = newLot.entrances[i];
                                 newLot.markers.push(new google.maps.Marker({
@@ -383,6 +396,9 @@
                             console.log(response);
                             newLot['bounds'] = mapService.convertToGMBounds(newLot.perimeter);
                             newLot['paths'] = mapService.convertToGMPaths(newLot.perimeter);
+
+                            updateBuildingNames(newLot);
+                            updateAccessNames(newLot);
 
                             for (var i = 0; i < oldLot.markers.length; i++) {
                                 let marker = oldLot.markers[i];
@@ -456,19 +472,7 @@
                         if (self.gates.hasOwnProperty(key)) {
                             let gate = self.gates[key];
 
-                            gate['accessNames'] = '';
-                            for (let i = 0; i < gate.access.length; i++) {
-                                let roleId = gate.access[i];
-                                for (let j = 0; j < self.campus.roles.length; j++) {
-                                    let role = self.campus.roles[j];
-                                    if (role.id === roleId) {
-                                        gate.accessNames += role.name + ', ';
-                                    }
-                                }
-                            }
-                            if (gate.accessNames.length >= 2) {
-                                gate.accessNames = gate.accessNames.slice(0, -2);
-                            }
+                            updateAccessNames(gate);
 
                             gate['marker'] = new google.maps.Marker({
                                 position: mapService.convertToGMCoord(gate.location[0]),
@@ -524,6 +528,9 @@
                     gateService.saveGate(campusId, newGate, function (response) {
                         if (response) {
                             console.log(response);
+
+                            updateAccessNames(newGate);
+
                             newGate['marker'] = new google.maps.Marker({
                                 position: mapService.convertToGMCoord(newGate.location[0]),
                                 map: map,
@@ -539,6 +546,9 @@
                     gateService.updateGate(campusId, self.structureToUpdate, newGate, function (response) {
                         if (response) {
                             console.log(response);
+
+                            updateAccessNames(newGate);
+
                             oldGate.marker.setMap(null);
                             newGate['marker'] = new google.maps.Marker({
                                 position: mapService.convertToGMCoord(newGate.location[0]),
