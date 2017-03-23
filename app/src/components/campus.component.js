@@ -321,7 +321,7 @@
                 var buildings = [];
                 for (var i = 0; i < self.selectedBuildings.length; i++) {
                     let building = self.selectedBuildings[i];
-                    if (isNan(building)) {
+                    if (isNaN(building)) {
                         console.log("not a number");
                         buildings.push(building.id);
                     } else {
