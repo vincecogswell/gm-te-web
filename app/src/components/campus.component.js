@@ -114,7 +114,8 @@
             function getBuildings() {
                 buildingService.getBuildings(campusId, function (buildings) {
                     self.buildings = buildings;
-                    console.log(self.buildings);
+                    self.buildingsAry = Object.keys(buildings).map(function (buildingId) { return buildings[buildingId]; });
+                    console.log(self.buildingsAry);
                     // populate map
                     for (var key in self.buildings) {
                         if (self.buildings.hasOwnProperty(key)) {
