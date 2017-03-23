@@ -711,6 +711,16 @@
                     self.selectedBuildings = lot.buildings;
                     self.selectedRoles = lot.access;
 
+                    console.log(self.selectedBuildings);
+
+                    var start = lot.start.split(':');
+                    self.fromTime.setHours(int(start[0]));
+                    self.fromTime.setMinutes(int(start[1]));
+
+                    var end = lot.end.split(':');
+                    self.toTime.setHours(int(end[0]));
+                    self.toTime.setMinutes(int(end[1]));
+
                     if (lot.perimeter.length > 2) {
                         curType = 'polygon';
                         overlay = new google.maps.Polygon({
@@ -774,7 +784,17 @@
                 } else if (self.modalMode === self.modalModeEnum.EDIT) {
                     var gate = self.gates[self.structureToUpdate];
                     $("#gate-name").val(gate.name);
+                    $("#gate-instructions").val(gate.instructions);
                     self.selectedRoles = gate.access;
+
+                    var start = gate.start.split(':');
+                    self.fromTime.setHours(int(start[0]));
+                    self.fromTime.setMinutes(int(start[1]));
+
+                    var end = gate.end.split(':');
+                    self.toTime.setHours(int(end[0]));
+                    self.toTime.setMinutes(int(end[1]));
+
                     markers.push(new google.maps.Marker({
                         position: mapService.convertToGMCoord(gate.location[0]),
                         map: modalMapGate,
@@ -789,6 +809,7 @@
 
             $("#modal-gate").on("hidden.bs.modal", function () {
                 $("#gate-name").val("");
+                $("#gate-instructions").val("");
                 self.clearMarkers();
                 self.selectedRoles = [];
                 resetDates();
