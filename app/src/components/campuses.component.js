@@ -168,6 +168,7 @@
                             }
 
                             roleService.saveRoles(self.campusToUpdate, createRoles, function (roles) {
+                                console.log("wtf");
                                 if (roles) {
                                     newCampus.roles.push.apply(newCampus.roles, roles);
                                     roleService.updateRoles(self.campusToUpdate, updateRoles, function (roles) {
