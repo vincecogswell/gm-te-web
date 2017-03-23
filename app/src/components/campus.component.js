@@ -35,7 +35,10 @@
             var campusId = parseInt($routeParams.campusId);
             campusService.getCampuses( function (campuses) {
                 self.campus = campuses[campusId];
-                self.selectedRoles = self.campus.roles;
+                for (var i = 0; i < self.campus.roles.length; i++) {
+                    self.selectedRoles.push(self.campus.roles[i]);
+                }
+                //self.selectedRoles = self.campus.roles;
             });
 
             self.structureToUpdate = null;
@@ -709,8 +712,8 @@
                 } else if (self.modalMode === self.modalModeEnum.EDIT) {
                     var lot = self.lots[self.structureToUpdate];
                     $("#lot-name").val(lot.name);
-                    self.selectedBuildings = lot.buildings;
-                    self.selectedRoles = lot.access;
+                    //self.selectedBuildings = lot.buildings;
+                    //self.selectedRoles = lot.access;
 
                     console.log(self.selectedBuildings);
 
@@ -786,7 +789,7 @@
                     var gate = self.gates[self.structureToUpdate];
                     $("#gate-name").val(gate.name);
                     $("#gate-instructions").val(gate.instructions);
-                    self.selectedRoles = gate.access;
+                    //self.selectedRoles = gate.access;
 
                     var start = gate.start.split(':');
                     self.fromTime.setHours(Number(start[0]));
