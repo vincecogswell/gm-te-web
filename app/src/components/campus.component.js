@@ -322,13 +322,14 @@
                 var buildings = [];
                 for (var i = 0; i < self.selectedBuildings.length; i++) {
                     let building = self.selectedBuildings[i];
-                    if (isNaN(building)) {
+                    /*if (isNaN(building)) {
                         console.log("not a number");
                         buildings.push(building.id);
                     } else {
                         console.log("YES a number");
                         buildings.push(building);
-                    }
+                    }*/
+                    buildings.push(building.id);
                 }
 
                 var roles = [];
@@ -788,8 +789,16 @@
                     var lot = self.lots[self.structureToUpdate];
                     $("#lot-name").val(lot.name);
 
-                    for (var buildingId in self.buildings) {
+                    /*for (var buildingId in self.buildings) {
                         let building = self.buildings[buildingId];
+                        let index = lot.buildings.indexOf(building.id);
+                        if (index > -1) {
+                            self.selectedBuildings.push(building);
+                        }
+                    }*/
+
+                    for (var i = 0; i < self.buildingsAry.length; i++) {
+                        let building = self.buildingsAry[i];
                         let index = lot.buildings.indexOf(building.id);
                         if (index > -1) {
                             self.selectedBuildings.push(building);
