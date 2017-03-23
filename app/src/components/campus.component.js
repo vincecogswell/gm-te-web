@@ -293,10 +293,6 @@
                     roles.push(role.id);
                 }
 
-                console.log(buildings);
-                console.log(roles);
-                return;
-
                 var perimeter = [];
                 for (var i = 0; i < bounds.getLength(); i++) {
                     let coord = bounds.getAt(i);
@@ -825,7 +821,6 @@
                         let role = self.campus.roles[i];
                         let index = gate.access.indexOf(role.id);
                         if (index > -1) {
-                            console.log("pushingg");
                             self.selectedRoles.push(role);
                         }
                     }
@@ -837,6 +832,9 @@
                     var end = gate.end.split(':');
                     self.toTime.setHours(Number(end[0]));
                     self.toTime.setMinutes(Number(end[1]));
+
+                    console.log(self.fromTime);
+                    console.log(self.toTime);
 
                     markers.push(new google.maps.Marker({
                         position: mapService.convertToGMCoord(gate.location[0]),
