@@ -234,6 +234,7 @@
                                 lot.buildingNames = lot.buildingNames.slice(0, -2);
                             }
 
+                            console.log(self.campus);
                             lot['accessNames'] = '';
                             for (let i = 0; i < lot.access.length; i++) {
                                 let roleId = lot.access[i];
