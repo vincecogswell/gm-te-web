@@ -336,8 +336,6 @@
                     roles.push(role.id);
                 }
 
-                return;
-
                 var perimeter = [];
                 for (var i = 0; i < bounds.getLength(); i++) {
                     let coord = bounds.getAt(i);
