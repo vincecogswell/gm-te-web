@@ -171,7 +171,7 @@
                 </div>
                 <div class="form-group">
                     <label>Associated Buildings:</label>
-                    <select multiple class="form-control" ng-model="vm.selectedBuildings" ng-options="building as building.name for (buildingId, building) in vm.buildings"></select>
+                    <select multiple class="form-control" ng-model="vm.selectedBuildings" ng-options="vm.buildings[buildingId] as building.name for (buildingId, building) in vm.buildings track by buildingId"></select>
                 </div>
                 <div class="form-group">
                     <label>Access:</label>
