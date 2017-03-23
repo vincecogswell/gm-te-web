@@ -239,6 +239,8 @@
                                 let roleId = lot.access[i];
                                 for (let j = 0; j < self.campus.roles; j++) {
                                     let role = self.campus.roles[i];
+                                    console.log(role.id + ' ' + roleId);
+                                    console.log(typeof role.id + ' ' + typeof roleId);
                                     if (role.id === roleId) {
                                         lot.accessNames += role.name + ', ';
                                     }
