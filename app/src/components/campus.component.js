@@ -321,13 +321,13 @@
                 var buildings = [];
                 for (var i = 0; i < self.selectedBuildings.length; i++) {
                     let building = self.selectedBuildings[i];
-                    //buildings.push(building.id);
+                    buildings.push(building.id);
                 }
 
                 var roles = [];
                 for (var i = 0; i < self.selectedRoles.length; i++) {
                     let role = self.selectedRoles[i];
-                    //roles.push(role.id);
+                    roles.push(role.id);
                 }
 
                 return;
