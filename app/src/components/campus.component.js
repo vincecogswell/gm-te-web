@@ -804,6 +804,7 @@
                     drawingManagerGate.setOptions({
                         drawingControl: false
                     });
+                    $scope.$apply();
                 }
             });
 
