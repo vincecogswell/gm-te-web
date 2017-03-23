@@ -790,7 +790,7 @@
                             drawingModes: ['marker']
                         }
                     });
-                    $scope.$apply();            
+                    $scope.$apply();
                 }
             });
 
@@ -825,6 +825,7 @@
                         let role = self.campus.roles[i];
                         let index = gate.access.indexOf(role.id);
                         if (index > -1) {
+                            console.log("pushingg");
                             self.selectedRoles.push(role);
                         }
                     }
@@ -846,7 +847,7 @@
                     drawingManagerGate.setOptions({
                         drawingControl: false
                     });
-                    //$scope.$apply();
+                    $scope.$apply();
                 }
             });
 
