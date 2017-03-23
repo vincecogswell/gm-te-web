@@ -35,11 +35,6 @@
             var campusId = parseInt($routeParams.campusId);
             campusService.getCampuses( function (campuses) {
                 self.campus = campuses[campusId];
-                self.selectedRoles = [];
-                for (var i = 0; i < self.campus.roles.length; i++) {
-                    self.selectedRoles.push(self.campus.roles[i]);
-                }
-                //self.selectedRoles = self.campus.roles;
             });
 
             self.structureToUpdate = null;
@@ -50,7 +45,7 @@
             };
             self.modalMode = null;
 
-            //self.selectedRoles = [];
+            self.selectedRoles = [];
             self.selectedBuildings = [];
 
             var overlay;
@@ -713,10 +708,21 @@
                 } else if (self.modalMode === self.modalModeEnum.EDIT) {
                     var lot = self.lots[self.structureToUpdate];
                     $("#lot-name").val(lot.name);
-                    //self.selectedBuildings = lot.buildings;
-                    //self.selectedRoles = lot.access;
 
-                    console.log(self.selectedBuildings);
+                    for (var buildingId in self.buildings) {
+                        let index = lot.buildings.indexOf(buildingId);
+                        if (index > -1) {
+                            self.selectedBuildings.push(buildingId);
+                        }
+                    }
+
+                    for (var i = 0; i < self.campus.roles.length; i++) {
+                        let role = self.campus.roles[i];
+                        let index = lot.access.indexOf(role);
+                        if (index > -1) {
+                            self.selectedRoles.push(role);
+                        }
+                    }
 
                     var start = lot.start.split(':');
                     self.fromTime.setHours(Number(start[0]));
@@ -790,7 +796,14 @@
                     var gate = self.gates[self.structureToUpdate];
                     $("#gate-name").val(gate.name);
                     $("#gate-instructions").val(gate.instructions);
-                    //self.selectedRoles = gate.access;
+
+                    for (var i = 0; i < self.campus.roles.length; i++) {
+                        let role = self.campus.roles[i];
+                        let index = lot.access.indexOf(role);
+                        if (index > -1) {
+                            self.selectedRoles.push(role);
+                        }
+                    }
 
                     var start = gate.start.split(':');
                     self.fromTime.setHours(Number(start[0]));
