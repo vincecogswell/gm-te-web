@@ -281,15 +281,21 @@
                 var start = convertTimeToString(self.fromTime);
                 var end = convertTimeToString(self.toTime);
 
-                /*var buildings = [];
-                if (typeof self.selectedBuildings[0] === 'object') {
-                    for (var i = 0; i < self.selectedBuildings.length; i++) {
-                        let building = self.selectedBuildings[i];
-                        buildings.push(building);
-                    }
-                } else {
-                    buildings = self.selectedBuildings;
-                }*/
+                var buildings = [];
+                for (var i = 0; i < self.selectedBuildings.length; i++) {
+                    let building = self.selectedBuildings[i];
+                    buildings.push(building.id);
+                }
+
+                var roles = [];
+                for (var i = 0; i < self.selectedRoles.length; i++) {
+                    let role = self.selectedRoles[i];
+                    roles.push(role.id);
+                }
+
+                console.log(buildings);
+                console.log(roles);
+                return;
 
                 var perimeter = [];
                 for (var i = 0; i < bounds.getLength(); i++) {
@@ -305,8 +311,8 @@
                 var newLot = {
                     name: $("#lot-name").val(),
                     active: true,
-                    buildings: self.selectedBuildings,
-                    access: self.selectedRoles,
+                    buildings: buildings,
+                    access: roles,
                     start: start,
                     end: end,
                     perimeter: perimeter,
@@ -456,16 +462,22 @@
                 var start = convertTimeToString(self.fromTime);
                 var end = convertTimeToString(self.toTime);
 
+                var roles = [];
+                for (var i = 0; i < self.selectedRoles.length; i++) {
+                    let role = self.selectedRoles[i];
+                    roles.push(role.id);
+                }
+
                 var location = [];
                 for (var i = 0; i < markers.getLength(); i++) {
                     let coord = markers.getAt(i).getPosition();
                     location.push([ coord.lat(), coord.lng() ]);
                 }
-                console.log(location);
+
                 var newGate = {
                     name: $("#gate-name").val(),
                     active: true,
-                    access: self.selectedRoles,
+                    access: roles,
                     start: start,
                     end: end,
                     instructions: $("#gate-instructions").val(),
@@ -724,7 +736,6 @@
                         let building = self.buildings[buildingId];
                         let index = lot.buildings.indexOf(building.id);
                         if (index > -1) {
-                            console.log("Pushing");
                             self.selectedBuildings.push(building);
                         }
                     }
@@ -736,9 +747,6 @@
                             self.selectedRoles.push(role);
                         }
                     }
-
-                    console.log(self.selectedBuildings);
-                    console.log(self.selectedRoles);
 
                     var start = lot.start.split(':');
                     self.fromTime.setHours(Number(start[0]));
@@ -815,7 +823,7 @@
 
                     for (var i = 0; i < self.campus.roles.length; i++) {
                         let role = self.campus.roles[i];
-                        let index = gate.access.indexOf(role);
+                        let index = lot.access.indexOf(role.id);
                         if (index > -1) {
                             self.selectedRoles.push(role);
                         }
