@@ -237,9 +237,7 @@
                             lot['accessNames'] = '';
                             for (let i = 0; i < lot.access.length; i++) {
                                 let roleId = lot.access[i];
-                                console.log("hi");
-                                for (let j = 0; j < self.campus.roles; j++) {
-                                    console.log("yo");
+                                for (let j = 0; j < self.campus.roles.length; j++) {
                                     let role = self.campus.roles[j];
                                     if (role.id === roleId) {
                                         lot.accessNames += role.name + ', ';
@@ -461,7 +459,7 @@
                             gate['accessNames'] = '';
                             for (let i = 0; i < gate.access.length; i++) {
                                 let roleId = gate.access[i];
-                                for (let j = 0; j < self.campus.roles; j++) {
+                                for (let j = 0; j < self.campus.roles.length; j++) {
                                     let role = self.campus.roles[j];
                                     if (role.id === roleId) {
                                         gate.accessNames += role.name + ', ';
