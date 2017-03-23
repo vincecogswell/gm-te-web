@@ -35,6 +35,7 @@
             var campusId = parseInt($routeParams.campusId);
             campusService.getCampuses( function (campuses) {
                 self.campus = campuses[campusId];
+                self.selectedRoles = self.campus.roles;
             });
 
             self.structureToUpdate = null;
@@ -45,7 +46,7 @@
             };
             self.modalMode = null;
 
-            self.selectedRoles = [1];
+            //self.selectedRoles = [];
             self.selectedBuildings = [];
 
             var overlay;
