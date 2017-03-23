@@ -76,7 +76,9 @@
             }
 
             self.goBack = function () {
-                // will probably have to reset stuff here
+                self.lots = null;
+                self.buildings = null;
+                self.gates = null;
                 $location.path('/campuses');
             }
 
@@ -200,6 +202,14 @@
                                 title: building.name
                             }));
                         }*/
+                    } else {
+                        for (var i = 0; i < self.lots.length; i++) {
+                            let lot = self.lots[i];
+                            let index = lot.buildings.indexOf(buildingId);
+                            if (index > -1) {
+                                lot.buildings.splice(index, 1);
+                            }
+                        }
                     }
                 });
             }
@@ -698,6 +708,9 @@
                 } else if (self.modalMode === self.modalModeEnum.EDIT) {
                     var lot = self.lots[self.structureToUpdate];
                     $("#lot-name").val(lot.name);
+                    self.selectedBuildings = lot.buildings;
+                    self.selectedRoles = lot.access;
+
                     if (lot.perimeter.length > 2) {
                         curType = 'polygon';
                         overlay = new google.maps.Polygon({
@@ -761,6 +774,7 @@
                 } else if (self.modalMode === self.modalModeEnum.EDIT) {
                     var gate = self.gates[self.structureToUpdate];
                     $("#gate-name").val(gate.name);
+                    self.selectedRoles = gate.access;
                     markers.push(new google.maps.Marker({
                         position: mapService.convertToGMCoord(gate.location[0]),
                         map: modalMapGate,
