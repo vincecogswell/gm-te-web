@@ -280,6 +280,16 @@
                 var start = convertTimeToString(self.fromTime);
                 var end = convertTimeToString(self.toTime);
 
+                /*var buildings = [];
+                if (typeof self.selectedBuildings[0] === 'object') {
+                    for (var i = 0; i < self.selectedBuildings.length; i++) {
+                        let building = self.selectedBuildings[i];
+                        buildings.push(building);
+                    }
+                } else {
+                    buildings = self.selectedBuildings;
+                }*/
+
                 var perimeter = [];
                 for (var i = 0; i < bounds.getLength(); i++) {
                     let coord = bounds.getAt(i);
@@ -709,12 +719,12 @@
                     var lot = self.lots[self.structureToUpdate];
                     $("#lot-name").val(lot.name);
 
-                    /*for (var buildingId in self.buildings) {
+                    for (var buildingId in self.buildings) {
                         let index = lot.buildings.indexOf(buildingId);
                         if (index > -1) {
-                            self.selectedBuildings.push(buildingId);
+                            self.selectedBuildings.push(self.buildings[buildingId]);
                         }
-                    }*/
+                    }
 
                     for (var i = 0; i < self.campus.roles.length; i++) {
                         let role = self.campus.roles[i];
@@ -724,6 +734,7 @@
                         }
                     }
 
+                    console.log(self.selectedBuildings);
                     console.log(self.selectedRoles);
 
                     var start = lot.start.split(':');
