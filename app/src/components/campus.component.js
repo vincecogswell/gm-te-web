@@ -234,14 +234,11 @@
                                 lot.buildingNames = lot.buildingNames.slice(0, -2);
                             }
 
-                            console.log(self.campus);
                             lot['accessNames'] = '';
                             for (let i = 0; i < lot.access.length; i++) {
                                 let roleId = lot.access[i];
                                 for (let j = 0; j < self.campus.roles; j++) {
-                                    let role = self.campus.roles[i];
-                                    console.log(role.id + ' ' + roleId);
-                                    console.log(typeof role.id + ' ' + typeof roleId);
+                                    let role = self.campus.roles[j];
                                     if (role.id === roleId) {
                                         lot.accessNames += role.name + ', ';
                                     }
@@ -463,7 +460,7 @@
                             for (let i = 0; i < gate.access.length; i++) {
                                 let roleId = gate.access[i];
                                 for (let j = 0; j < self.campus.roles; j++) {
-                                    let role = self.campus.roles[i];
+                                    let role = self.campus.roles[j];
                                     if (role.id === roleId) {
                                         gate.accessNames += role.name + ', ';
                                     }
