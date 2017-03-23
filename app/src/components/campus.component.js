@@ -45,7 +45,7 @@
             };
             self.modalMode = null;
 
-            self.selectedRoles = [];
+            self.selectedRoles = [1];
             self.selectedBuildings = [];
 
             var overlay;
