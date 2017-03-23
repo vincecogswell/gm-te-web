@@ -90,6 +90,7 @@
                     for (var key in self.buildings) {
                         if (self.buildings.hasOwnProperty(key)) {
                             let building = self.buildings[key];
+                            building['id'] = Number(key); // need to do this b/c of ng-options
                             building['markers'] = [];
                             for (let i = 0; i < building.entrances.length; i++) {
                                 let entrance = building.entrances[i];
@@ -720,10 +721,11 @@
                     $("#lot-name").val(lot.name);
 
                     for (var buildingId in self.buildings) {
-                        let index = lot.buildings.indexOf(Number(buildingId));
+                        let building = self.buildings[buildingId];
+                        let index = lot.buildings.indexOf(building.id);
                         if (index > -1) {
                             console.log("Pushing");
-                            self.selectedBuildings.push(self.buildings[buildingId]);
+                            self.selectedBuildings.push(building);
                         }
                     }
 
