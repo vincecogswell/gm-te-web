@@ -235,10 +235,11 @@
                             }
 
                             lot['accessNames'] = '';
-                            console.log(Object.keys(self.campus));
                             for (let i = 0; i < lot.access.length; i++) {
                                 let roleId = lot.access[i];
+                                console.log("hi");
                                 for (let j = 0; j < self.campus.roles; j++) {
+                                    console.log("yo");
                                     let role = self.campus.roles[j];
                                     if (role.id === roleId) {
                                         lot.accessNames += role.name + ', ';
