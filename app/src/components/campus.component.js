@@ -53,6 +53,10 @@
             var markers = new google.maps.MVCArray();
             var curType = null;
 
+            var buildingIcon = 'images/buildingIcon.png';
+            var lotIcon = 'images/lotIcon.png';
+            var gateIcon = 'images/gateIcon.png';
+
             // structure can be only a lot
             function updateBuildingNames(lot) {
                 lot['buildingNames'] = '';
@@ -129,7 +133,7 @@
                                     position: mapService.convertToGMCoord(entrance),
                                     map: map,
                                     title: building.name,
-                                    icon: 'images/buildingIcon.png'
+                                    icon: buildingIcon
                                 }));
                             }
                         }
@@ -171,7 +175,8 @@
                                 newBuilding.markers.push(new google.maps.Marker({
                                     position: mapService.convertToGMCoord(entrance),
                                     map: map,
-                                    title: newBuilding.name
+                                    title: newBuilding.name,
+                                    icon: buildingIcon
                                 }));
                             }
                             newBuilding['id'] = Number(response); // need to do this b/c of ng-options
@@ -197,7 +202,8 @@
                                 newBuilding.markers.push(new google.maps.Marker({
                                     position: mapService.convertToGMCoord(entrance),
                                     map: map,
-                                    title: newBuilding.name
+                                    title: newBuilding.name,
+                                    icon: buildingIcon
                                 }));
                             }
 
@@ -244,7 +250,8 @@
                             building.markers.push(new google.maps.Marker({
                                 position: mapService.convertToGMCoord(entrance),
                                 map: map,
-                                title: building.name
+                                title: building.name,
+                                icon: buildingIcon
                             }));
                         }*/
                     } else {
@@ -286,7 +293,8 @@
                                 lot.markers.push(new google.maps.Marker({
                                     position: mapService.convertToGMCoord(entrance),
                                     map: map,
-                                    title: lot.name
+                                    title: lot.name,
+                                    icon: lotIcon
                                 }));
                             }
                             if (lot.perimeter.length > 2) {
@@ -397,7 +405,8 @@
                                 newLot.markers.push(new google.maps.Marker({
                                     position: mapService.convertToGMCoord(entrance),
                                     map: map,
-                                    title: newLot.name
+                                    title: newLot.name,
+                                    icon: lotIcon
                                 }));
                             }
                             if (newLot.perimeter.length > 2) {
@@ -441,7 +450,8 @@
                                 newLot.markers.push(new google.maps.Marker({
                                     position: mapService.convertToGMCoord(entrance),
                                     map: map,
-                                    title: newLot.name
+                                    title: newLot.name,
+                                    icon: lotIcon
                                 }));
                             }
 
@@ -507,7 +517,8 @@
                             gate['marker'] = new google.maps.Marker({
                                 position: mapService.convertToGMCoord(gate.location[0]),
                                 map: map,
-                                title: gate.name
+                                title: gate.name,
+                                icon: gateIcon
                             });
                         }
                     }
@@ -564,7 +575,8 @@
                             newGate['marker'] = new google.maps.Marker({
                                 position: mapService.convertToGMCoord(newGate.location[0]),
                                 map: map,
-                                title: newGate.name
+                                title: newGate.name,
+                                icon: gateIcon
                             });
                         } else {
                             // error
@@ -583,7 +595,8 @@
                             newGate['marker'] = new google.maps.Marker({
                                 position: mapService.convertToGMCoord(newGate.location[0]),
                                 map: map,
-                                title: newGate.name
+                                title: newGate.name,
+                                icon: gateIcon
                             });
                         } else {
                             // error
@@ -784,7 +797,8 @@
                             position: mapService.convertToGMCoord(entrance),
                             map: modalMapBuilding,
                             draggable: true,
-                            title: building.name
+                            title: building.name,
+                            icon: buildingIcon
                         }));
                     }
                 }
@@ -866,7 +880,8 @@
                             position: mapService.convertToGMCoord(entrance),
                             map: modalMapLot,
                             draggable: true,
-                            title: lot.name
+                            title: lot.name,
+                            icon: lotIcon
                         }));
                     }
 
@@ -931,7 +946,8 @@
                         position: mapService.convertToGMCoord(gate.location[0]),
                         map: modalMapGate,
                         draggable: true,
-                        title: gate.name
+                        title: gate.name,
+                        icon: gateIcon
                     }));
                     drawingManagerGate.setOptions({
                         drawingControl: false
