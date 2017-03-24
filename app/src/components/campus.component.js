@@ -128,7 +128,8 @@
                                 building.markers.push(new google.maps.Marker({
                                     position: mapService.convertToGMCoord(entrance),
                                     map: map,
-                                    title: building.name
+                                    title: building.name,
+                                    icon: 'images/buildingIcon.png'
                                 }));
                             }
                         }
