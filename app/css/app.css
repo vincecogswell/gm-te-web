@@ -1,10 +1,5 @@
 /* app css stylesheet */
 
-.navbar-brand {
-  height: 20px;
-  width: 20px;
-}
-
 #map {
     height: 420px;
     width: 600px;
