@@ -1,5 +1,12 @@
 /* app css stylesheet */
 
+.navbar-brand,
+.navbar-nav li a {
+    line-height: 150px;
+    height: 150px;
+    padding-top: 0;
+}
+
 #map {
     height: 420px;
     width: 600px;
