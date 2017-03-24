@@ -114,8 +114,8 @@
             function getBuildings() {
                 buildingService.getBuildings(campusId, function (buildings) {
                     self.buildings = buildings;
-                    var buildingsAry = Object.keys(buildings).map(function (buildingId) { return buildings[buildingId]; });
-                    self.campus['buildings'] = buildingsAry;
+                    self.buildingsAry = Object.keys(buildings).map(function (buildingId) { return buildings[buildingId]; });
+                    //self.campus['buildings'] = buildingsAry;
                     //console.log(self.buildingsAry);
                     // populate map
                     for (var key in self.buildings) {
@@ -876,7 +876,7 @@
                             drawingModes: ['marker']
                         }
                     });
-                    $scope.$apply();
+                    //$scope.$apply();
                 }
             });
 
