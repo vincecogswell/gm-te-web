@@ -37,6 +37,8 @@
                 self.campus = campuses[campusId];
             });
 
+            $scope.testing = [];
+
             self.structureToUpdate = null;
 
             self.modalModeEnum = {
