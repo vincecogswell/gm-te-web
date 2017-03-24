@@ -664,7 +664,8 @@
                     drawingModes: ['marker']
                 },
                 markerOptions: {
-                    draggable: true
+                    draggable: true,
+                    icon: buildingIcon
                 }
             });
             drawingManagerBuilding.setMap(modalMapBuilding);
@@ -682,7 +683,8 @@
                     drawingModes: ['marker', 'rectangle', 'polygon']
                 },
                 markerOptions: {
-                    draggable: true
+                    draggable: true,
+                    icon: lotIcon
                 },
                 rectangleOptions: {
                     draggable: true,
@@ -708,7 +710,8 @@
                     drawingModes: ['marker']
                 },
                 markerOptions: {
-                    draggable: true
+                    draggable: true,
+                    icon: gateIcon
                 }
             });
             drawingManagerGate.setMap(modalMapGate);
