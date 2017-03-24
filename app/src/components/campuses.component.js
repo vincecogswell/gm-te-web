@@ -22,7 +22,7 @@
                 }
             });
         }])
-        .controller('CampusesCtrl', ['$http' ,'campusService', 'roleService', 'mapService', '$uibModal', '$scope', function ($http ,campusService, roleService, mapService, $uibModal, $scope) {
+        .controller('CampusesCtrl', ['campusService', 'roleService', 'mapService', '$uibModal', '$scope', function (campusService, roleService, mapService, $uibModal, $scope) {
             var self = this;
 
             self.campusToUpdate = null;
@@ -48,18 +48,6 @@
                     name: ''
                 });
             }
-
-            $http.get('/predictive-parking/1')
-            .then( function (response) {
-                console.log(response);
-                /*if (response && response.data && response.data.status === 200) {
-                    //campuses = response.data.campuses;
-                    //next(campuses);
-                } else {
-                    // error
-                    //next(null);
-                }*/
-            });
 
             function updateRoleNames(campus) {
                 campus['roleNames'] = '';
