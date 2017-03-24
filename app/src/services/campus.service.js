@@ -17,10 +17,10 @@
 					console.log(response);
 					if (response && response.data && response.data.status === 200) {
 						campuses = response.data.campuses;
-						$http.get('/predictive-parking/1/1')
+						/*$http.get('/predictive-parking/1/1')
 						.then( function (response) {
 							console.log(response);
-						});
+						});*/
 						next(campuses);
 					} else {
 						// error
