@@ -70,7 +70,7 @@
                             let command = '';
                             if (editMode) {
                                 let gate = self.gates[self.structureToUpdate];
-                                command = gate.instructions[i];
+                                command = gate.instructions[i][1];
                                 if (command === null) {
                                     command = '';
                                 }
