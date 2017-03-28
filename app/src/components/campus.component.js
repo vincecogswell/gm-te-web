@@ -66,7 +66,9 @@
                     let found = false;
                     for (var j = 0; j < self.selectedRoles; j++) {
                         let role = self.selectedRoles[j];
-                        if (role.id == roleId) {
+                        console.log(typeof role.id);
+                        console.log(typeof roleId);
+                        if (role.id === roleId) {
                             let command = '';
                             if (editMode) {
                                 let gate = self.gates[self.structureToUpdate];
