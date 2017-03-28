@@ -9,21 +9,17 @@
 	function buildingService($http) {
 
 		function getBuildings(campusId, next) {
-			if (buildings) {
-				next(buildings);
-			} else {
-				$http.get('/campuses/' + campusId.toString() + '/buildings')
-				.then( function (response) {
-					console.log(response);
-					if (response && response.data && response.data.status === 200) {
-						buildings = response.data.buildings;
-						next(buildings);
-					} else {
-						// error
-						next(null);
-					}
-				});
-			}
+			$http.get('/campuses/' + campusId.toString() + '/buildings')
+			.then( function (response) {
+				console.log(response);
+				if (response && response.data && response.data.status === 200) {
+					buildings = response.data.buildings;
+					next(buildings);
+				} else {
+					// error
+					next(null);
+				}
+			});
 		}
 
 		function saveBuilding(campusId, building, next) {

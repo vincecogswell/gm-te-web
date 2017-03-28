@@ -9,21 +9,17 @@
 	function lotService($http) {
 
 		function getLots(campusId, next) {
-			if (lots) {
-				next(lots);
-			} else {
-				$http.get('/campuses/' + campusId.toString() + '/lots')
-				.then( function (response) {
-					console.log(response);
-					if (response && response.data && response.data.status === 200) {
-						lots = response.data.lots;
-						next(lots);
-					} else {
-						// error
-						next(null);
-					}
-				});
-			}
+			$http.get('/campuses/' + campusId.toString() + '/lots')
+			.then( function (response) {
+				console.log(response);
+				if (response && response.data && response.data.status === 200) {
+					lots = response.data.lots;
+					next(lots);
+				} else {
+					// error
+					next(null);
+				}
+			});
 		}
 
 		function saveLot(campusId, lot, next) {

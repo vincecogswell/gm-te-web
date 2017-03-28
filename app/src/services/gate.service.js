@@ -9,21 +9,17 @@
 	function gateService($http) {
 
 		function getGates(campusId, next) {
-			if (gates) {
-				next(gates);
-			} else {
-				$http.get('/campuses/' + campusId.toString() + '/gates')
-				.then( function (response) {
-					console.log(response);
-					if (response && response.data && response.data.status === 200) {
-						gates = response.data.gates;
-						next(gates);
-					} else {
-						// error
-						next(null);
-					}
-				});
-			}
+			$http.get('/campuses/' + campusId.toString() + '/gates')
+			.then( function (response) {
+				console.log(response);
+				if (response && response.data && response.data.status === 200) {
+					gates = response.data.gates;
+					next(gates);
+				} else {
+					// error
+					next(null);
+				}
+			});
 		}
 
 		function saveGate(campusId, gate, next) {

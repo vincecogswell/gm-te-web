@@ -138,9 +138,9 @@
             }
 
             self.goBack = function () {
-                self.lots = null;
-                self.buildings = null;
-                self.gates = null;
+                //self.lots = null;
+                //self.buildings = null;
+                //self.gates = null;
                 $location.path('/campuses');
             }
 
