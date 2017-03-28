@@ -64,10 +64,8 @@
                 for (var i = 0; i < self.instructions.length; i++) {
                     let roleId = self.instructions[i].role.id;
                     let found = false;
-                    for (var j = 0; j < self.selectedRoles; j++) {
+                    for (var j = 0; j < self.selectedRoles.length; j++) {
                         let role = self.selectedRoles[j];
-                        console.log(typeof role.id);
-                        console.log(typeof roleId);
                         if (role.id === roleId) {
                             let command = '';
                             if (editMode) {
