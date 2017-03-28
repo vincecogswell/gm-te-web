@@ -948,7 +948,7 @@
                             drawingModes: ['marker']
                         }
                     });
-                    //$scope.$apply();
+                    $scope.$apply();
                 }
             });
 
@@ -1018,7 +1018,7 @@
                     drawingManagerGate.setOptions({
                         drawingControl: false
                     });
-                    //$scope.$apply();
+                    $scope.$apply();
                 }
             });
 
