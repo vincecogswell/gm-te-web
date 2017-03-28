@@ -47,6 +47,7 @@
 
             self.selectedRoles = [];
             self.selectedBuildings = [];
+            self.instructions = [];
 
             var overlay;
             var bounds = new google.maps.MVCArray();
@@ -56,6 +57,29 @@
             var buildingIcon = 'images/buildingIcon.png';
             var lotIcon = 'images/lotIcon.png';
             var gateIcon = 'images/gateIcon.png';
+
+            self.updateInstructions = function () {
+                var gate = self.gates[self.structureToUpdate];
+                for (var i = 0; i < self.instructions.length; i++) {
+                    let roleId = self.instructions[i].role.id;
+                    let found = false;
+                    for (var j = 0; j < self.selectedRoles; j++) {
+                        let role = self.selectedRoles[j];
+                        if (role.id === roleId) {
+                            let command = gate.instructions[i];
+                            if (command === null) {
+                                command = '';
+                            }
+                            self.instructions[i].command = command;
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        self.instructions[i].command = null;
+                    }
+                }
+            }
 
             // structure can be only a lot
             function updateBuildingNames(lot) {
@@ -514,6 +538,14 @@
 
                             updateAccessNames(gate);
 
+                            var instructions = [];
+                            for (var i = 0; i < self.campus.roles.length; i++) {
+                                let role = self.campus.roles[i];
+                                let instruction = gate.instructions[i];
+                                instructions.push([role.id, instruction]);
+                            }
+                            gate.instructions = instructions;
+
                             gate['marker'] = new google.maps.Marker({
                                 position: mapService.convertToGMCoord(gate.location[0]),
                                 map: map,
@@ -547,7 +579,23 @@
                 var roles = [];
                 for (var i = 0; i < self.selectedRoles.length; i++) {
                     let role = self.selectedRoles[i];
+                    /*for (var j = 0; j < self.instructions.length; j++) {
+                        let instruction = self.instructions[j];
+                        if (instruction.role.id === role.id && instruction.command === '') {
+                            return;
+                        } 
+                    }*/
                     roles.push(role.id);
+                }
+
+                var instructions = [];
+                for (var i = 0; i < self.instructions; i++) {
+                    let instruction = self.instructions[i];
+                    /*let command = instruction.command;
+                    if (command === null) {
+                        command = '';
+                    }*/
+                    instructions.push([instruction.role.id, instruction.command]);
                 }
 
                 var location = [];
@@ -562,7 +610,7 @@
                     access: roles,
                     start: start,
                     end: end,
-                    instructions: $("#gate-instructions").val(),
+                    instructions: instructions,
                     location: location
                 };
                 if (self.modalMode === self.modalModeEnum.ADD) {
@@ -924,7 +972,11 @@
                 } else if (self.modalMode === self.modalModeEnum.EDIT) {
                     var gate = self.gates[self.structureToUpdate];
                     $("#gate-name").val(gate.name);
-                    $("#gate-instructions").val(gate.instructions);
+                    //$("#gate-instructions").val(gate.instructions);
+                    /*for (var i = 0; i < gate.instructions.length; i++) {
+                        let instruction = gate.instructions[i];
+                        self.instructions.push({'command': instruction});
+                    }*/
 
                     for (var i = 0; i < self.campus.roles.length; i++) {
                         let role = self.campus.roles[i];
@@ -932,6 +984,7 @@
                         if (index > -1) {
                             self.selectedRoles.push(role);
                         }
+                        self.instructions.push({'role': role, 'command': gate.instructions[i][1]})
                     }
 
                     var start = gate.start.split(':');
@@ -964,6 +1017,7 @@
                 $("#gate-instructions").val("");
                 self.clearMarkers();
                 self.selectedRoles = [];
+                self.instructions = [];
                 resetDates();
             });
 

@@ -218,7 +218,7 @@
                 </div>
                 <div class="form-group">
                     <label>Access:</label>
-                    <select multiple class="form-control" ng-model="vm.selectedRoles" ng-options="role as role.name for role in vm.campus.roles track by role.id"></select>
+                    <select multiple class="form-control" ng-model="vm.selectedRoles" ng-change="vm.updateInstructions()" ng-options="role as role.name for role in vm.campus.roles track by role.id"></select>
                 </div>
                 <div class="form-group">
                     <label>Hours:</label>
@@ -234,8 +234,10 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="gate-instructions">Instructions:</label>
-                    <textarea class="form-control" rows="3" id="gate-instructions"></textarea>
+                    <div ng-repeat="instruction in vm.instructions" ng-if="instruction.command !== null">
+                        <label>{{ instruction.role.name }} Instructions:</label>
+                        <textarea class="form-control" rows="3" ng-model="instruction.command"></textarea>
+                    </div>
                 </div>
                 <label for="modal-map-gate">Location:</label>
                 <div id="modal-map-gate"></div>
