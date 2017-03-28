@@ -594,7 +594,7 @@
                 }
 
                 var instructions = [];
-                for (var i = 0; i < self.instructions; i++) {
+                for (var i = 0; i < self.instructions.length; i++) {
                     let instruction = self.instructions[i];
                     /*let command = instruction.command;
                     if (command === null) {
