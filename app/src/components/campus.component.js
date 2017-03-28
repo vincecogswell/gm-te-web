@@ -59,16 +59,21 @@
             var gateIcon = 'images/gateIcon.png';
 
             self.updateInstructions = function () {
-                var gate = self.gates[self.structureToUpdate];
+                var editMode = self.modalMode === self.modalModeEnum.EDIT;
+                
                 for (var i = 0; i < self.instructions.length; i++) {
                     let roleId = self.instructions[i].role.id;
                     let found = false;
                     for (var j = 0; j < self.selectedRoles; j++) {
                         let role = self.selectedRoles[j];
                         if (role.id === roleId) {
-                            let command = gate.instructions[i];
-                            if (command === null) {
-                                command = '';
+                            let command = '';
+                            if (editMode) {
+                                let gate = self.gates[self.structureToUpdate];
+                                command = gate.instructions[i];
+                                if (command === null) {
+                                    command = '';
+                                }
                             }
                             self.instructions[i].command = command;
                             found = true;
@@ -965,10 +970,15 @@
                 google.maps.event.trigger(modalMapGate, 'resize');
                 drawingManagerGate.setDrawingMode(null);
                 modalMapGate.fitBounds(self.campus.bounds);
+                
                 if (self.modalMode === self.modalModeEnum.ADD) {
                     drawingManagerGate.setOptions({
                         drawingControl: true
                     });
+                    for (var i = 0; i < self.campus.roles.length; i++) {
+                        let role = self.campus.roles[i];
+                        self.instructions.push({'role': role, 'command': null})
+                    }
                 } else if (self.modalMode === self.modalModeEnum.EDIT) {
                     var gate = self.gates[self.structureToUpdate];
                     $("#gate-name").val(gate.name);
