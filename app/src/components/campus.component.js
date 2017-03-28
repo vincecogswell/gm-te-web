@@ -541,15 +541,27 @@
                         if (self.gates.hasOwnProperty(key)) {
                             let gate = self.gates[key];
 
+                            var access = [];
+                            for (var i = 0; i < gate.tempAccess.length; i++) {
+                                let roleId = gate.tempAccess[i][0];
+                                access.push(roleId);
+                            }
+                            gate['access'] = access;
+
                             updateAccessNames(gate);
 
                             var instructions = [];
                             for (var i = 0; i < self.campus.roles.length; i++) {
                                 let role = self.campus.roles[i];
-                                let instruction = gate.instructions[i];
-                                instructions.push([role.id, instruction]);
+                                let index = gate.access.indexOf(role.id);
+                                if (index > -1) {
+                                    let command = gate.tempAccess[index][1];
+                                    instructions.push([role.id, command]);
+                                } else {
+                                    instructions.push([role.id, null]);
+                                }
                             }
-                            gate.instructions = instructions;
+                            gate['instructions'] = instructions;
 
                             gate['marker'] = new google.maps.Marker({
                                 position: mapService.convertToGMCoord(gate.location[0]),
