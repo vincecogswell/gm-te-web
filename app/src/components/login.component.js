@@ -19,6 +19,9 @@
         .controller('LoginCtrl', ['loginService', '$location', function (loginService, $location) {
             var self = this;
 
+            // log out before logging in just in case
+            loginService.logout();
+
             self.user = {
                 username: '',
                 password: ''

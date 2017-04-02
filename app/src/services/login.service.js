@@ -32,7 +32,6 @@
 
         function logout() {
             curUser = null;
-            $location.path('/login');
         }
 
 		var curUser = null;    // a user id
