@@ -28,6 +28,8 @@
                 password: ''
             };
 
+            self.invalid = false;
+
             self.logout = function () {
                 loginService.logout();
             }
@@ -53,6 +55,7 @@
                         $location.path('/campuses');
                     } else {
                         // error
+                        self.invalid = true;
                         console.log("error");
                     }
                 });
