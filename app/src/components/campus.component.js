@@ -65,6 +65,11 @@
             var lotIcon = 'images/lotIcon.png';
             var gateIcon = 'images/gateIcon.png';
 
+            self.logout = function () {
+                loginService.logout();
+                $location.path('/login');
+            }
+
             self.updateInstructions = function () {
                 var editMode = self.modalMode === self.modalModeEnum.EDIT;
                 

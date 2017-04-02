@@ -50,6 +50,11 @@
             var bounds = new google.maps.MVCArray();
             var curType = null;
 
+            self.logout = function () {
+                loginService.logout();
+                $location.path('/login');
+            }
+
             self.addRole = function () {
                 self.roles.push({
                     name: ''

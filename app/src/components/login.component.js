@@ -28,6 +28,10 @@
                 password: ''
             };
 
+            self.logout = function () {
+                loginService.logout();
+            }
+
             self.login = function () {
                 console.log("heree");
                 if (self.user.username === '') {
