@@ -4,9 +4,9 @@
 	angular
 		.module('app').factory('loginService', loginService);
 
-	loginService.$inject = ['$http'];
+	loginService.$inject = ['$http', '$location'];
 
-	function loginService($http) {
+	function loginService($http, $location) {
 
 		function login(credentials, next) {
 			$http.post('/authenticate', credentials)
@@ -30,11 +30,17 @@
             return false;
         }
 
+        function logout() {
+            curUser = null;
+            $location.path('/login');
+        }
+
 		var curUser = null;    // a user id
 
 		return {
 			login: login,
-            userIsLoggedIn: userIsLoggedIn
+            userIsLoggedIn: userIsLoggedIn,
+            logout: logout
 		}
 	}
 })();
