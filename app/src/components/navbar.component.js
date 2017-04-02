@@ -15,14 +15,11 @@
     navbarController.$inject = ['loginService', '$location'];
 
     function navbarController(loginService, $location) {
+        var self = this;
 
-        this.$onInit = function() {
-            var self = this;
-
-            self.logout = function () {
-                loginService.logout();
-                $location.path('/login');
-            }
+        self.logout = function () {
+            loginService.logout();
+            $location.path('/login');
         }
     }
 
