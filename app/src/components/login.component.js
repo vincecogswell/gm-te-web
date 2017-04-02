@@ -16,7 +16,7 @@
                 }
             });
         }])
-        .controller('CampusesCtrl', ['loginService', '$location', function (loginService, $location) {
+        .controller('LoginCtrl', ['loginService', '$location', function (loginService, $location) {
             var self = this;
 
             self.user = {
