@@ -11,14 +11,13 @@
             }
         });
 
-    navbarController.$inject = ['loginService', '$cookies', '$location'];
+    navbarController.$inject = ['loginService', '$location'];
 
-    function navbarController(loginService, $cookies, $location) {
+    function navbarController(loginService, $location) {
         var self = this;
 
         self.logout = function () {
             loginService.logout();
-            $cookies.put('loggedIn', 'no');
             $location.path('/login');
         }
     }

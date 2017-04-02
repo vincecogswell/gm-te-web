@@ -4,18 +4,18 @@
 	angular
 		.module('app').factory('loginService', loginService);
 
-	loginService.$inject = ['$http', '$location'];
+	loginService.$inject = ['$http', '$cookies'];
 
-	function loginService($http, $location) {
+	function loginService($http, $cookies) {
 
 		function login(credentials, next) {
 			$http.post('/authenticate', credentials)
 			.then( function (response) {
 				console.log(response);
 				if (response && response.data && response.data.status === 200) {
+					$cookies.put('loggedIn', 'yes');
 					var userId = response.data.userId;
-					curUser = userId;
-					next(curUser);
+					next(userId);
 				} else {
 					// error
 					next(null);
@@ -24,17 +24,16 @@
 		}
 
         function userIsLoggedIn() {
-            if (curUser) {
+            var loggedIn = $cookies.get('loggedIn');
+            if (loggedIn === 'yes') {
                 return true;
             }
             return false;
         }
 
         function logout() {
-            curUser = null;
+            $cookies.put('loggedIn', 'no');
         }
-
-		var curUser = null;    // a user id
 
 		return {
 			login: login,

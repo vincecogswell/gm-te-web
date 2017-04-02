@@ -16,11 +16,10 @@
                 }
             });
         }])
-        .controller('LoginCtrl', ['loginService', '$location', '$cookies', function (loginService, $location, $cookies) {
+        .controller('LoginCtrl', ['loginService', '$location', function (loginService, $location) {
             var self = this;
 
-            var loggedIn = $cookies.get('loggedIn');
-            if (loggedIn === 'yes') {
+            if (loginService.userIsLoggedIn()) {
                 $location.path('/campuses');
             }
 
@@ -47,7 +46,6 @@
 
                 loginService.login(user, function (response) {
                     if (response) {
-                        $cookies.put('loggedIn', 'yes');
                         $location.path('/campuses');
                     } else {
                         // error
