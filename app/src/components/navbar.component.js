@@ -2,7 +2,7 @@
     "use strict";
 
     angular
-        .module('app').directive('navbar', function () {
+        .module('app', ['app.login', 'app.campuses', 'app.campus']).directive('navbar', function () {
             return {   
                 restrict: 'E',                                     
                 bindToController: true,
