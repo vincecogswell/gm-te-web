@@ -3,7 +3,8 @@
 
     angular
         .module('app').directive('navbar', function () {
-            return {                                        
+            return {   
+                restrict: 'E',                                     
                 bindToController: true,
                 controllerAs: 'vm',
                 controller: navbarController,                
