@@ -29,6 +29,7 @@
             };
 
             self.login = function () {
+                console.log("heree");
                 if (self.user.username === '') {
                     // error - name can't be empty
                     return;
