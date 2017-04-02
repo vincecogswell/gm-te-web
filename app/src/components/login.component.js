@@ -28,20 +28,24 @@
                 password: ''
             };
 
-            self.invalid = false;
+            self.invalid = null;
 
             self.logout = function () {
                 loginService.logout();
             }
 
             self.login = function () {
+                self.invalid = null;
+
                 if (self.user.username === '') {
-                    // error - name can't be empty
+                    // error - username can't be empty
+                    self.invalid = 'Please enter a username';
                     return;
                 }
 
                 if (self.user.password === '') {
                     // error - password can't be empty
+                    self.invalid = 'Please enter a password';
                     return;
                 }
 
@@ -55,7 +59,7 @@
                         $location.path('/campuses');
                     } else {
                         // error
-                        self.invalid = true;
+                        self.invalid = 'Invalid username or password';
                         console.log("error");
                     }
                 });
