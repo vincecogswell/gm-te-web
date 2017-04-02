@@ -2,7 +2,7 @@
     "use strict";
 
     angular
-        .module('app.navbar').directive('navbar', function () {
+        .module('app').directive('navbar', function () {
             return {                                        
                 bindToController: true,
                 controllerAs: 'vm',
