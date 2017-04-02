@@ -24,12 +24,19 @@
                     },
                     mapService: function(mapService) {
                         return mapService;
+                    },
+                    loginService: function(loginService) {
+                        return loginService;
                     }
                 }
             });
         }])
-        .controller('CampusCtrl', ['campusService', 'buildingService', 'lotService', 'gateService', 'mapService', '$routeParams', '$scope', '$location', function(campusService, buildingService, lotService, gateService, mapService, $routeParams, $scope, $location) {
+        .controller('CampusCtrl', ['campusService', 'buildingService', 'lotService', 'gateService', 'mapService', 'loginService', '$routeParams', '$scope', '$location', function(campusService, buildingService, lotService, gateService, mapService, loginService, $routeParams, $scope, $location) {
             var self = this;
+
+            if (!loginService.userIsLoggedIn()) {
+                $location.path('/login');
+            }
 
             // implement checkboxes that control which components (buildings, lots, gates) are displayed on the map
             var campusId = parseInt($routeParams.campusId);

@@ -23,13 +23,18 @@
 			});
 		}
 
+        function userIsLoggedIn() {
+            if (curUser) {
+                return true;
+            }
+            return false;
+        }
+
 		var curUser = null;    // a user id
 
-        // Note: Remember to check for curUser in campuses and campus page
-        // if curUser is null then redirect to login page
-
 		return {
-			login: login
+			login: login,
+            userIsLoggedIn: userIsLoggedIn
 		}
 	}
 })();

@@ -18,12 +18,19 @@
                     },
                     mapService: function(mapService) {
                         return mapService;
+                    },
+                    loginService: function(loginService) {
+                        return loginService;
                     }
                 }
             });
         }])
-        .controller('CampusesCtrl', ['campusService', 'roleService', 'mapService', '$uibModal', '$scope', function (campusService, roleService, mapService, $uibModal, $scope) {
+        .controller('CampusesCtrl', ['campusService', 'roleService', 'mapService', 'loginService', '$uibModal', '$scope', '$location', function (campusService, roleService, mapService, loginService, $uibModal, $scope, $location) {
             var self = this;
+
+            if (!loginService.userIsLoggedIn()) {
+                $location.path('/login');
+            }
 
             self.campusToUpdate = null;
 
