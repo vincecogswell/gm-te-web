@@ -135,6 +135,37 @@
                         </tbody>
                     </table>
                 </uib-tab>
+                <uib-tab index="3" heading="Shuttles">
+                    <table st-table="vm.gates" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Access</th>
+                            <th>Hours</th>
+                            <th>Instructions</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="(gateId, gate) in vm.gates">
+                            <td>{{ gate.name }}</td>
+                            <td ng-if="gate.active">Active</td>
+                            <td ng-if="!gate.active">Closed</td>
+                            <td>{{ gate.accessNames }}</td>
+                            <td>{{ gate.start }}-{{ gate.end }}</td>
+                            <td>Click on the edit button to view instructions.</td>
+                            <td><button type="button" ng-click="vm.structureToUpdate = gateId; vm.modalMode = vm.modalModeEnum.EDIT" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-gate">
+                                <i class="glyphicon glyphicon-edit"></i>
+                            </td>
+                            <td><button type="button" ng-click="vm.deleteGate(gateId)" class="btn btn-sm btn-danger">
+                                <i class="glyphicon glyphicon-remove-circle"></i>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </uib-tab>
             </uib-tabset>
         </div>
     </div>
