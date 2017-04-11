@@ -246,6 +246,8 @@
                             }
                             newBuilding['id'] = Number(response); // need to do this b/c of ng-options
                             self.buildingsAry.push(newBuilding);
+
+                            $scope.activeTab = 0;
                         } else {
                             // error
                             console.log("error");
@@ -279,6 +281,8 @@
                                     break;
                                 }
                             }
+
+                            $scope.activeTab = 0;
                         } else {
                             // error
                             console.log("error");
@@ -496,6 +500,8 @@
                                 });
                             }
                             newLot.overlay.setMap(map); 
+
+                            $scope.activeTab = 1;
                         } else {
                             // error
                             console.log("error");
@@ -548,6 +554,8 @@
                                 });
                             }
                             newLot.overlay.setMap(map);
+
+                            $scope.activeTab = 1;
                         } else {
                             // error
                             console.log("error");
@@ -691,6 +699,8 @@
                                 title: newGate.name,
                                 icon: gateIcon
                             });
+
+                            $scope.activeTab = 2;
                         } else {
                             // error
                             console.log("error");
@@ -711,6 +721,8 @@
                                 title: newGate.name,
                                 icon: gateIcon
                             });
+
+                            $scope.activeTab = 2;
                         } else {
                             // error
                             console.log("error");
@@ -812,6 +824,8 @@
                     newShuttle.overlay.setMap(map);
 
                     self.shuttles[newShuttle.id] = newShuttle;
+
+                    $scope.activeTab = 3;
                     /*shuttleService.saveShuttle(campusId, newShuttle, function (response) {
                         if (response) {
                             console.log(response);
@@ -871,6 +885,8 @@
                     });
 
                     newShuttle.overlay.setMap(map);
+
+                    $scope.activeTab = 3;
                 }
 
                 $('#modal-shuttle').modal('toggle');
