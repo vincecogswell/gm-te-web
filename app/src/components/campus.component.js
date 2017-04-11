@@ -343,14 +343,16 @@
                                     paths: lot.paths,
                                     draggable: false,
                                     editable: false,
-                                    fillColor: rgba(124,252,0,0.5)
+                                    fillColor: '#7CFC00',
+                                    fillOpacity: 0.35
                                 });
                             } else {
                                 lot['overlay'] = new google.maps.Rectangle({
                                     bounds: lot.bounds,
                                     draggable: false,
                                     editable: false,
-                                    fillColor: rgba(124,252,0,0.5)
+                                    fillColor: '#7CFC00',
+                                    fillOpacity: 0.35
                                 });
                             }
                             lot.overlay.setMap(map); 
@@ -768,12 +770,14 @@
                 rectangleOptions: {
                     draggable: true,
                     editable: true,
-                    fillColor: rgba(124,252,0,0.5)
+                    fillColor: '#7CFC00',
+                    fillOpacity: 0.35
                 },
                 polygonOptions: {
                     draggable: true,
                     editable: true,
-                    fillColor: rgba(124,252,0,0.5)
+                    fillColor: '#7CFC00',
+                    fillOpacity: 0.35
                 }
             });
             drawingManagerLot.setMap(modalMapLot);

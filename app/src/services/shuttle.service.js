@@ -4,7 +4,7 @@
 	angular
 		.module('app').factory('shuttleService', shuttleService);
 
-	lotService.$inject = ['$http'];
+	shuttleService.$inject = ['$http'];
 	
 	function shuttleService($http) {
 
@@ -32,7 +32,7 @@
 					next(shuttleId);
 				} else {
 					// error
-					console.log(lot);
+					console.log(shuttle);
 					next(null);
 				}
 			});
