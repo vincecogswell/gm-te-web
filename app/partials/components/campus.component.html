@@ -322,16 +322,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div ng-repeat="stop in vm.shuttleStops">
-                        <label for="shuttle-stop">Stop {{ $index }}:</label>
-                        <div class="col-md-5">
-                            <div uib-timepicker ng-model="stop.stopTime" minute-step="15" show-meridian="['AM','PM']" id="shuttle-stop"></div>
-                        </div>
-                    </div>
-                </div>
                 <label for="modal-map-shuttle">Route:</label>
                 <div id="modal-map-shuttle"></div>
+                <div class="form-group">
+                    <div class="row" ng-repeat="stop in vm.shuttleStops">
+                        <label for="shuttle-stop">Stop {{ $index }}:</label>
+                        <div uib-timepicker ng-model="stop.stopTime" minute-step="15" show-meridian="['AM','PM']" id="shuttle-stop"></div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" type="button" ng-click="vm.saveShuttle()">Save</button>

@@ -1104,7 +1104,7 @@
                 drawingManagerShuttle.setOptions({
                     drawingControl: false
                 });
-                updateShuttleStops(true, bounds.getLength());
+                updateShuttleStops(true, bounds.getLength()-1);
                 $scope.$apply();
             });
 
