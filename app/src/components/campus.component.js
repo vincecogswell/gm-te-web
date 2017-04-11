@@ -954,14 +954,18 @@
                         overlay = new google.maps.Polygon({
                             paths: lot.paths,
                             draggable: true,
-                            editable: true
+                            editable: true,
+                            fillColor: '#7CFC00',
+                            fillOpacity: 0.35
                         });
                     } else {
                         curType = 'rectangle';
                         overlay = new google.maps.Rectangle({
                             bounds: lot.bounds,
                             draggable: true,
-                            editable: true
+                            editable: true,
+                            fillColor: '#7CFC00',
+                            fillOpacity: 0.35
                         });
                     }
                     overlay.setMap(modalMapLot);
