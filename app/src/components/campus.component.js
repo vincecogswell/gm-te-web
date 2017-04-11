@@ -1050,15 +1050,9 @@
                     if (addListeners) {
                         google.maps.event.addListener(path, 'insert_at', function () {
                             updateBounds();
-                            if (curType === 'polyline') {
-                                updateShuttleStops(path, true);
-                            }
                         });
                         google.maps.event.addListener(path, 'remove_at', function () {
                             updateBounds();
-                            if (curType === 'polyline') {
-                                updateShuttleStops(path, false);
-                            }
                         });
                         google.maps.event.addListener(path, 'set_at', function () {
                             updateBounds();
@@ -1108,6 +1102,7 @@
                 drawingManagerShuttle.setOptions({
                     drawingControl: false
                 });
+                updateShuttleStops(path, true);
             });
 
             $("#modal-building").on("shown.bs.modal", function () {
