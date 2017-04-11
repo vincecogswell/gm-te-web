@@ -153,7 +153,7 @@
                             <td ng-if="shuttle.active">Active</td>
                             <td ng-if="!shuttle.active">Closed</td>
                             <td>{{ shuttle.start }}-{{ shuttle.end }}</td>
-                            <td>4</td>
+                            <td>{{ shuttle.stopsCount }}</td>
                             <td><button type="button" ng-click="vm.structureToUpdate = shuttleId; vm.modalMode = vm.modalModeEnum.EDIT" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-shuttle">
                                 <i class="glyphicon glyphicon-edit"></i>
                             </td>
@@ -323,9 +323,11 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div ng-repeat="instruction in vm.instructions" ng-if="instruction.command !== null">
-                        <label>{{ instruction.role.name }} Instructions:</label>
-                        <textarea class="form-control" rows="3" ng-model="instruction.command"></textarea>
+                    <div ng-repeat="stop in vm.shuttleStops">
+                        <label for="shuttle-stop">Stop {{ $index }}:</label>
+                        <div class="col-md-5">
+                            <div uib-timepicker ng-model="stop.stopTime" minute-step="15" show-meridian="['AM','PM']" id="shuttle-stop"></div>
+                        </div>
                     </div>
                 </div>
                 <label for="modal-map-shuttle">Route:</label>

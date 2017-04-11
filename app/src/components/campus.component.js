@@ -58,6 +58,10 @@
             self.selectedRoles = [];
             self.selectedBuildings = [];
             self.instructions = [];
+
+            self.shuttles = { }; // temp
+            var shuttleId = 1; // temp
+
             self.shuttleStops = [];
 
             var overlay;
@@ -81,6 +85,18 @@
             function updateShuttleStops(path, add) {
                 // loop through path, check equal to element in bounds array
                 // if so then either add or remove that element from array
+
+                if (add) {
+                    var stopTime = new Date();
+                    stopTime.setHours(0);
+                    stopTime.setMinutes(0);
+
+                    self.shuttleStops.push({
+                        stopTime: stopTime
+                    });
+                } else {
+                    self.shuttleStops.pop();
+                }
             }
 
             self.updateInstructions = function () {
@@ -737,8 +753,8 @@
                                 path: shuttle.paths,
                                 draggable: false,
                                 editable: false,
-                                fillColor: '#FFA500',
-                                fillOpacity: 1.0
+                                strokeColor: '#FFA500',
+                                strokeOpacity: 1.0
                             });
                             shuttle.overlay.setMap(map); 
                         }
@@ -771,9 +787,15 @@
                     active: true,
                     start: start,
                     end: end,
-                    perimeter: perimeter
+                    perimeter: perimeter,
+                    shuttleStops: self.shuttleStops,
+                    stopsCount: self.shuttleStops.length
                 };
+
                 if (self.modalMode === self.modalModeEnum.ADD) {
+                    newShuttle['id'] = shuttleId;
+                    shuttleId++; // temp
+
                     newShuttle['bounds'] = mapService.convertToGMBounds(newShuttle.perimeter);
                     newShuttle['paths'] = mapService.convertToGMPaths(newShuttle.perimeter);
 
@@ -781,11 +803,13 @@
                         path: newShuttle.paths,
                         draggable: false,
                         editable: false,
-                        fillColor: '#FFA500',
-                        fillOpacity: 1.0
+                        strokeColor: '#FFA500',
+                        strokeOpacity: 1.0
                     });
 
                     newShuttle.overlay.setMap(map);
+
+                    self.shuttles[newShuttle.id] = newShuttle;
                     /*shuttleService.saveShuttle(campusId, newShuttle, function (response) {
                         if (response) {
                             console.log(response);
@@ -796,8 +820,8 @@
                                 path: newShuttle.paths,
                                 draggable: false,
                                 editable: false,
-                                fillColor: '#FFA500',
-                                fillOpacity: 1.0
+                                strokeColor: '#FFA500',
+                                strokeOpacity: 1.0
                             });
 
                             newShuttle.overlay.setMap(map); 
@@ -807,8 +831,8 @@
                         }
                     });*/
                 } else if (self.modalMode === self.modalModeEnum.EDIT) {
-                    /*var oldShuttle = self.shuttles[self.structureToUpdate];
-                    shuttleService.updateShuttle(campusId, self.structureToUpdate, newShuttle, function (response) {
+                    var oldShuttle = self.shuttles[self.structureToUpdate];
+                    /*shuttleService.updateShuttle(campusId, self.structureToUpdate, newShuttle, function (response) {
                         if (response) {
                             console.log(response);
                             newShuttle['bounds'] = mapService.convertToGMBounds(newShuttle.perimeter);
@@ -820,8 +844,8 @@
                                 path: newShuttle.paths,
                                 draggable: false,
                                 editable: false,
-                                fillColor: '#FFA500',
-                                fillOpacity: 1.0
+                                strokeColor: '#FFA500',
+                                strokeOpacity: 1.0
                             });
 
                             newShuttle.overlay.setMap(map);
@@ -834,12 +858,14 @@
                     newShuttle['bounds'] = mapService.convertToGMBounds(newShuttle.perimeter);
                     newShuttle['paths'] = mapService.convertToGMPaths(newShuttle.perimeter);
 
+                    oldShuttle.overlay.setMap(null);
+
                     newShuttle['overlay'] = new google.maps.Polyline({
                         path: newShuttle.paths,
                         draggable: false,
                         editable: false,
-                        fillColor: '#FFA500',
-                        fillOpacity: 1.0
+                        strokeColor: '#FFA500',
+                        strokeOpacity: 1.0
                     });
 
                     newShuttle.overlay.setMap(map);
@@ -849,10 +875,12 @@
             }
 
             self.deleteShuttle = function (shuttleId) {
-                /*var shuttle = self.shuttles[shuttleId];
+                var shuttle = self.shuttles[shuttleId];
                 shuttle.overlay.setMap(null);
 
-                shuttleService.deleteShuttle(campusId, shuttleId, function (response) {
+                delete self.shuttles[shuttleId];
+
+                /*shuttleService.deleteShuttle(campusId, shuttleId, function (response) {
                     if (!response) {
                         // error
                         console.log("error");
@@ -1302,13 +1330,16 @@
                     self.toTime.setHours(Number(end[0]));
                     self.toTime.setMinutes(Number(end[1]));
 
+                    // need stop time in here
+                    //for (var i = 0; i < shuttle)
+
                     curType = 'polyline';
                     overlay = new google.maps.Polyline({
                         path: shuttle.paths,
                         draggable: true,
                         editable: true,
-                        fillColor: '#FFA500',
-                        fillOpacity: 1.0
+                        strokeColor: '#FFA500',
+                        strokeOpacity: 1.0
                     });
 
                     overlay.setMap(modalMapShuttle);
@@ -1324,6 +1355,7 @@
                 $("#shuttle-name").val("");
                 resetDates();
                 bounds.clear();
+                self.shuttleStops = [];
                 if (overlay) {
                     updateListeners(false);
                     overlay.setMap(null);
