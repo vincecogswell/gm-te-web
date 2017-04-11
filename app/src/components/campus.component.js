@@ -78,7 +78,7 @@
                 $location.path('/campuses');
             }
 
-            self.updateShuttleStops = function (path, add) {
+            function updateShuttleStops(path, add) {
                 // loop through path, check equal to element in bounds array
                 // if so then either add or remove that element from array
             }
@@ -774,7 +774,19 @@
                     perimeter: perimeter
                 };
                 if (self.modalMode === self.modalModeEnum.ADD) {
-                    shuttleService.saveShuttle(campusId, newShuttle, function (response) {
+                    newShuttle['bounds'] = mapService.convertToGMBounds(newShuttle.perimeter);
+                    newShuttle['paths'] = mapService.convertToGMPaths(newShuttle.perimeter);
+
+                    newShuttle['overlay'] = new google.maps.Polyline({
+                        path: newShuttle.paths,
+                        draggable: false,
+                        editable: false,
+                        fillColor: '#FFA500',
+                        fillOpacity: 1.0
+                    });
+
+                    newShuttle.overlay.setMap(map);
+                    /*shuttleService.saveShuttle(campusId, newShuttle, function (response) {
                         if (response) {
                             console.log(response);
                             newShuttle['bounds'] = mapService.convertToGMBounds(newShuttle.perimeter);
@@ -793,9 +805,9 @@
                             // error
                             console.log("error");
                         }
-                    });
+                    });*/
                 } else if (self.modalMode === self.modalModeEnum.EDIT) {
-                    var oldShuttle = self.shuttles[self.structureToUpdate];
+                    /*var oldShuttle = self.shuttles[self.structureToUpdate];
                     shuttleService.updateShuttle(campusId, self.structureToUpdate, newShuttle, function (response) {
                         if (response) {
                             console.log(response);
@@ -818,14 +830,26 @@
                             console.log("error");
                             getShuttles();
                         }
+                    });*/
+                    newShuttle['bounds'] = mapService.convertToGMBounds(newShuttle.perimeter);
+                    newShuttle['paths'] = mapService.convertToGMPaths(newShuttle.perimeter);
+
+                    newShuttle['overlay'] = new google.maps.Polyline({
+                        path: newShuttle.paths,
+                        draggable: false,
+                        editable: false,
+                        fillColor: '#FFA500',
+                        fillOpacity: 1.0
                     });
+
+                    newShuttle.overlay.setMap(map);
                 }
 
                 $('#modal-shuttle').modal('toggle');
             }
 
             self.deleteShuttle = function (shuttleId) {
-                var shuttle = self.shuttles[shuttleId];
+                /*var shuttle = self.shuttles[shuttleId];
                 shuttle.overlay.setMap(null);
 
                 shuttleService.deleteShuttle(campusId, shuttleId, function (response) {
@@ -835,7 +859,7 @@
 
                         shuttle.overlay.setMap(map);
                     }
-                });
+                });*/
             }
 
 
