@@ -458,13 +458,17 @@
                                 newLot['overlay'] = new google.maps.Polygon({
                                     paths: newLot.paths,
                                     draggable: false,
-                                    editable: false
+                                    editable: false,
+                                    fillColor: '#7CFC00',
+                                    fillOpacity: 0.35
                                 });
                             } else {
                                 newLot['overlay'] = new google.maps.Rectangle({
                                     bounds: newLot.bounds,
                                     draggable: false,
-                                    editable: false
+                                    editable: false,
+                                    fillColor: '#7CFC00',
+                                    fillOpacity: 0.35
                                 });
                             }
                             newLot.overlay.setMap(map); 
@@ -506,13 +510,17 @@
                                 newLot['overlay'] = new google.maps.Polygon({
                                     paths: newLot.paths,
                                     draggable: false,
-                                    editable: false
+                                    editable: false,
+                                    fillColor: '#7CFC00',
+                                    fillOpacity: 0.35
                                 });
                             } else {
                                 newLot['overlay'] = new google.maps.Rectangle({
                                     bounds: newLot.bounds,
                                     draggable: false,
-                                    editable: false
+                                    editable: false,
+                                    fillColor: '#7CFC00',
+                                    fillOpacity: 0.35
                                 });
                             }
                             newLot.overlay.setMap(map);
