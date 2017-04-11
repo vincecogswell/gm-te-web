@@ -82,7 +82,7 @@
                 $location.path('/campuses');
             }
 
-            function updateShuttleStops(path, add) {
+            function updateShuttleStops(add) {
                 // loop through path, check equal to element in bounds array
                 // if so then either add or remove that element from array
 
@@ -1102,7 +1102,7 @@
                 drawingManagerShuttle.setOptions({
                     drawingControl: false
                 });
-                updateShuttleStops(path, true);
+                updateShuttleStops(true);
             });
 
             $("#modal-building").on("shown.bs.modal", function () {
