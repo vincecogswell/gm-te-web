@@ -738,7 +738,7 @@
                                 draggable: false,
                                 editable: false,
                                 fillColor: '#FFA500',
-                                fillOpacity: 0.35
+                                fillOpacity: 1.0
                             });
                             shuttle.overlay.setMap(map); 
                         }
@@ -785,7 +785,7 @@
                                 draggable: false,
                                 editable: false,
                                 fillColor: '#FFA500',
-                                fillOpacity: 0.35
+                                fillOpacity: 1.0
                             });
 
                             newShuttle.overlay.setMap(map); 
@@ -809,7 +809,7 @@
                                 draggable: false,
                                 editable: false,
                                 fillColor: '#FFA500',
-                                fillOpacity: 0.35
+                                fillOpacity: 1.0
                             });
 
                             newShuttle.overlay.setMap(map);
@@ -965,7 +965,7 @@
                     draggable: true,
                     editable: true,
                     strokeColor: '#FFA500',
-                    strokeOpacity: 0.35
+                    strokeOpacity: 1.0
                 }
             });
             drawingManagerShuttle.setMap(modalMapShuttle);
@@ -1284,7 +1284,7 @@
                         draggable: true,
                         editable: true,
                         fillColor: '#FFA500',
-                        fillOpacity: 0.35
+                        fillOpacity: 1.0
                     });
 
                     overlay.setMap(modalMapShuttle);
