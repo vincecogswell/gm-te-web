@@ -22,6 +22,9 @@
                     gateService: function(gateService) {
                         return gateService;
                     },
+                    shuttleService: function(shuttleService) {
+                        return shuttleService;
+                    },
                     mapService: function(mapService) {
                         return mapService;
                     },
@@ -31,7 +34,7 @@
                 }
             });
         }])
-        .controller('CampusCtrl', ['campusService', 'buildingService', 'lotService', 'gateService', 'mapService', 'loginService', '$routeParams', '$scope', '$location', function(campusService, buildingService, lotService, gateService, mapService, loginService, $routeParams, $scope, $location) {
+        .controller('CampusCtrl', ['campusService', 'buildingService', 'lotService', 'gateService', 'shuttleService', 'mapService', 'loginService', '$routeParams', '$scope', '$location', function(campusService, buildingService, lotService, gateService, shuttleService, mapService, loginService, $routeParams, $scope, $location) {
             var self = this;
 
             if (!loginService.userIsLoggedIn()) {
@@ -55,6 +58,7 @@
             self.selectedRoles = [];
             self.selectedBuildings = [];
             self.instructions = [];
+            self.shuttleStops = [];
 
             var overlay;
             var bounds = new google.maps.MVCArray();
@@ -68,6 +72,15 @@
             self.logout = function () {
                 loginService.logout();
                 $location.path('/login');
+            }
+
+            self.goBack = function () {
+                $location.path('/campuses');
+            }
+
+            self.updateShuttleStops = function (path, add) {
+                // loop through path, check equal to element in bounds array
+                // if so then either add or remove that element from array
             }
 
             self.updateInstructions = function () {
@@ -147,13 +160,6 @@
                     minutes = '0' + minutes;
                 }
                 return hours + ':' + minutes;
-            }
-
-            self.goBack = function () {
-                //self.lots = null;
-                //self.buildings = null;
-                //self.gates = null;
-                $location.path('/campuses');
             }
 
             function getBuildings() {
@@ -712,6 +718,129 @@
                 });
             }
 
+
+
+
+
+            function getShuttles() {
+                shuttleService.getShuttles(campusId, function (shuttles) {
+                    self.shuttles = shuttles;
+                    // populate map
+                    for (var key in self.shuttles) {
+                        if (self.shuttles.hasOwnProperty(key)) {
+                            let shuttle = self.shuttles[key];
+
+                            shuttle['bounds'] = mapService.convertToGMBounds(shuttle.perimeter);
+                            shuttle['paths'] = mapService.convertToGMPaths(shuttle.perimeter);
+
+                            shuttle['overlay'] = new google.maps.Polyline({
+                                path: shuttle.paths,
+                                draggable: false,
+                                editable: false,
+                                fillColor: '#FFA500',
+                                fillOpacity: 0.35
+                            });
+                            shuttle.overlay.setMap(map); 
+                        }
+                    }
+                });
+            }
+
+            self.saveShuttle = function () {
+                if ($("#shuttle-name").val() === '') {
+                    // error - name can't be empty
+                    return;
+                }
+
+                if (bounds.getLength() === 0) {
+                    // error - need to draw something
+                    return;
+                }
+
+                var start = convertTimeToString(self.fromTime);
+                var end = convertTimeToString(self.toTime);
+
+                var perimeter = [];
+                for (var i = 0; i < bounds.getLength(); i++) {
+                    let coord = bounds.getAt(i);
+                    perimeter.push([ coord.lat(), coord.lng() ]);
+                }
+
+                var newShuttle = {
+                    name: $("#shuttle-name").val(),
+                    active: true,
+                    start: start,
+                    end: end,
+                    perimeter: perimeter
+                };
+                if (self.modalMode === self.modalModeEnum.ADD) {
+                    shuttleService.saveShuttle(campusId, newShuttle, function (response) {
+                        if (response) {
+                            console.log(response);
+                            newShuttle['bounds'] = mapService.convertToGMBounds(newShuttle.perimeter);
+                            newShuttle['paths'] = mapService.convertToGMPaths(newShuttle.perimeter);
+
+                            newShuttle['overlay'] = new google.maps.Polyline({
+                                path: newShuttle.paths,
+                                draggable: false,
+                                editable: false,
+                                fillColor: '#FFA500',
+                                fillOpacity: 0.35
+                            });
+
+                            newShuttle.overlay.setMap(map); 
+                        } else {
+                            // error
+                            console.log("error");
+                        }
+                    });
+                } else if (self.modalMode === self.modalModeEnum.EDIT) {
+                    var oldShuttle = self.shuttles[self.structureToUpdate];
+                    shuttleService.updateShuttle(campusId, self.structureToUpdate, newShuttle, function (response) {
+                        if (response) {
+                            console.log(response);
+                            newShuttle['bounds'] = mapService.convertToGMBounds(newShuttle.perimeter);
+                            newShuttle['paths'] = mapService.convertToGMPaths(newShuttle.perimeter);
+
+                            oldShuttle.overlay.setMap(null);
+
+                            newShuttle['overlay'] = new google.maps.Polyline({
+                                path: newShuttle.paths,
+                                draggable: false,
+                                editable: false,
+                                fillColor: '#FFA500',
+                                fillOpacity: 0.35
+                            });
+
+                            newShuttle.overlay.setMap(map);
+                        } else {
+                            // error
+                            console.log("error");
+                            getShuttles();
+                        }
+                    });
+                }
+
+                $('#modal-shuttle').modal('toggle');
+            }
+
+            self.deleteShuttle = function (shuttleId) {
+                var shuttle = self.shuttles[shuttleId];
+                shuttle.overlay.setMap(null);
+
+                shuttleService.deleteShuttle(campusId, shuttleId, function (response) {
+                    if (!response) {
+                        // error
+                        console.log("error");
+
+                        shuttle.overlay.setMap(map);
+                    }
+                });
+            }
+
+
+
+
             self.clearModalMap = function () {
                 bounds.clear();
                 if (overlay) {
@@ -723,6 +852,12 @@
                 drawingManagerLot.setOptions({
                     drawingControlOptions: {
                         drawingModes: ['marker', 'rectangle', 'polygon']
+                    }
+                });
+                drawingManagerShuttle.setDrawingMode(null);
+                drawingManagerShuttle.setOptions({
+                    drawingControlOptions: {
+                        drawingModes: ['polyline']
                     }
                 });
                 self.clearMarkers();
@@ -814,12 +949,34 @@
             drawingManagerGate.setMap(modalMapGate);
 
 
+            var modalMapShuttle = new google.maps.Map(document.getElementById('modal-map-shuttle'), {
+                center: self.campus.bounds.getCenter(),
+                mapTypeId: 'satellite'
+            });
+            modalMapShuttle.fitBounds(self.campus.bounds);
+
+            var drawingManagerShuttle = new google.maps.drawing.DrawingManager({
+                drawingControl: true,
+                drawingControlOptions: {
+                    position: google.maps.ControlPosition.TOP_CENTER,
+                    drawingModes: ['polyline']
+                },
+                polylineOptions: {
+                    draggable: true,
+                    editable: true,
+                    strokeColor: '#FFA500',
+                    strokeOpacity: 0.35
+                }
+            });
+            drawingManagerShuttle.setMap(modalMapShuttle);
+
+
             function updateBounds() {
                 bounds.clear();
                 if (curType === 'rectangle') {
                     bounds.push(overlay.getBounds().getNorthEast());
                     bounds.push(overlay.getBounds().getSouthWest());
-                } else if (curType === 'polygon') {
+                } else if (curType === 'polygon' || curType === 'polyline') {
                     var path = overlay.getPath();
                     for (var i = 0; i < path.getLength(); i++) {
                         bounds.push(path.getAt(i));
@@ -836,14 +993,20 @@
                     } else {
                         google.maps.event.clearInstanceListeners(overlay);
                     }
-                } else if (curType === 'polygon') {
+                } else if (curType === 'polygon' || curType === 'polyline') {
                     var path = overlay.getPath();
                     if (addListeners) {
                         google.maps.event.addListener(path, 'insert_at', function () {
                             updateBounds();
+                            if (curType === 'polyline') {
+                                updateShuttleStops(path, true);
+                            }
                         });
                         google.maps.event.addListener(path, 'remove_at', function () {
                             updateBounds();
+                            if (curType === 'polyline') {
+                                updateShuttleStops(path, false);
+                            }
                         });
                         google.maps.event.addListener(path, 'set_at', function () {
                             updateBounds();
@@ -882,6 +1045,17 @@
                         }
                     });
                 }
+            });
+
+            google.maps.event.addListener(drawingManagerShuttle, 'overlaycomplete', function(event) {
+                overlay = event.overlay;
+                curType = event.type;
+                updateBounds();
+                updateListeners(true);
+                drawingManagerShuttle.setDrawingMode(null);
+                drawingManagerShuttle.setOptions({
+                    drawingControl: false
+                });
             });
 
             $("#modal-building").on("shown.bs.modal", function () {
@@ -1079,8 +1253,63 @@
                 resetDates();
             });
 
+
+            $("#modal-shuttle").on("shown.bs.modal", function () {
+                google.maps.event.trigger(modalMapShuttle, 'resize');
+                drawingManagerShuttle.setDrawingMode(null);
+                modalMapShuttle.fitBounds(self.campus.bounds);
+                if (self.modalMode === self.modalModeEnum.ADD) {
+                    drawingManagerShuttle.setOptions({
+                        drawingControlOptions: {
+                            drawingModes: ['polyline']
+                        }
+                    });
+                } else if (self.modalMode === self.modalModeEnum.EDIT) {
+                    var shuttle = self.shuttles[self.structureToUpdate];
+                    $("#shuttle-name").val(shuttle.name);
+
+                    var start = shuttle.start.split(':');
+                    self.fromTime = new Date();
+                    self.fromTime.setHours(Number(start[0]));
+                    self.fromTime.setMinutes(Number(start[1]));
+
+                    var end = shuttle.end.split(':');
+                    self.toTime = new Date();
+                    self.toTime.setHours(Number(end[0]));
+                    self.toTime.setMinutes(Number(end[1]));
+
+                    curType = 'polyline';
+                    overlay = new google.maps.Polyline({
+                        path: shuttle.paths,
+                        draggable: true,
+                        editable: true,
+                        fillColor: '#FFA500',
+                        fillOpacity: 0.35
+                    });
+
+                    overlay.setMap(modalMapShuttle);
+
+                    updateBounds();
+                    updateListeners(true);
+
+                    $scope.$apply();
+                }
+            });
+
+            $("#modal-shuttle").on("hidden.bs.modal", function () {
+                $("#shuttle-name").val("");
+                resetDates();
+                bounds.clear();
+                if (overlay) {
+                    updateListeners(false);
+                    overlay.setMap(null);
+                    overlay = null;
+                }
+            });
+
             resetDates();
             getBuildings();
             getGates();
+            //getShuttles();
         }]);
 })();
