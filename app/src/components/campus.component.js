@@ -729,12 +729,14 @@
             }
 
             var map = new google.maps.Map(document.getElementById('map'), {
-                center: self.campus.bounds.getCenter()
+                center: self.campus.bounds.getCenter(),
+                mapTypeId: 'satellite'
             });
             map.fitBounds(self.campus.bounds);
 
             var modalMapBuilding = new google.maps.Map(document.getElementById('modal-map-building'), {
-                center: self.campus.bounds.getCenter()
+                center: self.campus.bounds.getCenter(),
+                mapTypeId: 'satellite'
             });
             modalMapBuilding.fitBounds(self.campus.bounds);  
 
@@ -753,7 +755,8 @@
 
 
             var modalMapLot = new google.maps.Map(document.getElementById('modal-map-lot'), {
-                center: self.campus.bounds.getCenter()
+                center: self.campus.bounds.getCenter(),
+                mapTypeId: 'satellite'
             });
             modalMapLot.fitBounds(self.campus.bounds); 
 
@@ -784,7 +787,8 @@
 
 
             var modalMapGate = new google.maps.Map(document.getElementById('modal-map-gate'), {
-                center: self.campus.bounds.getCenter()
+                center: self.campus.bounds.getCenter(),
+                mapTypeId: 'satellite'
             });
             modalMapGate.fitBounds(self.campus.bounds);
 
