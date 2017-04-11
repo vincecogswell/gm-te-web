@@ -342,13 +342,15 @@
                                 lot['overlay'] = new google.maps.Polygon({
                                     paths: lot.paths,
                                     draggable: false,
-                                    editable: false
+                                    editable: false,
+                                    fillColor: rgba(124,252,0,0.5)
                                 });
                             } else {
                                 lot['overlay'] = new google.maps.Rectangle({
                                     bounds: lot.bounds,
                                     draggable: false,
-                                    editable: false
+                                    editable: false,
+                                    fillColor: rgba(124,252,0,0.5)
                                 });
                             }
                             lot.overlay.setMap(map); 
@@ -765,11 +767,13 @@
                 },
                 rectangleOptions: {
                     draggable: true,
-                    editable: true
+                    editable: true,
+                    fillColor: rgba(124,252,0,0.5)
                 },
                 polygonOptions: {
                     draggable: true,
-                    editable: true
+                    editable: true,
+                    fillColor: rgba(124,252,0,0.5)
                 }
             });
             drawingManagerLot.setMap(modalMapLot);
