@@ -6,7 +6,7 @@
     display: block;
 }
 
-#modal-map, #modal-map-building, #modal-map-lot, #modal-map-gate {
+#modal-map, #modal-map-building, #modal-map-lot, #modal-map-gate, #modal-map-shuttle {
   height: 387.5px;
   width: 567.5px;
   display: block;
