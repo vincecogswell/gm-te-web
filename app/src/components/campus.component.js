@@ -82,18 +82,20 @@
                 $location.path('/campuses');
             }
 
-            function updateShuttleStops(add) {
+            function updateShuttleStops(add, len) {
                 // loop through path, check equal to element in bounds array
                 // if so then either add or remove that element from array
 
                 if (add) {
-                    var stopTime = new Date();
-                    stopTime.setHours(0);
-                    stopTime.setMinutes(0);
+                    for (var i = 0; i < len; i++) {
+                        var stopTime = new Date();
+                        stopTime.setHours(0);
+                        stopTime.setMinutes(0);
 
-                    self.shuttleStops.push({
-                        stopTime: stopTime
-                    });
+                        self.shuttleStops.push({
+                            stopTime: stopTime
+                        });
+                    }
                 } else {
                     self.shuttleStops.pop();
                 }
@@ -1102,7 +1104,8 @@
                 drawingManagerShuttle.setOptions({
                     drawingControl: false
                 });
-                updateShuttleStops(true);
+                updateShuttleStops(true, bounds.getLength());
+                $scope.$apply();
             });
 
             $("#modal-building").on("shown.bs.modal", function () {
